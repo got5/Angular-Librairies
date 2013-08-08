@@ -1,0 +1,39 @@
+<div class="container">
+	<div class="bloc-content text-content">
+		
+		<ul>
+			<li>Requires <i class="text-red">$injector</i> service, and then <i class="text-red">$filter</i> service
+				from injector.</li>
+		</ul>
+		
+<editor show-preview="false" compile-code="false" show-tabs="false" height="420">
+<file type="javascript" name="filtersSpec.js">// test/unit/filters/filtersSpec.js
+describe('Filters Unit Tests', function() {
+
+	// Loads app module before each test.
+	beforeEach(angular.mock.module('App'));
+
+
+	describe('Currency Filter Unit Tests', function() {
+		
+		it('should have a currency filter', inject(function($filter) {
+			expect($filter('currency')).not.toEqual(null);
+		}));
+		
+		it('should format the number as a currency',
+			inject(function($filter) {
+			
+			var filterResult = $filter('currency')(1234.56);
+			expect(filter).toMatch('$1,234.56');
+			
+			filterResult = $filter('currency')(1234.56, "USD$");
+			expect(filterResult).toMatch('USD$1,234.56');
+		}));
+	});
+});
+
+</file>
+</editor>
+		
+	</div>
+</div>

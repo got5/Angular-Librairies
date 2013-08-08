@@ -1,0 +1,43 @@
+<div class="container">
+	<div class="bloc-content text-content">
+		<ul>
+			<li>Easiest blocks of code to test.</li>
+		</ul>
+		
+<editor show-preview="false" compile-code="false" show-tabs="false" height="420">
+<file type="javascript" name="test/unit/appSpec.js">// test/unit/services/appStorageSpecs.js
+describe("AppStorage Unit Tests", function() {
+
+	// Loads app module before each test.
+	beforeEach(angular.mock.module('App'));
+	
+	// Checks if the appStorage service has been registered.
+	it('should contain an $appStorage service', 
+		inject(function($appStorage) {
+		
+		expect($appStorage).not.to.equal(null);
+	}));
+	
+	// Checks the appStorage service functionnalities.
+	it('should store and save data properly', 
+		inject(['$appStorage',function($storage) {
+		
+		var key = 'key', value = 'value';
+		$storage.enableCaching();
+		$storage.put(key, value);
+		expect($storage.isPresent(key)).to.equal(true);
+		expect($storage.get(key)).to.equal(value);
+
+		$storage.erase(key);
+		expect($storage.isPresent(key)).to.equal(false);
+
+		$storage.put(key, value);
+		$storage.flush();
+		expect($storage.isPresent(key)).to.equal(false);
+	}]));
+});
+</file>
+</editor>
+		
+	</div>
+</div>

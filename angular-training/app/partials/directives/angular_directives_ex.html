@@ -1,0 +1,56 @@
+<div class="bloc-content text-content">
+	<ul>
+		<li style="font-size: 20px"><span class="text-red">Exercise</span>: Finish the survey application! Remaining tasks are listed in the
+			controller.</li>
+	</ul>
+		
+<editor-vertical show-preview="true" show-tabs="true" height="380">
+<file type="html" name="survey.html">&lt;div ng-controller="SurveyCtrl"&gt;
+
+&lt;h3&gt;Survey application&lt;/h3&gt;
+
+&lt;form name="formSurvey"&gt;
+	Name: &lt;input type="text"/&gt;&lt;br/&gt; &lt;br/&gt;
+	
+	&lt;button class="btn"&gt;Submit poll&lt;/button&gt;
+&lt;/form&gt;
+</file>
+<file type="javascript" name="surveyCtrl.js">var SurveyCtrl = function($scope) {
+
+	$scope.categories = [ 'Theory', 'Exercices', 
+		'Documentation', 'Trainer' ];
+	$scope.notes = [ 1, 2, 3, 4 ];
+	
+	$scope.survey = {};
+	for (var index = 0; index &lt; 
+		$scope.categories.length; index++) {
+		var category = $scope.categories[index];
+		$scope.survey[category] = 3;
+	}
+	
+	// TODO: One form line per category, 
+	// with one radio button per note.
+	// TODO: Note of 2 or less displays a 
+	// mandatory text input.
+	// TODO: Note of 2 or less is 
+	// disabled for Trainer category.
+};
+</file>
+</editor-vertical>
+		
+</div>
+
+<!-- 
+
+<div ng-repeat="category in categories">
+		{{category}}:
+		<span ng-repeat="note in notes">
+			{{note}}
+			<input type="radio" value="{{note}}" ng-model="survey[category]"
+				ng-disabled="note < 3 && category == 'Trainer'"/>
+		</span>
+		<input type="text" placeholder="Comment..."
+			ng-show="survey[category] < 3"/>
+	</div>
+
+ -->

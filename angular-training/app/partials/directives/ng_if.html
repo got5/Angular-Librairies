@@ -1,0 +1,18 @@
+<div class="bloc-content text-content">
+	<ul>
+		<li><span class="text-red">Removes</span> a portion of the DOM tree conditionally.</li>
+	</ul>
+		
+<editor show-preview="true" show-tabs="false" height="270">
+<file type="html" name="http.html">&lt;div ng-init="bRemoveDiv = true"&gt;
+	&lt;button class="btn" ng-click="bRemoveDiv = !bRemoveDiv"&gt;
+		Show/Remove
+	&lt;/button&gt;
+	&lt;div ng-if="bRemoveDiv"&gt;
+		I'm visible because &lt;i&gt;bRemoveDiv&lt;/i&gt; is {{bRemoveDiv}}.
+	&lt;/div&gt;
+&lt;/div&gt;
+</file>
+</editor>
+
+</div>

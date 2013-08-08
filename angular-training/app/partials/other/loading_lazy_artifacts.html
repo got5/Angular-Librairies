@@ -1,0 +1,44 @@
+<div class="container">
+	<div class="bloc-content text-content">
+		<ul>
+			<li>What is the best place to load our lazy artifacts?</li>
+			<li>In the <i class="text-red">resolve</i> property of the <span class="text-red">route definition</span>.</li>
+		</ul>
+		
+<editor show-preview="false" compile-code="false" height="370">
+<file type="javascript" name="app.js">$routeProvider.when('/about', {
+	templateUrl: 'partials/about.html', 
+	// Controller is not specified here, but in the template file.
+	
+	// Map of dependencies injected into the route controller.
+	// Called before the route redirection.
+	resolve: {
+		deps: function($q, $rootScope) {
+			var deferred = $q.defer();
+			var dependencies =
+			[
+				'controllers/AboutController.js',
+				'directives/AboutDirective.js'
+			];
+		 
+			// Load the dependencies
+			$script(dependencies, function()
+			{
+				// All dependencies have now been loaded, so we can resolve
+				// the promise. Current route will change, and
+				// ng-controller='AboutController' will be recognized 
+				// in its template file.
+				$rootScope.$apply(function()
+				{
+					deferred.resolve();
+				});
+			});
+			return deferred.promise;
+		}
+	}
+});
+</file>
+</editor>
+		
+	</div>
+</div>

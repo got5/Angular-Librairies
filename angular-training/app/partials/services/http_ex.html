@@ -1,0 +1,53 @@
+<div class="container">
+	<div class="bloc-content text-content">
+		<ul>
+			<li><span class="text-red">Exercises</span>
+				<ol style="font-size: 20px">
+					<li>Write a function <i>getNbConnectedUsers</i>, which uses <i>$http</i>
+						service to return the content of <i>data/users.json</i> file.
+					</li>
+					<li>Create a function which use the <i>$timeout</i> service
+						to call this function after two seconds.
+					</li>
+					<li>Make a promise to call the above function and
+						store the number of results in <i>$scope.nbUsers</i> property.
+					</li>
+				</ol>
+		</ul>
+		
+<editor show-preview="true" show-tabs="true" height="210">
+    <file type="html" name="http.html">&lt;div ng-controller="UserCtrl"&gt;
+    There are {{nbUsers}} connected users on the website.
+&lt;/div&gt;</file>
+	<file type="javascript" name="http.js">var UserCtrl = function($scope, $timeout) {
+	
+}</file>
+</editor>
+	</div>
+
+<!-- 
+function asynchGetNbUsers() {
+        var deferred = $q.defer();
+        $timeout(function() {
+        	$scope.$apply(function() {
+        		deferred.resolve(getNbUsers());
+        	});
+        }, 2000);
+        
+        return deferred.promise;
+	}
+    
+    function getNbUsers() {
+        return $http({method: 'GET', url: 'data/users.json'});
+    }
+    
+    var promise = asynchGetNbUsers();
+    promise.then(function(result) {
+    	$scope.nbUsers = result.data.length;
+    }, function(error) {
+    	console.log('error');
+    });
+ -->
+
+</div>
+</div>

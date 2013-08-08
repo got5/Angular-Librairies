@@ -1,0 +1,24 @@
+<article>
+	<div class="photo-data">
+		<p><a href="#" title="See Product sheet">
+			<img class="photo" ng-src="img/catalog/{{product.id}}.jpg" alt="Title of product" />
+		</a></p>
+	</div>
+	<p class="extra new" ng-if="product.isNew">new</p>
+	<h3 class="fn name">
+		<a ng-href="/book/{{product.id}}" title="See Product sheet">{{product.name}}</a>
+	</h3>
+		    	
+	<p ng-class="getRatingClass(product)"><a href="#comments">{{getNbComments(product)}} comment(s)</a></p>
+		    	
+	<div class="price-data">
+		<p class="all-prices">
+			<strong class="price new">{{product.price | currency}}</strong>
+		</p>
+	</div>
+	<div class="buyZone">
+		<p class="buy">
+			<a href="basket" ng-click="addToCart(product)">Add to basket</a>
+		</p>
+	</div>
+</article>

@@ -1,0 +1,31 @@
+<div class="bloc-content text-content">
+	<ul>
+		<li>You can associate your controllers via:</li>
+		<li>The <span class="text-red">ngController</span> directive.</li>
+		<li>The <span class="text-red">$route</span> service.</li>
+	</ul>
+		
+<editor show-preview="false" show-tabs="true" compile-code="false" height="300">
+<file type="javascript" name="app.js">var application = angular.module('trainingApp', [])
+	.config(function ($routeProvider) {
+		$routeProvider
+			.when('/home', {
+				templateUrl: 'views/main.html',
+				controller: MainController
+			})
+			.when('/contact', {
+				templateUrl: 'views/contact.html',
+			})
+			.otherwise({
+				redirectTo: '/home'
+			});
+		});
+</file>
+<file type="html" name="contact.html">&lt;div ng-controller="ContactController"&gt;
+	...
+&lt;/div&gt;
+
+</file>
+</editor>
+
+</div>

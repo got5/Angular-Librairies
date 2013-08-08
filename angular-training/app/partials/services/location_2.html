@@ -1,0 +1,28 @@
+<div class="container">
+	<div class="bloc-content text-content">
+
+<editor show-preview="true" show-tabs="true" height=300>
+    <file type="html" name="location.html">&lt;div ng-controller="LocationCtrl"&gt;
+    Current url is : &lt;i&gt;{{currentURL}}&lt;/i&gt;. 
+    &lt;br/&gt;
+    &lt;button class="btn" ng-click="gotoWindowSlide()"&gt;
+        Go to $window service slide
+    &lt;/button&gt;
+&lt;/div&gt;</file>
+	<file type="javascript" name="location.js">var LocationCtrl = function($scope, $location) {
+	$scope.currentURL = $location.url();
+	
+	$scope.gotoWindowSlide = function() {
+		$location.path("/services/window");
+	};
+	
+	$scope.$on('$routeChangeStart', function(event, next, current) {
+        //TODO: Handler on route change.
+    });
+};
+</file>
+</editor>
+</div>
+		
+	</div>
+</div>

@@ -1,0 +1,101 @@
+{
+	"products":{
+		"1": {
+			"id": 1,
+			"name": "AngularJS",
+			"author": "Brad Green, Shyam Seshadri",
+			"price": 15.34,
+			"description": "Description...", 
+			"category": "book", 
+			"isNew": false,
+			"comments": [
+				{
+					"rate": 2,
+					"user": "Laurent Wroblewski",
+					"comment": "Test comment"
+				}
+			]
+		
+		}, 
+		"2": {
+			"id": 2,
+			"name": "Angularjs in Action",
+			"author": "Brian Ford, Lukas Ruebbelke",
+			"price": 34.51,
+			"description": "Description...", 
+			"category": "book", 
+			"isNew": true,
+			"comments": null
+		}, 
+		"3": {
+			"id": 3,
+			"name": "Instant AngularJS Starter",
+			"author": "Dan Menard",
+			"price": 16.26,
+			"description": "Description...", 
+			"category": "book", 
+			"isNew": false,
+			"comments": null
+		}, 
+		"4": {
+			"id": 4,
+			"name": "Javascript: The Definitive Guide",
+			"author": "David Flanagan",
+			"price": 34.44,
+			"description": "Description...", 
+			"category": "book", 
+			"isNew": false,
+			"comments": null
+		}, 
+		"5": {
+			"id": 5,
+			"name": "JavaScript and HTML5 Now",
+			"author": "Kyle Simpson",
+			"price": 24.35,
+			"description": "Description...", 
+			"category": "book", 
+			"isNew": false,
+			"comments": null
+		}, 
+		"6": {
+			"id": 6,
+			"name": "Tapestry in Action",
+			"author": "Lewis M Ship",
+			"price": 34.40,
+			"description": "Description...", 
+			"category": "book", 
+			"isNew": false,
+			"comments": null
+		}, 
+		"7": {
+			"id": 7,
+			"name": "High Performance Flash",
+			"author": "Elad Elrom, R.J. Owen",
+			"price": 36.04,
+			"description": "Description...", 
+			"category": "book", 
+			"isNew": true,
+			"comments": null
+		}, 
+		"8": {
+			"id": 8,
+			"name": "Programming Windows 8 Apps",
+			"author": "Kraig Brockschmidt",
+			"price": 0.00,
+			"description": "Description...", 
+			"category": "book", 
+			"isNew": false,
+			"comments": null
+		}, 
+		"9": {
+			"id": 9,
+			"name": "Functional JavaScript",
+			"author": "Michael Fogus",
+			"price": 22.63,
+			"description": "Description...", 
+			"category": "book", 
+			"isNew": false,
+			"comments": null
+		}
+	}
+}

@@ -1,0 +1,25 @@
+<div ng-controller="ControllerExCtrl">
+	<div class="bloc-content text-content">
+		<ul>
+			<li><span class="text-red">Exercise</span>: Complete the <i>user.js</i> file by adding one or several controllers.</li>
+		</ul>
+			
+<editor show-preview="true" show-tabs="true" height="260">
+<file type="html" name="user.html">&lt;div&gt;
+	Hello, {{currentUser.login}}
+	&lt;tabset&gt;
+		&lt;tab heading="Mails"&gt;
+			&lt;div&gt;You have {{nbMails}} mails in your box.&lt;/div&gt;
+		&lt;/tab&gt;
+		&lt;tab heading="Profile"&gt;&lt;div&gt;
+			&lt;input type="text" ng-model="tmpLogin"/&gt;
+			&lt;button class="btn"&gt;Change login&lt;/button&gt;
+		&lt;/div&gt;&lt;/tab&gt;
+	&lt;/tabset&gt;
+&lt;/div&gt;
+</file>
+<file type="javascript" name="user.js"></file>
+</editor>
+		
+	</div>
+</div>

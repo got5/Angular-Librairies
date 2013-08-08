@@ -1,0 +1,24 @@
+<div class="container">
+	<div class="bloc-content text-content">
+		<ul>
+			<li>Uses an existing instance as a service (like <i class="text-red">value()</i>)...</li>
+			<li>... But registers also this object as its own provider.</li>
+			<li>The service can be configured, using <i class="text-red">config()</i> method of the application.</li>
+		</ul>
+		
+		<img src="images/constant.png" width="380" class="back-image"/>
+		
+<editor show-preview="false" show-tabs="false" height="190">
+	<file type="javascript" name="services.js">var appServices = angular.module('ecommerce.services', []);
+appServices.constant('versionDescriptor', { numVersion: null, mode: "release" });
+
+var application = angular.module('ecommerceApp', [ 'ecommerce.services' ]);
+application.config(function(versionDescriptor) {
+		versionDescriptor.numVersion = "0.1";
+		versionDescriptor.mode = "debug";
+	});
+</file>
+</editor>
+		
+	</div>
+</div>

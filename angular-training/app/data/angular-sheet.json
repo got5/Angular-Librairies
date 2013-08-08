@@ -1,0 +1,135 @@
+{
+	"js": {
+	
+	},
+	"html": {
+		"<": {
+			
+		},
+		">": {
+			
+		},
+		" ": {
+			"<": {
+				"suggestions": [
+					"*directives"
+				]
+			},
+			">": {
+			
+			}
+		},
+		"{": {
+		
+		}
+	},
+	"categories": {
+		"directives": {
+			"ng-app": {
+			
+			},
+			"ng-bind": {
+			
+			},
+			"ng-bind-html-unsafe": {
+			
+			},
+			
+			"ng-change": {
+			
+			},
+			"ng-checked": {
+			
+			},
+			"ng-class": {
+			
+			},
+			"ng-click": {
+				"doc": null
+			},
+			"ng-dblclick": {
+			
+			},
+			"ng-cloak": {
+			
+			},
+			"ng-controller": {
+			
+			},
+			"ng-csp": {
+				"restrict": "html"
+			},
+			"ng-disabled": {
+			
+			},
+			"ng-form": {
+				"restrict": "form"
+			},
+			"ng-hide": {
+			
+			},
+			"ng-show": {
+			
+			},
+			"ng-hide": {
+			
+			},
+			"ng-href": {
+			
+			},
+			"ng-include": {
+			
+			},
+			"ng-init": {
+			
+			},
+			"ng-pattern": {
+			
+			},
+			"ng-list": {
+			
+			},
+			"ng-true-value": {
+			
+			},
+			"ng-false-value": {
+			
+			},
+			"ng-model": {
+			
+			},
+			"ng-mousedown": {
+			
+			},
+			"ng-mouseenter": {
+			
+			},
+			"ng-mouseleave": {
+			
+			},
+			"ng-mousemove": {
+			
+			},
+			"ng-mouseover": {
+			
+			},
+			"ng-mouseup": {
+			
+			},
+			"ng-multiple": {
+				"restrict": "select"
+			}
+			
+		},
+		"filters": {
+		
+		},
+		"functions": {
+		
+		},
+		"services": {
+		
+		}
+		
+	}
+}

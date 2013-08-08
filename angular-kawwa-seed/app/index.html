@@ -1,0 +1,50 @@
+<!DOCTYPE html>  
+<html lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<meta name="viewport" content="width=device-width; initial-scale=1.0" />
+	<link rel="shortcut icon" href="../img/k-theme0/favicon.png" />
+	<title>[KAWWA &raquo; Article Template]</title>
+	<!-- STYLESHEET -->
+	<link href="./css/k-structure.css" rel="stylesheet" media="all" type="text/css">
+  	<link href="./css/k-theme0.css" rel="stylesheet" media="all" type="text/css">
+  	<link href="./css/style.css" rel="stylesheet" media="all" type="text/css">
+	<!--[if lt IE 9]><link href="./css/iehacks0.css" rel="stylesheet" type="text/css" /><![endif]-->
+
+</head>
+
+<body>
+
+<div id="container">
+
+	<header role="banner">
+		<h1>KAWWA <small>Markup Pattern Library</small></h1>
+	</header>
+	
+	<nav>
+		<ul class="k-navbar">
+			<li class="home"><a href="/">Home</a></li>
+			<li><a href="/login">Login</a></li>
+		</ul>
+	</nav>
+	
+	<div id="wrapper">		
+		<div id="main" role="main" ng-controller="RootController">
+			<div ng-view id="main-container" class="container-fluid"></div>
+		</div>
+		<aside role="complementary">
+		
+		</aside>	
+	</div>
+	
+	<footer role="contentinfo">
+		<p class="k-copyright">&copy; Your copyright, 2013</p>
+	</footer>
+</div>
+
+<script type="text/javascript" src="js/lib/angular/angular.js"></script>
+<script data-main="js/bootstrap.js" src="js/lib/require.js"></script>
+
+</body>
+</html>
