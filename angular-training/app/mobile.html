@@ -5,19 +5,25 @@
     		<link rel="stylesheet" href="styles/main.css">
     		<style type="text/css" media="screen">
     		.mobile-preview {
-			padding-left: 28px;
-			padding-right: 28px;
-			padding-top: 32px;
-			padding-bottom: 50px;
-			font-size: 20px;
-			background-image:url(images/android-skin.png);
-			width: 244px;
-			height: 398px;
-		}
-
-		.page-content {
-			padding-left: 5px;
-		}
+				padding-left: 28px;
+				padding-right: 28px;
+				padding-top: 32px;
+				padding-bottom: 50px;
+				font-size: 20px;
+				background-image:url(images/android-skin.png);
+				width: 244px;
+				height: 398px;
+			}
+	
+			.page-content {
+				padding-left: 5px;
+				padding-right: 5px;
+			}
+			
+			.ui-input-text {
+				font-size: 26px !important;
+			}
+			
     		</style>
 	</head>
 	<body ng-app="angularMobileTrainingApp">
@@ -25,21 +31,27 @@
 <editor-mobile show-preview="true" show-tabs="false" height="460">
 <file type="html" name="mobileApp.html">&lt;div jqm-page class="jqm-standalone-page"&gt;
 	&lt;div jqm-header&gt;
-		Header
+		&lt;h3&gt;Mobile App&lt;/h3&gt;
 	&lt;/div&gt;
 
 	&lt;div class='page-content'&gt;
 		&lt;div jqm-checkbox ng-model="disably"&gt;
-			Checkbox value is {{disably}}.
+			Checkbox is {{disably}}.
 		&lt;/div&gt;
 		&lt;div jqm-flip ng-model="switch" 
 			on-label="On" on-value="1" 
 			off-label="Off" off-value="0"&gt;
 			Switch value is: {{switch}}.
 		&lt;/div&gt;
+		
+		&lt;div jqm-textinput ng-model="search" 
+			clear-btn="true"&gt;&lt;/div&gt;
+		
 	&lt;/div&gt;
 
-	&lt;div jqm-footer&gt;Footer&lt;/div&gt;
+	&lt;div jqm-footer&gt;
+		&lt;h1&gt;Made by GPS Team&lt;/h1&gt;
+	&lt;/div&gt;
 &lt;/div&gt;
 
 
@@ -56,6 +68,7 @@
 
 		<script src="js/directives/directives.js"></script>
     	<script src="js/directives/editor.js"></script>
+    	<script src="js/directives/suggest.js"></script>
 
     	<script type="text/javascript">
     		angular.module('angularMobileTrainingApp',  ['directives', 'jqm', 'ui.bootstrap']);

@@ -42,7 +42,6 @@ var FileEditorController = function($scope, window, transclude, location, timeou
 	/** Scope properties */
 	$scope.showPreview = settings.showPreview;
 	$scope.showTabs = settings.showTabs;
-	$scope.popupStyle = { 'right' : '0px', 'bottom' : '0px' };
 	$scope.showPopup = false;
 
 	/** Currently edited file */
@@ -64,14 +63,17 @@ var FileEditorController = function($scope, window, transclude, location, timeou
 					var textBefore = getTextBeforeCursor();
 					$scope.suggestions = completionService.getSuggestions(
 							textBefore, currentFile.type);
-					$scope.showPopup = true;
-
-					editor.container.addEventListener("keydown",
-							function(event) {
-								if (event.keyCode == 13) {
-									$scope.showPopup = false;
-								}
-							}, true);
+					
+					if ($scope.suggestions != null && $scope.suggestions.length > 0) {
+						
+						//Auto-insert
+						if ($scope.suggestions.length == 1 && $scope.suggestions[0].autoInsert == true) {
+							$scope.chosenSuggestion = $scope.suggestions[0];
+						} else {
+							$scope.startedWord = completionService.getStartedWord(textBefore, currentFile.type);
+							$scope.showPopup = true;
+						}
+					}
 				} else {
 					$scope.showPopup = false;
 				}
@@ -79,15 +81,94 @@ var FileEditorController = function($scope, window, transclude, location, timeou
 		}
 	});
 	
-	$scope.$watch('chosenSuggestion', function() {
-		if ($scope.chosenSuggestion != undefined) {
+	/** Move cursor position */
+	var moveCursor = function(pDelta) {
+		if (pDelta > 0) {
+			editor.navigateRight(pDelta);
+		} else if (pDelta < 0) {
+			editor.navigateLeft(-pDelta);
+		}
+	};
+	
+	$scope.$watch('showPopup', function(newValue, oldValue) {
+		if (newValue != oldValue &&  !newValue) {
+			editor.focus();
+		}
+	});
+	
+	$scope.$watch('userInput', function() {
+		if ($scope.userInput != undefined && $scope.userInput != '') {
 			timeout(function() {
-				editor.insert($scope.chosenSuggestion);
 				editor.focus();
+				editor.insert($scope.userInput);
+				$scope.userInput = '';
 			});
 		}
 	});
-
+	
+	$scope.$watch('chosenSuggestion', function() {
+		if ($scope.chosenSuggestion != undefined) {
+			timeout(function() {
+				
+				// Removes currently written word if replace is set to true.
+				if ($scope.chosenSuggestion.replace == true) {
+					editor.removeWordLeft();
+				}
+				
+				var codeToInsert = $scope.chosenSuggestion.compare == undefined ? 
+						$scope.chosenSuggestion.name.trim() : $scope.chosenSuggestion.compare.trim();
+				
+				// Expression suffix (for example, ="")
+				if ($scope.chosenSuggestion.suffix != undefined) {
+					codeToInsert += $scope.chosenSuggestion.suffix;
+				}
+				
+				// If a part of the suggestion has already been written.
+				if ($scope.startedWord != undefined && $scope.startedWord.length > 0) {
+					codeToInsert = codeToInsert.substring($scope.startedWord.length);
+				}
+				
+				if ($scope.chosenSuggestion.addWhitespace == true) {
+					var codeAfter = getTextAfterCursor();
+					if (codeAfter.length > 0 && codeAfter[0] != " ") {
+						codeToInsert += " ";
+						$scope.chosenSuggestion.cursorPosition--;
+					}
+				}
+				
+				editor.insert(codeToInsert);
+				
+				moveCursor($scope.chosenSuggestion.cursorPosition);
+				
+				$scope.chosenSuggestion = undefined;
+			});
+		}
+	});
+	
+	/*var getElementBeforePosition = function(pPosition, pString, pTrim) {
+		var lines = currentFile.content.split('\n');
+		for (var indexRow = pPosition.row; indexRow >= 0; indexRow--) {
+			var line = lines[indexRow];
+		}
+	};*/
+	
+	/** Returns text after given position. */
+	var getTextAfterPosition = function(position) {
+		var lines = currentFile.content.split('\n');
+		var textAfter = "";
+		
+		var lastLine = lines[position.row];
+		for ( var indexCol = position.column; indexCol < lastLine.length; indexCol++) {
+			textAfter += lastLine[indexCol];
+		}
+		if (position.row < lines.length) {
+			for ( var indexRow = position.row; indexRow < lines.length; indexRow++) {
+				textAfter += lines[indexRow];
+			}
+		}
+		return textAfter;
+	};
+	
 	/** Returns text before given position. */
 	var getTextBeforePosition = function(position) {
 		var lines = currentFile.content.split('\n');
@@ -103,7 +184,12 @@ var FileEditorController = function($scope, window, transclude, location, timeou
 		}
 		return textBefore;
 	};
-
+	
+	/** Returns text after current cursor position. */
+	var getTextAfterCursor = function() {
+		return getTextAfterPosition(editor.selection.getCursor());
+	};
+	
 	/** Returns text before current cursor position. */
 	var getTextBeforeCursor = function() {
 		return getTextBeforePosition(editor.selection.getCursor());
@@ -186,12 +272,26 @@ var FileEditorController = function($scope, window, transclude, location, timeou
 
 			if (file.type == "javascript") {
 				content += wrapJSScript(file.content);
+			} else if (file.type == "html") {
+				content += "<div class='html-content'>" + file.content + "</div>";
 			} else {
 				content += file.content;
 			}
 		}
 
 		return content;
+	};
+	
+	/** Updates started word written when suggestion popup is visible. Used to filter suggestions. */
+	var updateStartedWord = function() {
+		if ($scope.showPopup) {
+			var position = editor.selection.getCursor();
+			position.column++; // Cursor position has not been yet
+								// updated.
+			// Used to filter suggestions in the auto-completion popup.
+			$scope.startedWord = completionService.getStartedWord(
+					getTextBeforePosition(position), currentFile.type);
+		}
 	};
 
 	/** Handler on editor content change. */
@@ -206,14 +306,7 @@ var FileEditorController = function($scope, window, transclude, location, timeou
 					$scope.code = editorContent;
 				}
 
-				if ($scope.showPopup) {
-					var position = editor.selection.getCursor();
-					position.column++; // Cursor position has not been yet
-										// updated.
-					// Used to filter suggestions in the auto-completion popup.
-					$scope.startedWord = completionService.getStartedWord(
-							getTextBeforePosition(position), currentFile.type);
-				}
+				updateStartedWord();
 			});
 		}
 	};
@@ -239,7 +332,7 @@ var FileEditorController = function($scope, window, transclude, location, timeou
 	
 	/** Used to correct a resize problem on the editor. */
 	var onFocus = function(event) {
-		editor.resize();
+		editor.resize(true);
 	};
 	
 	resetServiceCache();
@@ -296,135 +389,6 @@ directives.directive('compile', ['$compile', '$timeout', function($compile, $tim
 			});
 	};
 }]);
-
-/** Suggestion popup controller. */
-var SuggestController = function($scope, $timeout, element) {
-	
-	var select = document.getElementById('suggestSelect');
-	
-	var keyDownHandler = function(event) {
-		if (event.keyCode == 13) {
-			$scope.$apply(function() {
-				$scope.showPopup = false;
-				$scope.chosenSuggestion = $scope.selectedProperty;
-			});
-			select.removeEventListener("keydown", keyDownHandler);
-		}
-	};
-	
-	$scope.$watch('showPopup', function(showPopup) {
-		if (showPopup) {
-			$timeout(function() {
-				select.focus();
-				//select[0].selected = true;
-				select.addEventListener("keydown", keyDownHandler, true);
-				console.log($scope.suggestions);
-			});
-		}
-	});
-
-	$scope.showSuggest = function(suggest) {
-		return $scope.startedWord == undefined
-				|| suggest.name.indexOf($scope.startedWord) == 0;
-	};
-};
-
-/** Auto-completion popup. */
-directives.directive('suggestPopup', function() {
-	return {
-		restrict : 'E',
-		template : "<div ng-show='showPopup' ng-style='popupStyle' class='autocomplete-popup'><select ng-model='selectedProperty' id='suggestSelect' size='5' class='suggest-select'>"
-			+ "<option ng-repeat='suggestion in suggestions | filter:showSuggest'>{{suggestion.name}}</option></select></div>",
-		replace : true,
-		controller : [ '$scope', '$element', '$attrs', '$timeout', function($scope, element, attrs, $timeout) {
-			return new SuggestController($scope, $timeout, element);
-		}]
-	};
-});
-
-/** Auto-completion service */
-var CompletionService = function($http) {
-
-	var properties = null;
-
-	/** Loads all suggestions. */
-	$http.get("data/angular-sheet.json").success(function(data) {
-		properties = data;
-	});
-
-	/** Returns parse properties for a given type. */
-	this.getProperties = function(type) {
-		if (type == "javascript") {
-			return properties.js;
-		} else if (type == "html") {
-			return properties.html;
-		}
-		return null;
-	};
-
-	/** Returns currently written word. */
-	this.getStartedWord = function(content, type) {
-		var word = "";
-		var props = this.getProperties(type);
-		for ( var index = content.length - 1; index > -1; index--) {
-			var char = content[index];
-			if (props[char] != undefined) {
-				return word;
-			} else {
-				word = char + word;
-			}
-		}
-		return word;
-	},
-
-	/** Returns a suggestion list for given type and content. */
-	this.getSuggestions = function(content, type) {
-
-		var props = this.getProperties(type);
-		var inputs = [];
-		var input = '';
-		// Parses content from end to beginning.
-		for ( var index = content.length - 1; index > -1; index--) {
-			var char = content[index];
-		
-			// Checks if current char is a special one (<, >, etc...)
-			if (props[char] != undefined) {
-				props = props[char];
-				inputs.push(input);
-				input = '';
-				if (props.suggestions != undefined) {
-					var list = [];
-					// $scope.startedWord = inputs[0];
-					for ( var indexProp = 0; indexProp < props.suggestions.length; indexProp++) {
-						var suggestionName = props.suggestions[indexProp];
-		
-						if (suggestionName.indexOf('*') == 0) {
-							suggestionName = suggestionName.slice(1);
-							var category = properties.categories[suggestionName];
-							if (category != undefined) {
-								for ( var key in category) {
-									if (key.indexOf(inputs[0]) == 0) {
-										category[key].name = key;
-										category[key].type = suggestionName;
-										list.push(category[key]);
-									}
-								}
-							}
-						}
-					}
-					return list;
-				}
-			} else {
-				input = char + input;
-			}
-		}
-		
-		return null;
-	};
-};
-
-directives.service('CompletionService', [ '$http', CompletionService ]);
-
 
 var EditorConstructor = function() {
 	return {

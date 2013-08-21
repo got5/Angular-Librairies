@@ -197,6 +197,11 @@ var TestUtils = function($timeout) {
 				return angular.element(element).scope();
 			}
 		}
+		// If scope on element not found, get the global scope.
+		var parentElement = document.getElementsByClassName('html-content');
+		if (parentElement) {
+			return angular.element(parentElement).scope();
+		}
 		return null;
 	};
 	

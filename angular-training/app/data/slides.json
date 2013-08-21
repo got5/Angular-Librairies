@@ -224,6 +224,10 @@
     "content":"services/resource_2"
   },
   {
+  	"title":"Practical work",
+    "content":"tps/resource_tp"
+  },
+  {
   	"title":"Main Angular services: $window",
     "content":"services/window"
   },
@@ -316,10 +320,6 @@
     "content":"services/create_conclusion_2"
   },
   {
-    "title":"Creating Angular services",
-    "content":"services/create_ex"
-  },
-  {
     "title":"Practical Work",
     "content":"tps/services_create_tp"
   },
@@ -373,6 +373,10 @@
   {
   	"title":"And many more...",
     "content":"directives/more"
+  },
+  {
+  	"title":"directive-start/end",
+    "content":"directives/directive_start_end"
   },
   {
   	"title":"Practical Work",

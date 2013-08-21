@@ -1,0 +1,16 @@
+<div id="suggestPopup" ng-show="showPopup" ng-style="popupStyle" class="autocomplete-popup">
+	<table>
+		<tr>
+			<td style="max-width: 320px">
+				<div class="suggest-doc" ng-show="selectedProperty.doc != null"
+					ng-bind-html-unsafe="selectedProperty.doc">
+				</div>
+			</td>
+			<td>
+				<select ng-model="selectedProperty" id="suggestSelect" size="5"
+					ng-options="property as property.name group by property.type for property in filteredSuggestions">
+				</select>
+			</td>
+		</tr>
+	</table>
+</div>

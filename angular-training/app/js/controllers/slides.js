@@ -45,6 +45,12 @@ var ExpressionsExCtrl = function($scope, testUtils) {
 		if (scope) {
 			scope.price = pPrice;
 			scope.qty = pQty;
+			
+			// Second question, with a complex object.
+			if (scope.product != undefined) {
+				scope.product.price = pPrice;
+				scope.product.qty = pQty;
+			}
 		}
 	};
 	
