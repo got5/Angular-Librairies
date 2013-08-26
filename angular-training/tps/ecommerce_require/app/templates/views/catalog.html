@@ -1,0 +1,28 @@
+<div ng-controller="CatalogController">
+	<div class="lateral-form">
+		Results per page: <br/>
+		<input type="number" id="nbFilter" name="nbFilter" ng-model="nbResults" />
+		Filter by name: <br/>
+		<input type="text" id="nameFilter" name="nameFilter" ng-model="nameFilter" />
+		<br/> Order by: <br/>
+		<select ng-model="bookOrderBy" name="bookOrderBy" id="bookOrderBy">
+			<option>name</option>
+			<option>price</option>
+			<option>rating</option>
+		</select>
+		<br/> Reverse filter: <input type="checkbox" ng-model="filterReverse"/>
+		<br/>
+	</div>
+
+	<div class="k-catalog list-products">
+		<!-- hproduct/ -->
+		<product-summary ng-repeat="product in products | filter:nameFilter | orderBy:bookOrderBy:filterReverse | startFrom:(currentPage - 1)*nbResults | limitTo:nbResults"/>
+		<!-- /hproducts -->
+	</div>
+
+	<div class="bloc-pagination">
+		<pagination num-pages="getNbPages()" current-page="currentPage"></pagination>
+	</div>
+</div>
+
+

@@ -1,0 +1,31 @@
+<div>
+	<div class="lateral-form">
+		Results per page: <br />
+		<!-- TODO: Number of products displayed per page. -->
+		<input type="number" id="nbFilter" name="nbFilter" /> Filter by name:
+		<br />
+		<!-- TODO -->
+		<input type="text" id="nameFilter" name="nameFilter" /> <br /> Order
+		by: <br />
+		<!-- TODO -->
+		<select name="bookOrderBy" id="bookOrderBy">
+			<option>name</option>
+			<option>price</option>
+			<option>rating</option>
+		</select>
+		<!-- TODO -->
+		<br /> Reverse filter: <input type="checkbox" /> <br />
+	</div>
+
+	<div class="k-catalog list-products">
+		<!-- hproduct/ -->
+		<product-summary ng-repeat="product in products"/>
+		<!-- /hproducts -->
+	</div>
+
+	<div class="bloc-pagination">
+		<!-- TODO: use pagination directive from angular-ui -->
+	</div>
+</div>
+
+

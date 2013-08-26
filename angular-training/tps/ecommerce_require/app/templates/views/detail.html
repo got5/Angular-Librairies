@@ -1,0 +1,34 @@
+<article class="k-product-sheet" ng-controller="DetailController">
+	<div class="hproduct k-product">
+		<div class="photo-data">
+			<img class="photo" ng-src="../img/catalog/{{product.id}}.jpg" />
+		</div>
+		<div class="product-data">
+			<h3 class="fn name">{{product.name}}</h3>
+			<h4 class="category">
+				<a href="#">{{product.category}}</a>
+			</h4>
+			<p ng-class="getRatingClass()">
+				<a href="#comments">{{product.comments.length}} comment(s)</a>
+			</p>
+			<p class="description">{{product.description}}</p>
+			Quantity: <input type="number" class="product-qty" ng-model="quantity" /> 
+			<br />
+			<div class="price-data">
+				<strong class="price sale">
+					{{product.price * quantity | currency}}
+				</strong>
+			</div>
+			<div class="buyZone">
+				<div class="availability">
+					<p>
+						<strong>Availability :</strong> immediate delivery
+					</p>
+				</div>
+				<p class="buy">
+					<a href="#/basket" ng-click="addToCart()">Add to basket</a>
+				</p>
+			</div>
+		</div>
+	</div>
+</article>

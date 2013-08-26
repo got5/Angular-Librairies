@@ -224,10 +224,6 @@
     "content":"services/resource_2"
   },
   {
-  	"title":"Practical work",
-    "content":"tps/resource_tp"
-  },
-  {
   	"title":"Main Angular services: $window",
     "content":"services/window"
   },
@@ -318,6 +314,10 @@
   {
     "title":"When should you use which way?",
     "content":"services/create_conclusion_2"
+  },
+  {
+    "title":"Creating Angular services",
+    "content":"services/create_ex"
   },
   {
     "title":"Practical Work",

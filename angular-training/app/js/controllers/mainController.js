@@ -18,7 +18,7 @@ var MainController = function($scope, $document, $http, $route, $location, $posi
 			$route.routes["/" + route.content] = { templateUrl: "partials/" + route.content + ".html" };
 		});
 		
-		if (currentLocation == "/" || currentLocation == "") {
+		if (currentLocation == "/") {
 			//Redirects to the first slide.
 			$scope.slideIndex = 0;
 		} else {
