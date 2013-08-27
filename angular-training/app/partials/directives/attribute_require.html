@@ -1,17 +1,28 @@
 <div class="bloc-content text-content">
 	<ul>
-		<li>Takes the name of a <span class="text-red">required controller</span> to be passed 
-			into <span class="text-red">linking function</span>.</li>
+		<li>Require another directive and inject its controller as the fourth argument to the linking function.</li>
 		<li>If no controller is found, an error is raised. You can use <i class="text-red">?</i> prefix to make the
 			dependency optional.</li>
 		<li>Use <i class="text-red">^</i> prefix to look for the controller on parent elements as well.</li>
 	</ul>
 		
-<editor show-preview="false" show-tabs="false" height="110" compile-code="false">
-<file type="javascript" name="directive.js">require: ['^parentCtrl', '?optionalCtrl'], 
-link: function (scope, iElement, iAttrs, controllers) {
-	// controllers[0].callMethod(...);
-}
+<editor show-preview="false" show-tabs="false" height="240" compile-code="false">
+<file type="javascript" name="directives.js">application.directive('ngSwitchDefault', function() {
+	return {
+		require: [ '^ngSwitch' ], 
+		link: function (scope, element, attrs, controllers) {
+			// controllers[0].callMethod(...);
+		}
+	};
+});
+
+application.directive('input', function() {
+	return {
+		require: '?ngModel',
+		link: function (scope, element, attrs, controllers) { }
+	};
+});
+
 </file>
 </editor>
 

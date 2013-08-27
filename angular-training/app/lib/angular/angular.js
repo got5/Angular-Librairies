@@ -4247,6 +4247,7 @@ function $CompileProvider($provide, $injector) {
 
   this.resetDirective = function(name) {
     if (hasDirectives.hasOwnProperty(name)) {
+	  delete hasDirectives[name];
       $injector.resetService(name + "Directive");
     }
   };

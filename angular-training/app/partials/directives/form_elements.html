@@ -5,7 +5,7 @@
 		
 <editor show-preview="true" show-tabs="false" height="300">
 <file type="html" name="http.html">&lt;form name="userForm" 
-	ng-init="user = { login: null, mail: 'Bob@gmail.com', role: 'user' }"&gt;
+	ng-init="user = { login: null, mail: 'Bob@gmail.com', role: 'none' }"&gt;
 	
 	Login: &lt;input type="text" ng-model="user.login" 
 		ng-minlength="5" ng-maxlength="10" /&gt;
@@ -13,8 +13,8 @@
 	Email: &lt;input type="email" ng-model="user.mail" ng-required="true" /&gt;
 	
 	Account type: &lt;input type="checkbox" ng-model="user.role" 
-		ng-true-value="admin" ng-false-value="user"&gt;
-	{{currentUser.role}}
+		ng-true-value="admin" ng-false-value="none"&gt;
+	{{user.role}}
 	
 &lt;/form&gt;
 </file>

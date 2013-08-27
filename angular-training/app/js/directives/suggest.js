@@ -86,8 +86,7 @@ var SuggestController = function($scope, $timeout, element) {
 			var filteredSuggestions = [];
 			for (var index = 0; index < $scope.suggestions.length; index++) {
 				var suggestion = $scope.suggestions[index];
-				if (suggestion.name.indexOf($scope.startedWord) == 0 ||
-						(suggestion.compare != undefined && suggestion.compare.indexOf($scope.startedWord) == 0)) {
+				if (suggestion.name.indexOf($scope.startedWord) == 0) {
 					filteredSuggestions.push(suggestion);
 				}
 			}
@@ -180,7 +179,12 @@ var CompletionService = function($http) {
 		// Parses content from end to beginning.
 		for ( var index = content.length - 1; index > -1; index--) {
 			var char = content[index];
-		
+			
+			// Tabulation case: treated as space.
+			if (char == "\t") {
+				char = " ";
+			}
+			
 			// Checks if current char is a special one (<, >, etc...)
 			if (props[char] != undefined || props[ELSE_KEYWORD] != undefined) {
 				props = props[char] != undefined ? props[char] : props[ELSE_KEYWORD];
@@ -205,8 +209,7 @@ var CompletionService = function($http) {
 								if (category != undefined) {
 									for (var key in category) {
 										//Check that the started input matches the suggestion syntax.
-										if (key.indexOf(inputs[0]) == 0 || 
-												(category[key].compare != undefined && category[key].compare.indexOf(inputs[0]) == 0)) {
+										if (key.indexOf(inputs[0]) == 0) {
 											category[key].name = key; // suggestion name
 											category[key].type = suggestionName; // suggestion type (directive, etc...)
 											

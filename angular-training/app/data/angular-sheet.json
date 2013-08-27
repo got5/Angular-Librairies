@@ -1,10 +1,9 @@
  {
 	"js": {
-		"$": {
+		" ": {
 			"suggestions": [
 				{
-					"name": "$scope",
-					"compare": "scope"
+					"name": "$scope"
 				},
 				"services"
 			]
@@ -309,71 +308,50 @@
 			"list": {
 				"$anchorScroll": {
 					"suffix": "();",
-					"doc": "Scrolls to html anchor related in <i>$location.hash()</i>.<br/><br/><pre><code>$anchorScroll();</code></pre>",
-					"compare": "anchorScroll"
+					"doc": "Scrolls to html anchor related in <i>$location.hash()</i>.<br/><br/><pre><code>$anchorScroll();</code></pre>"
 				},
 				"$animate": {
-					"compare": "animate"
 				},
 				"$cacheFactory": {
-					"compare": "cacheFactory",
 					"doc": "Constructs cache objects and gives access to them.<br/><br/><pre><code>var cache = $cacheFactory(\"cacheId\");<br/>cache.put( \"key\", \"value\");<br/></code></pre>"
 				},
 				"$compile": {
-					"compare": "compile"
 				},
 				"$controller": {
-					"compare": "controller"
 				},
 				"$document": {
-					"compare": "document"
 				},
 				"$exceptionHandler": {
-					"compare": "exceptionHandler"
 				},
 				"$filter": {
-					"compare": "filter"
 				},
 				"$http": {
-					"compare": "http"
 				},
 				"$httpBackend": {
-					"compare": "httpBackend"
 				},
 				"$interpolate": {
-					"compare": "interpolate"
 				},
 				"$locale": {
-					"compare": "locale"
 				},
 				"$location": {
-					"compare": "location"
 				},
 				"$log": {
-					"compare": "log"
 				},
 				"$parse": {
-					"compare": "parse"
 				},
 				"$q": {
-					"compare": "q"
 				},
 				"$rootElement": {
-					"compare": "rootElement"
 				},
 				"$rootScope": {
-					"compare": "rootScope"
 				},
 				"$templateCache": {
-					"compare": "templateCache"
 				},
 				"$timeout": {
-					"doc": "Wrapper for <i>window.setTimeout</i>.<br/><br/><pre><code>$timeout(fn[, delay][, invokeApply]);</code></pre>",
-					"compare": "timeout"
+					"doc": "Wrapper for <i>window.setTimeout</i>.<br/><br/><pre><code>$timeout(fn[, delay][, invokeApply]);</code></pre>"
 				},
 				"$window": {
-					"doc": "A reference to the browser's window object. Better than <i>window</i> for testing.<br/><br/><pre><code>$window.alert(\"Hello\");</code></pre>",
-					"compare": "window"
+					"doc": "A reference to the browser's window object. Better than <i>window</i> for testing.<br/><br/><pre><code>$window.alert(\"Hello\");</code></pre>"
 				}
 			}
 		}

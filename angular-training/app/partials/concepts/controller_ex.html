@@ -1,25 +1,51 @@
 <div ng-controller="ControllerExCtrl">
 	<div class="bloc-content text-content">
 		<ul>
-			<li><span class="text-red">Exercise</span>: Complete the <i>user.js</i> file by adding one or several controllers.</li>
+			<li><span class="text-red">Exercise</span>: Complete the <i>user.js</i> file by linking 
+				the controllers to the appropriate HTML elements.</li>
 		</ul>
 			
-<editor show-preview="true" show-tabs="true" height="260">
-<file type="html" name="user.html">&lt;div&gt;
+<editor show-preview="true" show-tabs="true" height="240">
+<file type="html" name="user.html">&lt;div id="mainApp"&gt;
 	Hello, {{currentUser.login}}
 	&lt;tabset&gt;
 		&lt;tab heading="Mails"&gt;
-			&lt;div&gt;You have {{nbMails}} mails in your box.&lt;/div&gt;
+			&lt;div&gt;You have {{nbMails}} mail(s) in your box.&lt;/div&gt;
 		&lt;/tab&gt;
-		&lt;tab heading="Profile"&gt;&lt;div&gt;
-			&lt;input type="text" ng-model="tmpLogin"/&gt;
-			&lt;button class="btn"&gt;Change login&lt;/button&gt;
-		&lt;/div&gt;&lt;/tab&gt;
+		&lt;tab heading="Profile"&gt;
+			&lt;div&gt;
+				&lt;input type="text" id="inputLogin" ng-model="tmpLogin"/&gt;
+				&lt;button class="btn"&gt;Change login&lt;/button&gt;
+			&lt;/div&gt;
+		&lt;/tab&gt;
 	&lt;/tabset&gt;
 &lt;/div&gt;
 </file>
-<file type="javascript" name="user.js"></file>
+<file type="javascript" name="user.js">var MainCtrl = function($scope) {
+	$scope.currentUser = { login: "BobSponge", 
+		mail: "sponge@water.bloub", mails: null };
+};
+
+var MailCtrl = function($scope) {
+	// Gets all user mails.
+	$scope.currentUser.mails = [ { id: 1, content: "Test" }]; // TODO
+	
+	$scope.nbMails = $scope.currentUser.mails.length;
+};
+
+var EditCtrl = function($scope) {
+	$scope.tmpLogin = $scope.currentUser.login;
+	
+	$scope.editLogin = function() {
+		// TODO: update login.
+	};
+};
+
+</file>
 </editor>
 		
 	</div>
+	
+	<button-valid/>
+	
 </div>

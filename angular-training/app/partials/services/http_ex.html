@@ -1,4 +1,4 @@
-<div class="container">
+<div ng-controller="HttpExCtrl">
 	<div class="bloc-content text-content">
 		<ul>
 			<li><span class="text-red">Exercises</span>
@@ -9,45 +9,64 @@
 					<li>Create a function which use the <i>$timeout</i> service
 						to call this function after two seconds.
 					</li>
-					<li>Make a promise to call the above function and
-						store the number of results in <i>$scope.nbUsers</i> property.
+					<li>Make a promise in the above function to return the number of results 
+						in the <i>resolve()</i> function. You can now call the function <i>asynchGetNbUsers()</i>, and get the result 
+						in a chained <i>then()</i> function, to store it in a <i>$scope.nbUsers</i> property.
 					</li>
 				</ol>
 		</ul>
 		
-<editor show-preview="true" show-tabs="true" height="210">
-    <file type="html" name="http.html">&lt;div ng-controller="UserCtrl"&gt;
+<editor show-preview="true" show-tabs="true" height="200">
+    <file type="html" name="http.html">&lt;div id="userPanel" ng-controller="UserCtrl"&gt;
     There are {{nbUsers}} connected users on the website.
 &lt;/div&gt;</file>
 	<file type="javascript" name="http.js">var UserCtrl = function($scope, $timeout) {
 	
-}</file>
+	$scope.asynchGetNbUsers = function() {
+		// TODO: use $timeout to call getNbUsers.
+		// TODO: use a promise to return the number of users when the $http.get is finished.
+	};
+	
+	$scope.getNbUsers = function() {
+		// TODO: use $http to get data/users.json file.
+	};
+	
+	// TODO: Call $scope.asynchGetNbUsers()
+};
+
+</file>
 </editor>
 	</div>
+	
+	<button-valid/>
 
 <!-- 
-function asynchGetNbUsers() {
-        var deferred = $q.defer();
+var UserCtrl = function($scope, $timeout, $http, $q) {
+    
+    $scope.asynchGetNbUsers = function() {
+		var deferred = $q.defer();
         $timeout(function() {
-        	$scope.$apply(function() {
-        		deferred.resolve(getNbUsers());
+            $scope.getNbUsers().then(function(result) {
+                console.log(result.data.length);
+            	deferred.resolve(result.data.length);
+        	}, function(reason) {
+        		deferred.reject(reason);
         	});
         }, 2000);
         
         return deferred.promise;
-	}
-    
-    function getNbUsers() {
-        return $http({method: 'GET', url: 'data/users.json'});
-    }
-    
-    var promise = asynchGetNbUsers();
-    promise.then(function(result) {
-    	$scope.nbUsers = result.data.length;
-    }, function(error) {
-    	console.log('error');
-    });
+	};
+	
+	$scope.getNbUsers = function() {
+		return $http.get('data/users.json');
+	};
+	
+	$scope.asynchGetNbUsers().then(function(nbUsers) {
+        $scope.nbUsers = nbUsers;
+	});
+};
+
+
  -->
 
-</div>
 </div>

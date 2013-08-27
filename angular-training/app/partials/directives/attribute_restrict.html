@@ -10,9 +10,8 @@
 		</ul>
 	</ul>
 		
-<editor show-preview="true" show-tabs="true" height="130">
-	<file type="javascript" name="rating.js">// Use angular.module('moduleName', [ ... ]).directive() instead.
-application.compileProvider.directive('starRating', function () {
+<editor show-preview="true" show-tabs="true" height="130"  ng-controller="DirectiveSlideController">
+	<file type="javascript" name="rating.js">application.directive('starRating', function () {
     return {
 		restrict: 'A, E',
 		link: function (scope, elem, attrs) {

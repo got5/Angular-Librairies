@@ -1,0 +1,48 @@
+<div class="bloc-content text-content">
+	<ul>
+		<li>Complete the directive <i class="text-red">starRating</i>, by displaying the CSS class corresponding
+			to the value of the property <i>productMarkCss</i> (in the <i>ProductRatingCtrl</i> scope).</li> 
+	</ul>
+	
+<editor show-preview="true" show-tabs="true" height="200"  ng-controller="DirectiveSlideController">
+	<file type="javascript" name="starRating.js">application.directive('starRating', function () {
+    return {
+		restrict: 'E',
+		transclude: true,
+		// TODO: scope
+		template: "&lt;p ng-class=\"value\" ng-transclude&gt;&lt;/p&gt;"
+    };
+});
+</file>
+<file type="html" name="product.html">&lt;div ng-controller="ProductRatingCtrl"&gt;
+	&lt;star-rating&gt;2 comments&lt;/star-rating&gt;
+	Mark: 
+	&lt;select ng-options="mark for mark in marks" ng-model="productMark" /&gt;
+&lt;/div&gt;
+</file>
+<file type="javascript" name="ProductRatingCtrl.js">var ProductRatingCtrl = function($scope) {
+	
+	$scope.marks = [ "one", "two", "three", "four", "five" ];
+	
+	// Default CSS Class for the product.
+	$scope.productMark = "three";
+	
+	$scope.$watch('productMark', function() {
+		$scope.productMarkCss = "rating " + $scope.productMark;
+	});
+	
+};
+</file>
+</editor>
+
+<!-- 
+
+		scope: {
+			value: "="
+		},
+		
+		
+		value="productMarkCss"
+ -->
+
+</div>

@@ -224,6 +224,10 @@
     "content":"services/resource_2"
   },
   {
+  	"title":"Practical work",
+    "content":"tps/resource_tp"
+  },
+  {
   	"title":"Main Angular services: $window",
     "content":"services/window"
   },
@@ -316,10 +320,6 @@
     "content":"services/create_conclusion_2"
   },
   {
-    "title":"Creating Angular services",
-    "content":"services/create_ex"
-  },
-  {
     "title":"Practical Work",
     "content":"tps/services_create_tp"
   },
@@ -399,6 +399,10 @@
     "content":"directives/create"
   },
   {
+  	"title":"Using the link function",
+    "content":"directives/attribute_link_ex"
+  },
+  {
   	"title":"Attribute restrict",
     "content":"directives/attribute_restrict"
   },
@@ -433,6 +437,10 @@
   {
     "title":"Isolate scope properties",
     "content":"directives/attribute_scope_local_4"
+  },
+  {
+    "title":"Using the scope property",
+    "content":"directives/attribute_scope_ex"
   },
   {
   	"title":"Attribute link",
@@ -496,6 +504,10 @@
   {
   	"title":"Form validation methods",
     "content":"other/form_validation_methods"
+  },
+  {
+  	"title":"Using form validation methods",
+    "content":"other/form_validation_ex"
   },
   {
   	"title":"Services decoration",

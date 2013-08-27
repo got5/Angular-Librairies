@@ -115,8 +115,7 @@ var FileEditorController = function($scope, window, transclude, location, timeou
 					editor.removeWordLeft();
 				}
 				
-				var codeToInsert = $scope.chosenSuggestion.compare == undefined ? 
-						$scope.chosenSuggestion.name.trim() : $scope.chosenSuggestion.compare.trim();
+				var codeToInsert = $scope.chosenSuggestion.name.trim();
 				
 				// Expression suffix (for example, ="")
 				if ($scope.chosenSuggestion.suffix != undefined) {
@@ -149,6 +148,8 @@ var FileEditorController = function($scope, window, transclude, location, timeou
 		var lines = currentFile.content.split('\n');
 		for (var indexRow = pPosition.row; indexRow >= 0; indexRow--) {
 			var line = lines[indexRow];
+			
+			var convertedLine = pTrim ? line.replace(" ", "") : line;
 		}
 	};*/
 	
@@ -278,7 +279,6 @@ var FileEditorController = function($scope, window, transclude, location, timeou
 				content += file.content;
 			}
 		}
-
 		return content;
 	};
 	
@@ -390,6 +390,7 @@ directives.directive('compile', ['$compile', '$timeout', function($compile, $tim
 	};
 }]);
 
+/** Base directive definition object */
 var EditorConstructor = function() {
 	return {
 		restrict: 'E',

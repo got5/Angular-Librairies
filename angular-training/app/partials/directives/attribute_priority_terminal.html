@@ -6,9 +6,8 @@
 			with lesser <i class="text-red">priority</i> will not be compiled.</li>
 	</ul>
 		
-<editor show-preview="true" show-tabs="true" height="210">
-	<file type="javascript" name="priority.js">// Use angular.module('moduleName', [ ... ]).directive() instead.
-application.compileProvider.directive('priorityTest', function () {
+<editor show-preview="true" show-tabs="true" height="210" ng-controller="DirectiveSlideController">
+	<file type="javascript" name="priority.js">application.directive('priorityTest', function () {
     return {
 		priority: 10,
 		link: function (scope, elem, attrs) {
@@ -17,7 +16,7 @@ application.compileProvider.directive('priorityTest', function () {
     };
 });
 
-application.compileProvider.directive('priorityTestBis', function () {
+application.directive('priorityTestBis', function () {
     return {
 		priority: 20,
 		terminal: true,

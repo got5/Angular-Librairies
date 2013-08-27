@@ -9,10 +9,34 @@
 		</ol>
 	</ul>
 		
-<editor show-preview="false" show-tabs="false" height="80">
-<file type="javascript" name="directive.js">function compile(tElement, tAttrs, transclude) {
-	//TODO : DOM transformation
-}
+<editor show-preview="true" show-tabs="true" height="180" ng-controller="DirectiveSlideController">
+<file type="javascript" name="gpsRepeat.js">application.directive('gpsRepeat', function() {
+	return {
+		compile: function(element, attr) {
+			var parent = element.parent();
+			element.removeAttr('gps-repeat');
+			for (var index = 0; index &lt; (attr.gpsRepeat - 1); index++) {
+				var clone = element.clone();
+				parent.append(clone);
+			}
+		}
+	};
+});
+</file>
+<file type="html" name="directive.html">&lt;div ng-controller="CompileTestCtrl"&gt;
+	&lt;button ng-class="buttonClass" ng-click="clickHandler()" gps-repeat="10"&gt;
+		Click Me
+	&lt;/button&gt;
+&lt;/div&gt;
+</file>
+<file type="javascript" name="CompileTestCtrl.js">var CompileTestCtrl = function($scope, $window) {
+	
+	$scope.buttonClass = "btn btnSmall";
+	
+	$scope.clickHandler = function() {
+		$window.alert('ng-click is working.');
+	};
+};
 </file>
 </editor>
 		

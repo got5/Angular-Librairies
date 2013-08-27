@@ -37,7 +37,7 @@ var TestVO = function(pTestName, pSetupFunction, pVerifyFunction) {
 	/** Tests name */
 	this.testName = pTestName;
 	
-	this.setupFunction = pSetupFunction;
+	this.setupFunction = pSetupFunction != null ? pSetupFunction : function() {};
 	
 	this.verifyFunction = pVerifyFunction != null ? pVerifyFunction : function() {};
 };
@@ -90,14 +90,23 @@ var TestUtils = function($timeout) {
 				if (test instanceof TestVO) {
 					if (typeof(test.setupFunction) == 'function' && typeof(test.verifyFunction) == 'function') {
 						self.info("Setup test: " + test.testName);
-						test.setupFunction();
 						
-						this.waitForAngularToUpdate().then(function() {
+						var potentialPromise = test.setupFunction();
+						
+						var afterWaiting = function() {
 							self.info("Checking test: " + test.testName);
 							test.verifyFunction();
 							self.info("Ending test: " + test.testName + "<br/>");
 							self.doNextTest();
-						});
+						};
+						
+						if (potentialPromise == null) {
+							this.waitForAngularToUpdate().then(afterWaiting);
+						} else {
+							potentialPromise.then(function(result) {
+								self.waitForAngularToUpdate().then(afterWaiting);
+							});
+						}
 					} else {
 						this.error("Properties setupFunction and verifyFunction have to be functions.");
 					}
