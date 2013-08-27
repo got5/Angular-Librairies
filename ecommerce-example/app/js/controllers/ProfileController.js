@@ -1,11 +1,12 @@
-define(['appModule'], function(app)
+define(['app'], function(app)
 {
-    app.lazy.controller('ProfileController', [ '$scope', 'UserService', function($scope, userService) {
-        
-    	$scope.user = userService.currentUser;
-    	
-    	$scope.updateUser = function() {
-    		// TODO
-    	};
-    }]);
+	/** Profile view controller */
+	app.lazy.controller('ProfileController', [ '$scope', function($scope) {
+	
+		$scope.user = null; // TODO
+	
+		$scope.updateUser = function() {
+			// TODO
+		};
+	}]);
 });

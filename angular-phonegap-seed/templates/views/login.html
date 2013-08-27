@@ -1,0 +1,29 @@
+<div jqm-page>
+	<div jqm-header>
+		<h1>Login</h1>
+	</div>
+
+	<a href="home">Back</a>
+	
+	<br/>Checkbox:
+	<div jqm-checkbox ng-model="checky">My value is: {{checky}}</div>
+	
+	<div jqm-flip ng-model="flip">
+		Flip switch
+	</div>
+	
+	<div ng-init="state={}"></div>
+	<div jqm-panel-container="state.openPanel" style="height:300px;overflow:hidden">
+		<div jqm-panel position="left">
+			Hello, left panel!
+		</div>
+		<div jqm-panel position="right" display="overlay">
+			Hello, right panel!
+		</div>
+		<div style="background: white">
+			Opened panel: {{state.openPanel}}
+			<button ng-click="state.openPanel='left'">Open left</button>
+			<button ng-click="state.openPanel='right'">Open right</button>
+		</div>
+	</div>
+</div>

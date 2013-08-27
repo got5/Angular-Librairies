@@ -1,24 +1,11 @@
-define(['appModule'], function(app)
+/** Basket view controller */
+var BasketController = function($scope)
 {
-    app.lazy.controller('BasketController',
-    [
-        '$scope', 'UserService',
-        function($scope, userService)
-        {
-            $scope.items = userService.getCartItems();
-            $scope.nbItems = $scope.items != undefined ? $scope.items.length : 0;
-            
-            $scope.getTotal = function() {
-            	if ($scope.items != undefined) {
-                	var total = 0;
-                	for (var index = 0; index < $scope.items.length; index++) {
-                		var cartItem = $scope.items[index];
-                		total += cartItem.qty * cartItem.price;
-                	}
-                	return total;
-                }
-            	return 0;
-            };
-        }
-    ]);
-});
+	$scope.items = []; // TODO
+         
+	$scope.getTotal = function() {
+		 // TODO
+		return 0;
+	};
+};
+BasketController.$inject = ['$scope'];

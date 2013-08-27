@@ -3,6 +3,7 @@ var Cart = function(pCartItems) {
 	
 	var items = null;
 	
+	/** Defines cart items. */
 	this.setItems = function(pItems) {
 		items = {};
 		if (pItems) {
@@ -13,6 +14,7 @@ var Cart = function(pCartItems) {
 		}
 	};
 	
+	/** Returns all cart items. */
 	this.getItems = function() {
 		var arrItems = [];
 		for (var key in items) {
@@ -21,6 +23,7 @@ var Cart = function(pCartItems) {
 		return arrItems;
 	};
 	
+	/** Sets the quantity for a given item. It will be added if not in the cart. */
 	this.setItemQty = function(pItem, pQty) {
 		if (pQty > 0) {
 			if (items[pItem.id] == undefined) {
@@ -31,6 +34,7 @@ var Cart = function(pCartItems) {
 		}
 	};
 	
+	/** Returns the quantity for a given item. */
 	this.getItemQty = function(pItem) {
 		return items[pItem.id] != undefined ? items[pItem.id].qty : 0;
 	};
@@ -45,7 +49,7 @@ var Cart = function(pCartItems) {
 	
 	this.setItems(pCartItems);
 };
-
+/** Cart item */
 var CartItem = function(pItem, pQty) {
 	this.id = pItem.id;
 	this.name = pItem.name;

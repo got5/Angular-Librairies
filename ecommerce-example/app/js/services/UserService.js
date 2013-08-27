@@ -1,84 +1,82 @@
-define(['appModule', 'data/User'], function(app, user)
+define(['app'], function(app) 
 {
-	/** User service */
-	var UserService = function(http, cookies) {
+	/** Service which handle all user logic. */
+	var UserService = function($http, $q, $log) {
 		
-		var USER_URL = 'data/users.json';
+		/** Currently logged user. */
+		var currentUser = null;
 		
-		/** Currently logged user */
-		this.currentUser = null;
-		
-		var login = null;
-		var password = null;
-		
-		var onGetUsers = function(pUsers) {
-			for (var index = 0; index < pUsers.length; index++) {
-        		var user = pUsers[index];
-        		if (user.login == login && user.password == password) {
-        			this.currentUser = new User(user.id, user.firstName, user.lastName, user.login, 
-        					user.password, user.mail, user.cart, user.role, user.address);
-        			
-        			// Registers current user in cookie.
-        			cookies.loginECommerce = user.login;
-        			cookies.passwordECommerce = user.password;
-        			return;
-        		}
-        	}
+		this.getCurrentUser = function() {
+			// temp user, if not logged.
+			if (!currentUser) {
+				currentUser = new User();
+			}
+			return currentUser;
 		};
 		
-		this.logUser = function(pLogin, pPassword) {
-			login = pLogin;
-			password = pPassword;
-			return http.get(USER_URL).success(onGetUsers.bind(this));
+		this.logUser = function(login, password) {
+			// We create a promise to offer the possibility to users to call some functions after the
+			// asynchronous call of $http.get.
+			var deferred = $q.defer();
+			
+			$http.get('/data/users.json')
+				.success(function(users) {
+					$log.info("[INFO] All users loaded.");
+					
+					for (var index = 0; index < users.length; index++) {
+						var user = users[index];
+						if (user.login == login && user.password == password) {
+							currentUser = user;
+							
+							// Success function in then() will be called, with the user as a parameter.
+							deferred.resolve(user);
+							return;
+						}
+					}
+					
+					// Error function in then() will be called.
+					deferred.reject("No user found.");
+					
+				})
+				.error(function(reason) {
+					$log.error("[ERROR] Unable to load users...");
+					deferred.reject(reason);
+				});
+			
+			// A promise is returned, so we can make: userService.logUser(u, p).then(success, error).
+			return deferred.promise;
 		};
 		
+		/** Add an item with a given quantity in the user basket. */
 		this.addToCart = function(pItem, pQty) {
 			if (this.currentUser) {
 				this.currentUser.cart.setItemQty(pItem, pQty);
 			}
 		};
-		
-		this.getCartItems = function() {
-			if (this.currentUser) {
-				return this.currentUser.cart.getItems();
-			}
-		};
-		
-		this.getCartNbItems = function() {
-			if (this.currentUser) {
-				return this.getCartItems().length;
-			}
-			return 0;
-		};
-		
-		/** Returns true if the current user is authorized to see a page with a given access. */
-		this.isAuthorized = function(pRole) {
-			switch (pRole) {
-				case null:
-					return true;
-				case "user":
-					return this.isLoggedIn();
-				case "admin":
-					return this.currentUser && this.currentUser.role == "admin";
-				default:
-					return false;
-			};
-		};
-		
-		this.isLoggedIn = function() {
-			return this.currentUser != null;
-		};
-		
-		this.logout = function() {
-			if (this.currentUser) {
-				this.currentUser = null;
-				delete cookies.loginECommerce;
-    			delete cookies.passwordECommerce;
-			}
-		};
 	};
 	
-    app.lazy.factory('UserService', ['$http', '$cookies', function($http, $cookies) {
-    	return new UserService($http, $cookies);
-    }]);
+	/** Registers our service. */
+	app.lazy.factory('UserService', [ '$http', '$q', '$log', function($http, $q, $log) {
+		return new UserService($http, $q, $log);
+	}]);
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
