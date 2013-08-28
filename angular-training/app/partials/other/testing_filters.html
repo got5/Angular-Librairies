@@ -24,7 +24,7 @@ describe('Filters Unit Tests', function() {
 			inject(function($filter) {
 			
 			var filterResult = $filter('currency')(1234.56);
-			expect(filter).toMatch('$1,234.56');
+			expect(filterResult).toMatch('$1,234.56');
 			
 			filterResult = $filter('currency')(1234.56, "USD$");
 			expect(filterResult).toMatch('USD$1,234.56');
