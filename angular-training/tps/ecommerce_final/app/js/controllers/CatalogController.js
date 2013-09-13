@@ -1,5 +1,6 @@
 /** Catalog view controller */
-var CatalogController = function($scope, catalogService) {
+angular.module('app').controller('CatalogController', 
+		[ '$scope', 'CatalogService', function($scope, catalogService) {
 
 	/** Returns all products. */
 	catalogService.getCatalog().success(function(result) {
@@ -15,5 +16,4 @@ var CatalogController = function($scope, catalogService) {
     		return $scope.products != undefined ? Math.ceil($scope.products.length / $scope.nbResults) : 0;
     	};
 	});
-};
-CatalogController.$inject = ['$scope', 'CatalogService'];
+}]);

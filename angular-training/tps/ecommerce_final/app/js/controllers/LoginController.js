@@ -1,5 +1,6 @@
 /** Login view controller */
-var LoginController = function($scope, $location, $cookies, userService)
+angular.module('app').controller('LoginController', 
+		[ '$scope', '$location', '$cookies', 'UserService', function($scope, $location, $cookies, userService)
 {
 	$scope.errorMsg = null;
 	
@@ -13,8 +14,7 @@ var LoginController = function($scope, $location, $cookies, userService)
 				$scope.errorMsg = reason;
 			});
 	};
-};
-LoginController.$inject = ['$scope', '$location', '$cookies', 'UserService'];
+}]);
 
 
 

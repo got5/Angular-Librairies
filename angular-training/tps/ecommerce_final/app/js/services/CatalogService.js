@@ -22,6 +22,4 @@ var CatalogService = function(http, angularFire) {
 	};
 };
 
-app.factory('CatalogService', ['$http', 'angularFire', function($http, angularFire) {
-	return new CatalogService($http, angularFire);
-}]);
+angular.module('app').service('CatalogService', [ '$http', 'angularFire', CatalogService ]);

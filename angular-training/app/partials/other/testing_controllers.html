@@ -24,16 +24,20 @@ describe('UserCtrl Unit Tests', function() {
 	var httpMock;
 	
 	// $httpBackend is in module ngMock (angular-mock.js)
+	// inject() is used to inject services in our function.
 	beforeEach(inject(function($rootScope, $controller, 
 		$httpBackend, $http) {
+		
+		// Creates a new scope for our test.
 		scope = $rootScope.$new();
 		
 		// Fake http backend implementation for unit testing.	
 		httpMock = $httpBackend;
 		httpMock.when('GET', '/api/roles')
-			.respond("roles list");
-			
-		var ctrl = $controller(myController, 
+			.respond([ "user", "admin" ]);
+		
+		// Creates a new UserCtrl.
+		var ctrl = $controller(UserCtrl, 
 			{$scope: scope, $http: $http});
 	}));
      
@@ -56,7 +60,9 @@ describe('UserCtrl Unit Tests', function() {
 		// Calls the success function bound to the http request.
 		httpMock.flush();
 		
-		expect(scope.roles).toMatch("roles list");
+		// Tests the result of the $http service.
+		expect(scope.roles[0]).toMatch("user");
+		expect(scope.roles[1]).toMatch("admin");
 	});
 });
 

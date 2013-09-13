@@ -10,17 +10,10 @@ var ProductSummaryController = function($scope, userService, productUtils) {
 };
 
 /** Product summary directive */
-app.directive('productSummary', function() {
+angular.module('app').directive('productSummary', function() {
 	return {
 		restrict : 'E',
 		templateUrl : "templates/partials/productSummary.html",
-		controller : [
-				'$scope',
-				'UserService',
-				'ProductUtils',
-				function(scope, userService, productUtils) {
-					return new ProductSummaryController(scope, userService,
-							productUtils);
-				} ]
+		controller : [ '$scope', 'UserService', 'ProductUtils', ProductSummaryController ]
 	};
 });

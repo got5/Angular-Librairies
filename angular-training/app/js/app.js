@@ -1,7 +1,7 @@
 'use strict';
 
 var application = angular.module('angularTrainingApp',
-		[ 'ngResource', 'ui.bootstrap', 'directives', 'filters', 'services' ])
+		[ 'ngResource', 'ui.bootstrap', 'firebase', 'directives', 'filters', 'services' ])
 		.config(function($routeProvider, $locationProvider, $compileProvider, $injector, $provide) {
 			$locationProvider.html5Mode(false); // TODO
 

@@ -1,5 +1,5 @@
 /** Home view controller */
-var HomeController = function($scope, $resource) {
+angular.module('app').controller('HomeController', [ '$scope', '$resource', function($scope, $resource) {
 	$scope.message = "Welcome in our shop!!!";
 	
 	var News = $resource("/news/:id");
@@ -34,5 +34,4 @@ var HomeController = function($scope, $resource) {
 		// We refresh the list with the added news.
 		$scope.lstNews = News.query();
 	};
-};
-HomeController.$inject = [ '$scope', '$resource' ];
+}]);

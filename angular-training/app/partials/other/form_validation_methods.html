@@ -8,16 +8,17 @@
 		
 <editor show-preview="true" show-tabs="true" height="180">
 	<file type="javascript" name="mailCtrl.js">var MailCtrl = function($scope) {
-	$scope.checkEmail = function(){
-        if($scope.user.email === $scope.user.email2){
-            $scope.myForm.email.$setValidity('samemail', true);
-            $scope.myForm.email2.$setValidity('samemail', true);
-        } else {
+	$scope.$watch('user', function() {
+        if($scope.user.email == $scope.user.email2){
             $scope.myForm.email.$setValidity('samemail', false);
             $scope.myForm.email2.$setValidity('samemail', false);
+        } else {
+            $scope.myForm.email.$setValidity('samemail', true);
+            $scope.myForm.email2.$setValidity('samemail', true);
         }
-    }
-};</file>
+    }, true);
+};
+</file>
 <file type="html" name="mail.html">&lt;form name="myForm" ng-controller="MailCtrl"&gt;
 	&lt;div ng-class="{error : myForm.email.$invalid}"&gt;
 		Email &lt;input name="email" type="email" ng-model="user.email"&gt;
@@ -28,7 +29,7 @@
 		Confirm mail 
 		&lt;input name="email2" type="email" ng-model="user.email2" 
 			ng-change="checkEmail()"&gt;
-		&lt;span ng-show="myForm.email2.$error.samemail"&gt;Not the same samil!&lt;/span&gt;
+		&lt;span ng-show="myForm.email2.$error.samemail"&gt;Not the same mail!&lt;/span&gt;
 	&lt;/div&gt;
 &lt;/form&gt;
 </file>

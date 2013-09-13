@@ -1,5 +1,5 @@
 /** Filter used to return a collection which only elements at or after a given index. */
-app.filter('startFrom', function() {
+angular.module('app').filter('startFrom', function() {
     return function(pArray, pStartIndex) {
     	if (pArray != undefined && pArray != null) {
     		var filteredArray = [];

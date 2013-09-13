@@ -1,5 +1,7 @@
 /** Product detail view controller */
-var DetailController = function($scope, $routeParams, catalogService, productUtils) {
+angular.module('app').controller('DetailController', 
+		[ '$scope', '$routeParams', 'CatalogService', 'ProductUtils', 
+		  function($scope, $routeParams, catalogService, productUtils) {
 
 	/** Gets product from Firebase. */
 	catalogService.getProduct($routeParams.id, $scope, "product");
@@ -18,5 +20,4 @@ var DetailController = function($scope, $routeParams, catalogService, productUti
 		}
 		return null;
 	};
-};
-DetailController.$inject = ['$scope', '$routeParams', 'CatalogService', 'ProductUtils'];
+}]);

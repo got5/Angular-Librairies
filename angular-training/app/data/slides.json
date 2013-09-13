@@ -185,6 +185,50 @@
     "content":"tps/concepts_tp"
   },
   {
+    "title":"Wait... Didn't we forget something?",
+    "content":"other/test_intro"
+  },
+  {
+    "title":"Testing Angular applications",
+    "content":"other/test"
+  },
+  {
+    "title":"Tests approaches overview",
+    "content":"other/test_overview"
+  },
+  {
+    "title":"Setting up your tests: Karma",
+    "content":"other/karma"
+  },
+  {
+    "title":"karma.conf.js",
+    "content":"other/karma_config_file"
+  },
+  {
+    "title":"e2e testing with ngScenario",
+    "content":"other/e2e_testing"
+  },
+  {
+    "title":"ngScenario main commands",
+    "content":"other/e2e_commands"
+  },
+  {
+    "title":"Testing application pages",
+    "content":"other/testing_pages"
+  },
+  {
+    "title":"Unit testing with angular-mocks",
+    "content":"other/unit_testing"
+  },
+  {
+    "title":"Testing controllers",
+    "content":"other/testing_controllers"
+  },
+  {
+    "title":"Practical Work",
+    "content":"tps/controllers_tests_tp"
+  },
+  {
     "content":"services/services_title"
   },
   {
@@ -322,6 +366,14 @@
   {
     "title":"Practical Work",
     "content":"tps/services_create_tp"
+  },
+  {
+    "title":"Testing services",
+    "content":"other/testing_services"
+  },
+  {
+    "title":"Practical Work",
+    "content":"tps/services_tests_tp"
   },
   {
     "content":"directives/title"
@@ -467,6 +519,14 @@
     "content":"directives/create_directive_ex"
   },
   {
+    "title":"Testing directives",
+    "content":"other/testing_directives"
+  },
+  {
+    "title":"Testing directives",
+    "content":"other/testing_directives_2"
+  },
+  {
   	"title":"Practical work",
     "content":"tps/directives_create_tp"
   },
@@ -488,6 +548,10 @@
   {
   	"title":"Creating Angular Filters",
     "content":"other/creating_filters"
+  },
+  {
+    "title":"Testing filters",
+    "content":"other/testing_filters"
   },
   {
   	"title":"Practical Work",
@@ -558,60 +622,32 @@
     "content":"other/yeoman"
   },
   {
-    "title":"Grunt, the builder and utility tool",
-    "content":"other/grunt"
-  },
-  {
     "title":"Bower, your web component installer",
     "content":"other/bower"
   },
   {
-    "title":"Testing Angular applications",
-    "content":"other/test"
-  },
-  {
-    "title":"Tests approaches overview",
-    "content":"other/test_overview"
-  },
-  {
-    "title":"Setting up your tests: Karma",
-    "content":"other/karma"
-  },
-  {
-    "title":"karma.conf.js",
-    "content":"other/karma_config_file"
+    "title":"Grunt, the builder and utility tool",
+    "content":"other/grunt"
   },
   {
     "title":"Project structure",
     "content":"other/project_structure"
   },
   {
-    "title":"Testing modules",
-    "content":"other/testing_modules"
+    "title":"Wire up your backend with AngularFire",
+    "content":"firebase/introduction"
   },
   {
-    "title":"Testing pages",
-    "content":"other/testing_pages"
+    "title":"Setup AngularFire",
+    "content":"firebase/setup"
   },
   {
-    "title":"Testing controllers",
-    "content":"other/testing_controllers"
+    "title":"Using automatic synchronization",
+    "content":"firebase/automatic"
   },
   {
-    "title":"Testing directives",
-    "content":"other/testing_directives"
-  },
-  {
-    "title":"Testing services",
-    "content":"other/testing_services"
-  },
-  {
-    "title":"Testing filters",
-    "content":"other/testing_filters"
-  },
-  {
-    "title":"Practical Work",
-    "content":"tps/tests_tp"
+    "title":"Control synchronization with Firebase",
+    "content":"firebase/control"
   },
   {
     "content":"conclusion"

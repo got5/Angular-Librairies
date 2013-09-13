@@ -34,10 +34,13 @@ require
     }
 );
 </file>
-<file type="javascript" name="appModule.js">define([ 'dependency1', 'dependency2' ], function( d1, d2 ) {
-	var app = angular.module('app', []);
+<file type="javascript" name="appModule.js">define([ 'lib/angular-resource', 'lib/localize' ], function() {
+	var app = angular.module('app', [ 'ngResource', 'localize' ]);
 	
-	//TODO: app.config, etc.
+	//TODO: app.config, etc...
+	
+	// Used later to add services/controllers/etc.
+	return app;
 });
 
 </file>

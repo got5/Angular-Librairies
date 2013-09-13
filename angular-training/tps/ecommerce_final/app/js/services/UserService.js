@@ -1,5 +1,5 @@
 /** Service which handle all user logic. */
-var UserService = function($http, $q, $log,isDebugMode) {
+var UserService = function($http, $q, $log, isDebugMode) {
 	
 	/** Currently logged user. */
 	var currentUser = null;
@@ -16,13 +16,11 @@ var UserService = function($http, $q, $log,isDebugMode) {
 		// We create a promise to offer the possibility to users to call some functions after the
 		// asynchronous call of $http.get.
 		var deferred = $q.defer();
-		
 		$http.get('/data/users.json')
 			.success(function(users) {
 				if (isDebugMode) {
 					$log.info("[INFO] All users loaded.");
 				}
-				
 				for (var index = 0; index < users.length; index++) {
 					var user = users[index];
 					if (user.login == login && user.password == password) {

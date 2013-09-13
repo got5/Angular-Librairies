@@ -47,4 +47,4 @@ var ProductUtils = function() {
 	};
 };
 
-app.value('ProductUtils', new ProductUtils());
+angular.module('app').value('ProductUtils', new ProductUtils());

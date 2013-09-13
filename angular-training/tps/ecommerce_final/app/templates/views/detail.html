@@ -4,7 +4,7 @@
 			<img class="photo" ng-src="../img/catalog/{{product.id}}.jpg" />
 		</div>
 		<div class="product-data">
-			<h3 class="fn name">{{product.name}}</h3>
+			<h3 class="fn name" id="productName">{{product.name}}</h3>
 			<h4 class="category">
 				<a href="#">{{product.category}}</a>
 			</h4>
@@ -26,7 +26,7 @@
 					</p>
 				</div>
 				<p class="buy">
-					<a href="#/basket" ng-click="addToCart()">Add to basket</a>
+					<a href="#/basket" ng-click="addToCart()" id="btnBasket">Add to basket</a>
 				</p>
 			</div>
 		</div>

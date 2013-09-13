@@ -1,35 +1,37 @@
-<div class="container">
-	<div class="bloc-content text-content">
-		<ul>
-			<li>Easiest blocks of code to test.</li>
-		</ul>
+<div class="bloc-content text-content">
+	<ul>
+		<li>Easiest blocks of code to test.</li>
+	</ul>
 		
 <editor show-preview="false" compile-code="false" show-tabs="false" height="420">
 <file type="javascript" name="test/unit/appSpec.js">// test/unit/services/appStorageSpecs.js
 describe("AppStorage Unit Tests", function() {
 
-	// Loads app module before each test.
-	beforeEach(angular.mock.module('App'));
+	// Loads app module before each test. Otherwise, service won't be found.
+	beforeEach(angular.module('app'));
 	
 	// Checks if the appStorage service has been registered.
 	it('should contain an $appStorage service', 
 		inject(function($appStorage) {
 		
-		expect($appStorage).not.to.equal(null);
+		expect($appStorage).not.toEqual(null);
 	}));
 	
 	// Checks the appStorage service functionnalities.
 	it('should store and save data properly', 
 		inject(['$appStorage',function($storage) {
 		
+		// Call service methods...
 		var key = 'key', value = 'value';
 		$storage.enableCaching();
 		$storage.put(key, value);
-		expect($storage.isPresent(key)).to.equal(true);
-		expect($storage.get(key)).to.equal(value);
+		
+		// ... And after tests service results.
+		expect($storage.isPresent(key)).toEqual(true);
+		expect($storage.get(key)).toEqual(value);
 
 		$storage.erase(key);
-		expect($storage.isPresent(key)).to.equal(false);
+		expect($storage.isPresent(key)).toEqual(false);
 
 		$storage.put(key, value);
 		$storage.flush();
@@ -39,5 +41,4 @@ describe("AppStorage Unit Tests", function() {
 </file>
 </editor>
 		
-	</div>
 </div>

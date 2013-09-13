@@ -2,7 +2,7 @@
 	<div class="bloc-content text-content">
 	
 <editor show-preview="false" compile-code="false" height="470">
-<file type="javascript" name="routes.js">// test/e2e/views.js
+<file type="javascript" name="routes.js">// test/e2e/viewsSpec.js
 describe("Testing Application Routes", function() {
 
   beforeEach(function() {
@@ -13,6 +13,18 @@ describe("Testing Application Routes", function() {
     browser().navigateTo('#/');
     expect(browser().location().path()).toBe("/main");
     expect(element('#ng-view').html()).toContain('Hello World!');
+  });
+  
+  it('Route /login should exist.', function() {
+    browser().navigateTo('#/login');
+    expect(browser().location().path()).toBe("/login");
+    
+    // Login error
+    input("login").enter('Unknown');
+    input("login").enter('WrongPasswd');
+    element("#btnLogin").click(); // Clicks on the element with btnLogin id.
+    // Tests if the element with error css class displays an error message.
+    expect(element('.error').text()).toContain('User not found.');
   });
 
   it('Route /products should exist.', function() {

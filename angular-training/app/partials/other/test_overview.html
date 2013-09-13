@@ -1,45 +1,48 @@
-<div class="container">
-	<div class="bloc-content text-content">
-		<table class="key-list">
-			<thead>
-				<tr>
-					<th>Unit Testing</th>
-					<th>Midway Testing</th>
-					<th>E2E Testing</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr>
-					<td>
-						<ul>
-							<li>Code-level testing</li>
-							<li>Used to test classes/objects/services</li>
-							<li>Isolated/Sandboxed</li>
-							<li>Mocking required</li>
-							<li>Fast</li>
-							<li>Uses Jasmine/QUnit/Mocha</li>
-						</ul>
-					</td>
-					<td>
-						<ul>
-							<li>Application/Code-level testing</li>
-							<li>Fast, but slow for XHR requests</li>
-							<li>Code-level testing in an<br/> integration test.</li>
-							<li>Uses Jasmine/QUnit/Mocha</li>
-						</ul>
-					</td>
-					<td>
-						<ul>
-							<li>Application-level testing</li>
-							<li>Used for integration tests</li>
-							<li>Requires its own special web server</li>
-							<li>Can only test rendererd HTML</li>
-							<li>Slow</li>
-							<li>Uses AngularJS Scenario runner.</li>
-						</ul>
-					</td>
-				</tr>	
-			</tbody>
-		</table>
-	</div>
+<div class="bloc-content text-content">
+	<table class="key-list">
+		<thead>
+			<tr>
+				<th>Unit Testing</th>
+				<!-- th>Midway Testing</th -->
+				<th>E2E Testing</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td>
+					<ul>
+						<li>Code-level testing</li>
+						<li>Used to test classes/objects/services</li>
+						<li>Isolated/Sandboxed</li>
+						<li>Mocking required (<i>angular-mocks.js</i>)
+						</li>
+						<li>Fast</li>
+						<li>Uses Jasmine/QUnit/Mocha</li>
+					</ul>
+				</td>
+				<!-- td>
+					<ul>
+						<li>Application/Code-level testing</li>
+						<li>Fast, but slow for XHR requests</li>
+						<li>Code-level testing in an<br /> integration test
+						</li>
+						<li>Requires <a
+							href="https://github.com/yearofmoo/ngMidwayTester">ngMidwayTester</a></li>
+						<li>Uses Jasmine/QUnit/Mocha</li>
+					</ul>
+				</td  -->
+				<td>
+					<ul>
+						<li>Application-level testing</li>
+						<li>Used for integration tests</li>
+						<li>Requires its own special web server</li>
+						<li>Can only test rendererd HTML</li>
+						<li>Slow</li>
+						<li>Uses AngularJS Scenario runner (<i>angular-scenario.js</i>), OR <i>Protractor</i> (with <i>Selenium</i>)
+						</li>
+					</ul>
+				</td>
+			</tr>
+		</tbody>
+	</table>
 </div>

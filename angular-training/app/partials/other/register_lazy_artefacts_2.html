@@ -39,8 +39,8 @@ require
     }
 );
 </file>
-<file type="javascript" name="appModule.js">define([ 'dependency1', 'dependency2' ], function( d1, d2 ) {
-	var app = angular.module('app', []);
+<file type="javascript" name="appModule.js">define([ 'lib/angular-resource' ], function() {
+	var app = angular.module('app', [ 'ngResource' ]);
 	
 	// Application configuration
 	app.config(
@@ -53,8 +53,7 @@ require
 		function($controllerProvider, $compileProvider, 
 			$filterProvider, $provide)
 		{
-			// Providers are referenced in the app to be
-			// used anywhere in your application.
+			// Providers are referenced in the app to be used anywhere in your application.
 			app.lazy =
 			{
 				controller : $controllerProvider.register,
@@ -65,22 +64,32 @@ require
 			};
 		}
 	]);
+	
+	return app;
 })
 
 </file>
 <file type="javascript" name="ContactCtrl.js">define([ 'appModule' ], function(app)
 {
 	// Controller is registered dynamically in the controller provider.
-    app.lazy.controller('ContactController',
-    [
-        '$scope',
-
-        function($scope)
-        {
-            $scope.title = 'Contact';
-            
-        }
-    ]);
+    app.lazy.controller('ContactController', function($scope) {
+		$scope.title = 'Contact';
+		
+		$scope.registerContact = function(pContact) {
+			// TODO
+		};
+	});
+});
+</file>
+<file type="javascript" name="UserService.js">define([ 'appModule' ], function(app) 
+{
+    app.lazy.factory('UserService', function() {
+		return {
+			login: function(pLogin, pPassword) {
+				// TODO
+			}
+		};
+	});
 });
 </file>
 </editor>

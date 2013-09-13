@@ -50,36 +50,92 @@ var FileEditorController = function($scope, window, transclude, location, timeou
 	/** Ace editor creation and configuration. */
 	var editor = ace.edit("editor");
 	editor.setTheme("ace/theme/" + settings.theme);
-
-	/** Add auto-completion command to the editor. */
-	editor.commands.addCommand({
-		name : 'autocompletion',
-		bindKey : {
-			win : 'Ctrl-Space'
-		},
-		exec : function(editor) {
-			$scope.$apply(function() {
-				if (!$scope.showPopup) {
-					var textBefore = getTextBeforeCursor();
-					$scope.suggestions = completionService.getSuggestions(
-							textBefore, currentFile.type);
-					
-					if ($scope.suggestions != null && $scope.suggestions.length > 0) {
+	
+	if (settings.enableCompletion) {
+		/** Add auto-completion command to the editor. */
+		editor.commands.addCommand({
+			name : 'autocompletion',
+			bindKey : {
+				win : 'Ctrl-Space'
+			},
+			exec : function(editor) {
+				$scope.$apply(function() {
+					if (!$scope.showPopup) {
+						var textBefore = getTextBeforeCursor();
+						$scope.suggestions = completionService.getSuggestions(
+								textBefore, currentFile.type);
 						
-						//Auto-insert
-						if ($scope.suggestions.length == 1 && $scope.suggestions[0].autoInsert == true) {
-							$scope.chosenSuggestion = $scope.suggestions[0];
-						} else {
-							$scope.startedWord = completionService.getStartedWord(textBefore, currentFile.type);
-							$scope.showPopup = true;
+						if ($scope.suggestions != null && $scope.suggestions.length > 0) {
+							
+							//Auto-insert
+							if ($scope.suggestions.length == 1 && $scope.suggestions[0].autoInsert == true) {
+								$scope.chosenSuggestion = $scope.suggestions[0];
+							} else {
+								$scope.startedWord = completionService.getStartedWord(textBefore, currentFile.type);
+								$scope.showPopup = true;
+							}
+						}
+					} else {
+						$scope.showPopup = false;
+					}
+				});
+			}
+		});
+		
+		$scope.$watch('showPopup', function(newValue, oldValue) {
+			if (newValue != oldValue &&  !newValue) {
+				editor.focus();
+			}
+		});
+		
+		$scope.$watch('userInput', function() {
+			if ($scope.userInput != undefined && $scope.userInput != '') {
+				timeout(function() {
+					editor.focus();
+					editor.insert($scope.userInput);
+					$scope.userInput = '';
+				});
+			}
+		});
+		
+		$scope.$watch('chosenSuggestion', function() {
+			if ($scope.chosenSuggestion != undefined) {
+				timeout(function() {
+					
+					// Removes currently written word if replace is set to true.
+					if ($scope.chosenSuggestion.replace == true) {
+						editor.removeWordLeft();
+					}
+					
+					var codeToInsert = $scope.chosenSuggestion.name.trim();
+					
+					// Expression suffix (for example, ="")
+					if ($scope.chosenSuggestion.suffix != undefined) {
+						codeToInsert += $scope.chosenSuggestion.suffix;
+					}
+					
+					// If a part of the suggestion has already been written.
+					if ($scope.startedWord != undefined && $scope.startedWord.length > 0) {
+						codeToInsert = codeToInsert.substring($scope.startedWord.length);
+					}
+					
+					if ($scope.chosenSuggestion.addWhitespace == true) {
+						var codeAfter = getTextAfterCursor();
+						if (codeAfter.length > 0 && codeAfter[0] != " ") {
+							codeToInsert += " ";
+							$scope.chosenSuggestion.cursorPosition--;
 						}
 					}
-				} else {
-					$scope.showPopup = false;
-				}
-			});
-		}
-	});
+					
+					editor.insert(codeToInsert);
+					
+					moveCursor($scope.chosenSuggestion.cursorPosition);
+					
+					$scope.chosenSuggestion = undefined;
+				});
+			}
+		});
+	}
 	
 	/** Move cursor position */
 	var moveCursor = function(pDelta) {
@@ -89,60 +145,6 @@ var FileEditorController = function($scope, window, transclude, location, timeou
 			editor.navigateLeft(-pDelta);
 		}
 	};
-	
-	$scope.$watch('showPopup', function(newValue, oldValue) {
-		if (newValue != oldValue &&  !newValue) {
-			editor.focus();
-		}
-	});
-	
-	$scope.$watch('userInput', function() {
-		if ($scope.userInput != undefined && $scope.userInput != '') {
-			timeout(function() {
-				editor.focus();
-				editor.insert($scope.userInput);
-				$scope.userInput = '';
-			});
-		}
-	});
-	
-	$scope.$watch('chosenSuggestion', function() {
-		if ($scope.chosenSuggestion != undefined) {
-			timeout(function() {
-				
-				// Removes currently written word if replace is set to true.
-				if ($scope.chosenSuggestion.replace == true) {
-					editor.removeWordLeft();
-				}
-				
-				var codeToInsert = $scope.chosenSuggestion.name.trim();
-				
-				// Expression suffix (for example, ="")
-				if ($scope.chosenSuggestion.suffix != undefined) {
-					codeToInsert += $scope.chosenSuggestion.suffix;
-				}
-				
-				// If a part of the suggestion has already been written.
-				if ($scope.startedWord != undefined && $scope.startedWord.length > 0) {
-					codeToInsert = codeToInsert.substring($scope.startedWord.length);
-				}
-				
-				if ($scope.chosenSuggestion.addWhitespace == true) {
-					var codeAfter = getTextAfterCursor();
-					if (codeAfter.length > 0 && codeAfter[0] != " ") {
-						codeToInsert += " ";
-						$scope.chosenSuggestion.cursorPosition--;
-					}
-				}
-				
-				editor.insert(codeToInsert);
-				
-				moveCursor($scope.chosenSuggestion.cursorPosition);
-				
-				$scope.chosenSuggestion = undefined;
-			});
-		}
-	});
 	
 	/*var getElementBeforePosition = function(pPosition, pString, pTrim) {
 		var lines = currentFile.content.split('\n');

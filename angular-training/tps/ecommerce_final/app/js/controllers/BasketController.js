@@ -1,5 +1,5 @@
 /** Basket view controller */
-var BasketController = function($scope)
+angular.module('app').controller('BasketController', [ '$scope', function($scope)
 {
 	$scope.items = []; // TODO
          
@@ -7,5 +7,4 @@ var BasketController = function($scope)
 		 // TODO
 		return 0;
 	};
-};
-BasketController.$inject = ['$scope'];
+}]);
