@@ -1,19 +1,18 @@
 'use strict';
 
 var application = angular.module('angularTrainingApp',
-		[ 'ngResource', 'ui.bootstrap', 'firebase', 'directives', 'filters', 'services' ])
+		[ 'ngRoute', 'ngResource', 'ui.bootstrap', 'firebase', 'directives', 'filters', 'services' ])
 		.config(function($routeProvider, $locationProvider, $compileProvider, $injector, $provide) {
 			$locationProvider.html5Mode(false); // TODO
 
 			$routeProvider.when('/', {
 				templateUrl : 'partials/main.html'
-			}).otherwise({
-				redirectTo : '/'
 			});
 
 			// Used for the slide code samples, to dynamically add directives.
 			application.compileProvider = $compileProvider;
 			application.injector = $injector;
+            application.routeProvider = $routeProvider;
 
 			$provide.decorator('$log', [ '$delegate',
 				'configurationData', function($delegate, config) {
@@ -27,7 +26,7 @@ var application = angular.module('angularTrainingApp',
 							}
 						}
 					};
-				} 
+				}
 			]);
 		});
 		

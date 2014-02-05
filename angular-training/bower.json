@@ -1,0 +1,20 @@
+{
+  "name": "angular-training",
+  "version": "1.0.1",
+  "homepage": "https://github.com/got5/Angular-Librairies",
+  "authors": [
+    "Krazar <krazarpwnu@gmail.com>"
+  ],
+  "description": "Training for Angular",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "angular": "1.2.11",
+    "angular-resource": "1.2.11",
+    "angularfire": "~0.6.0",
+    "ace-builds": "~1.1.1",
+    "lodash": "~2.4.1",
+    "angular-route": "1.2.11",
+    "angular-ui-bootstrap-bower": "~0.10.0"
+  }
+}

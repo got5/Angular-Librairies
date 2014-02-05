@@ -1,10 +1,12 @@
 'use strict';
 
-var MainController = function($scope, $document, $http, $route, $location, $position, $window) {
+var MainController = function($scope, $document, $http, $route, $location, $window) {
 	
 	var currentLocation = $location.url();
-	
+    $scope.slideIndexAsPc = 0;
+
 	$scope.$watch('slideIndex', function(newSlide, oldSlide) {
+        $scope.updateSlideIndexAsPc();
 		if (oldSlide != newSlide && $scope.slides != undefined) {
 			var route = $scope.slides[$scope.slideIndex];
 			$location.path("/" + route.content);
@@ -14,8 +16,11 @@ var MainController = function($scope, $document, $http, $route, $location, $posi
 	/** Gets all slides and create urls for each one. */
 	$http.get("data/slides.json").success(function(data) {
 		$scope.slides = data;
+        $scope.updateSlideIndexAsPc();
 		angular.forEach($scope.slides, function(route) {
-			$route.routes["/" + route.content] = { templateUrl: "partials/" + route.content + ".html" };
+            application.routeProvider.when("/" + route.content, {
+                templateUrl : "partials/" + route.content + ".html"
+            })
 		});
 		
 		if (currentLocation == "/" || currentLocation == "") {
@@ -52,22 +57,16 @@ var MainController = function($scope, $document, $http, $route, $location, $posi
 			$scope.slideIndex--;
 		}
 	};
-	
-	/** Used for progress bar */
-	var progressBarIndicator = {
-		index: 0,
-		value: { value: 0, type: "danger" }
-	};
-	
-	$scope.getProgressLength = function() {
-		if ($scope.slides != undefined && progressBarIndicator.index != $scope.slideIndex) {
-			progressBarIndicator.index = $scope.slideIndex;
-			progressBarIndicator.value = { value: $scope.slideIndex/ $scope.slides.length * 100, type: "danger" };
-		}
-		return progressBarIndicator.value;
-	};
 
-	$document.keydown(function(event) {
+    $scope.updateSlideIndexAsPc = function(){
+        if(  $scope.slideIndex != undefined && $scope.slides!= undefined && $scope.slides.length > 0){
+            $scope.slideIndexAsPc = $scope.slideIndex/$scope.slides.length * 100;
+        }else{
+            $scope.slideIndexAsPc = 0;
+        }
+    };
+
+	$document.on("keydown",function(event) {
 		if (event.keyCode == 37) {
 			$scope.$apply(function() {
 				$scope.previousSlide();
@@ -86,12 +85,11 @@ var MainController = function($scope, $document, $http, $route, $location, $posi
 		$scope.slideIndex = indexSlide;
 	};
 
+
     /** Updates popup text with slide title (depends on mouse position on the progress bar). */
-	$scope.setPopupText = function() {
+	$scope.setPopupText = function(e) {
 		if ($scope.slides != undefined) {
-			var mousePos = $position.mouse();
-			indexSlide = (mousePos.x * $scope.slides.length)/$window.document.width;
-			indexSlide = Math.floor(indexSlide) + 1;
+			indexSlide = Math.floor((e.x * $scope.slides.length)/$window.outerWidth) + 1;
 			var progressBarSlide = $scope.slides[indexSlide];
 			if (progressBarSlide != undefined) {
 				$scope.popupText = indexSlide + (progressBarSlide.title != undefined ? " : " + progressBarSlide.title : '');
@@ -99,11 +97,19 @@ var MainController = function($scope, $document, $http, $route, $location, $posi
 		}
 	};
 
+
     /** Listen to routes changes, to synchronize $scope.slideIndex with current location path. */
 	$scope.$on('$routeChangeStart', function(event, next) {
         //TODO: no better way to have the next location...?
         if (next != null && next.$$route != undefined) {
-            var indexURL = getSlideIndexFromURL(next.$$route.templateUrl.replace("partials", "").replace(".html", ""));
+            var templateUrl = next.$$route.templateUrl;
+            var url;
+            if(templateUrl == null){
+                url = '/'
+            }else{
+                url = templateUrl.replace("partials", "").replace(".html", "");
+            }
+            var indexURL = getSlideIndexFromURL(url);
             if (indexURL > -1 && indexURL != $scope.slideIndex) {
                 $scope.slideIndex = indexURL;
             }
@@ -112,4 +118,4 @@ var MainController = function($scope, $document, $http, $route, $location, $posi
 };
 
 
-MainController.$inject = [ '$scope', '$document', '$http', '$route', '$location', '$position', '$window' ];
+MainController.$inject = [ '$scope', '$document', '$http', '$route', '$location', '$window' ];

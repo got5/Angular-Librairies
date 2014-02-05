@@ -10,7 +10,7 @@ body {
     overflow: hidden;
     background-color: #F2F5A9;
     font-family: 'Calibri', sans-serif;
-    line-height: 1.5;
+    /*line-height: 1.5;*/
     font-size: 2em;
 }
 
