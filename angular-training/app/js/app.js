@@ -1,8 +1,6 @@
 'use strict';
-
-
 var application = angular.module('angularTrainingApp',
-        [ 'ngRoute', 'ngResource', 'ui.bootstrap', 'firebase', 'directives', 'filters', 'services' ])
+        [ 'ngRoute', 'ngAnimate', 'ui.bootstrap', 'firebase', 'directives', 'filters', 'services' ])
     .config(function ($routeProvider, $locationProvider, $compileProvider, $injector, $provide) {
 
         var request = new XMLHttpRequest();
@@ -44,4 +42,3 @@ var application = angular.module('angularTrainingApp',
             }
         ]);
     });
-		

@@ -2,8 +2,10 @@
 
 var MainController = function ($scope, $document, $http, $route, $location, $window) {
 
+    var animation = "view-animate";;
     var currentLocation = $location.url();
     $scope.slideIndexAsPc = 0;
+
 
     $scope.$watch('slideIndex', function (newSlide, oldSlide) {
         $scope.updateSlideIndexAsPc();
@@ -40,12 +42,16 @@ var MainController = function ($scope, $document, $http, $route, $location, $win
     };
 
     $scope.nextSlide = function () {
+        animation = "view-animate";
+
         if ($scope.slides != undefined && $scope.slideIndex < $scope.slides.length) {
             $scope.slideIndex++;
         }
     };
 
     $scope.previousSlide = function () {
+       animation = "view-back-animate";
+
         if ($scope.slideIndex > 0) {
             $scope.slideIndex--;
         }
@@ -108,7 +114,11 @@ var MainController = function ($scope, $document, $http, $route, $location, $win
             }
         }
     });
+
+    $scope.getAnimation = function(){
+        return animation;
+    }
 };
 
 
-MainController.$inject = [ '$scope', '$document', '$http', '$route', '$location', '$window' ];
+MainController.$inject = [ '$scope', '$document', '$http', '$route', '$location', '$window', '$animate' ];

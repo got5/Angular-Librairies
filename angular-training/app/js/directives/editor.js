@@ -56,7 +56,8 @@ var FileEditorController = function($scope, window, transclude, location, timeou
 		editor.commands.addCommand({
 			name : 'autocompletion',
 			bindKey : {
-				win : 'Ctrl-Space'
+				win : 'Ctrl-Space',
+                mac: 'Cmd-Space'
 			},
 			exec : function(editor) {
 				$scope.$apply(function() {
@@ -83,7 +84,7 @@ var FileEditorController = function($scope, window, transclude, location, timeou
 		});
 		
 		$scope.$watch('showPopup', function(newValue, oldValue) {
-			if (newValue != oldValue &&  !newValue) {
+			if (newValue != oldValue &&  newValue) {
 				editor.focus();
 			}
 		});
