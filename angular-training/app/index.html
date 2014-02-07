@@ -8,12 +8,12 @@
   </head>
   <body ng-app="angularTrainingApp">
 
-    <div class="slide" ng-controller="MainController">
+    <div class="slide" ng-cloak ng-controller="MainController">
     
     	<div popover-placement="bottom"  popover="{{popupText}}" ng-mousemove="setPopupText($event)">
 	    	<a ng-click="gotoSelectedSlide()">
 	    		<progressbar  value="slideIndexAsPc" type="danger" class="progress-slideshow active">
-                    <span style="color:black; white-space:nowrap;" ng-cloak>{{slideIndex}} / {{slides.length}}</span></progressbar>
+                    <span style="color:black; white-space:nowrap;">{{slideIndex}} / {{slides.length}}</span></progressbar>
 	    	</a>
 	    </div>
     
@@ -26,7 +26,7 @@
 	    </a>
 	    
 	    <div class="header" ng-show="slides[slideIndex].title">
-	        <h1 class="title" ng-bind-html-unsafe="slideIndex + '. ' + slides[slideIndex].title"></h1>
+	        <h1 class="title">{{slideIndex}}. {{slides[slideIndex].title}}</h1>
 	    </div>
 	    
 	    <div ng-view ng-class="getAnimation()"></div>

@@ -82,7 +82,7 @@ var MainController = function ($scope, $route, $location, $document, $window) {
     /** Changes selected slide index. */
     $scope.gotoSelectedSlide = function () {
         $scope.getAnimation($scope.slideIndex < indexSlide);
-        
+
         $scope.slideIndex = indexSlide;
     };
 
@@ -126,8 +126,6 @@ var MainController = function ($scope, $route, $location, $document, $window) {
             }
         }
         return animation;
-    }
+    };
 };
-
-
 MainController.$inject = [ '$scope', '$route', '$location', '$document', '$window', '$animate' ];
