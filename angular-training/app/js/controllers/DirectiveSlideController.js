@@ -19,7 +19,7 @@ var DirectiveSlideController = function($scope, $timeout) {
 	$scope.$watch('code', function(newValue, oldValue) {
 		if (newValue != oldValue || !bIsInit) {
 			bIsInit = true;
-			if (!directiveName) {
+			if (!directiveName && newValue) {
 				directiveName = getDirectiveName($scope.code);
 			}
 			if (directiveName) {

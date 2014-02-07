@@ -434,7 +434,7 @@ directives.directive('editorVertical', function() {
 });
 
 /** Service used to store the editor content, edited by the users. */
-var SaveService = function($route) {
+var SaveService = function() {
 	
 	/** Used to register the content of files of a given url. */
 	var savedContent = {};
@@ -467,4 +467,4 @@ var SaveService = function($route) {
 		return currentFiles[pUrl] != undefined ? currentFiles[pUrl] : null;
 	};
 };
-directives.service('SaveService', [ '$route', SaveService]);
+directives.service('SaveService', [ SaveService]);
