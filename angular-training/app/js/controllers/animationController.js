@@ -6,5 +6,5 @@ var AnimationController = function ($scope, $animate ) {
         $animate.enabled(newValue);
     });
 
-}
+};
 AnimationController.$inject = [ '$scope', '$animate' ];

@@ -1,8 +1,8 @@
 'use strict';
 
-var MainController = function ($scope, $document, $http, $route, $location, $window) {
+var MainController = function ($scope, $route, $location, $document, $window) {
 
-    var animation = "view-animate";;
+    var animation = "view-animate";
     var currentLocation = $location.url();
     $scope.slideIndexAsPc = 0;
 
@@ -42,7 +42,7 @@ var MainController = function ($scope, $document, $http, $route, $location, $win
     };
 
     $scope.nextSlide = function () {
-        animation = "view-animate";
+        $scope.getAnimation(true);
 
         if ($scope.slides != undefined && $scope.slideIndex < $scope.slides.length) {
             $scope.slideIndex++;
@@ -50,7 +50,7 @@ var MainController = function ($scope, $document, $http, $route, $location, $win
     };
 
     $scope.previousSlide = function () {
-       animation = "view-back-animate";
+       $scope.getAnimation(false);
 
         if ($scope.slideIndex > 0) {
             $scope.slideIndex--;
@@ -81,6 +81,8 @@ var MainController = function ($scope, $document, $http, $route, $location, $win
 
     /** Changes selected slide index. */
     $scope.gotoSelectedSlide = function () {
+        $scope.getAnimation($scope.slideIndex < indexSlide);
+        
         $scope.slideIndex = indexSlide;
     };
 
@@ -115,10 +117,17 @@ var MainController = function ($scope, $document, $http, $route, $location, $win
         }
     });
 
-    $scope.getAnimation = function(){
+    $scope.getAnimation = function(way){
+        if(way){
+            animation = "view-animate";
+        }else{
+            if(way === false){
+                animation = "view-back-animate";
+            }
+        }
         return animation;
     }
 };
 
 
-MainController.$inject = [ '$scope', '$document', '$http', '$route', '$location', '$window', '$animate' ];
+MainController.$inject = [ '$scope', '$route', '$location', '$document', '$window', '$animate' ];
