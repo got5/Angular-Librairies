@@ -5,7 +5,7 @@
 				to intercept a service instance creation, and to create a new instance which delegates the original one.</li>
 		</ul>
 		
-<editor show-preview="false" show-tabs="true" height="290">
+<editor editor-options="{showPreview:false , showTabs:true , height:290 }">
 	<file type="javascript" name="log.js">angular.module('logApp', []).config(['$provide', function($provide) {
 	$provide.decorator('$log', [ '$delegate', 'configurationData',
 		function($delegate, config) {

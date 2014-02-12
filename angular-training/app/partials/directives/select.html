@@ -5,7 +5,7 @@
 			generate a list of <i class="text-red">&lt;option&gt;</i> elements.</li>
 	</ul>
 
-<editor show-preview="true" show-tabs="true" height="220">
+<editor editor-options="{showPreview:true , showTabs:true , height:220 }">
     <file type="html" name="select.html">&lt;div ng-controller="SelectCtrl"&gt;
     &lt;select ng-model="user" 
     	ng-options="user.name group by user.country for user in users"&gt;

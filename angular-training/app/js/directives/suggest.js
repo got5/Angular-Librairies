@@ -257,4 +257,4 @@ var CompletionService = function($http) {
 	};
 };
 
-directives.service('CompletionService', [ '$http', CompletionService ]);
+directives.service('completionService', [ '$http', CompletionService ]);
