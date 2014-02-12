@@ -10,7 +10,7 @@
 
     <div class="slide" ng-cloak ng-controller="MainController">
     
-    	<div popover-placement="bottom"  popover="{{popupText}}" ng-mousemove="setPopupText($event)">
+    	<div popover-placement="bottom"  popover="{{popupText}}" ng-mousemove="setPopupText($event)" popover-trigger="mouseenter">
 	    	<a ng-click="gotoSelectedSlide()">
 	    		<progressbar  value="slideIndexAsPc" type="danger" class="progress-slideshow active">
                     <span style="color:black; white-space:nowrap;">{{slideIndex}} / {{slides.length}}</span></progressbar>
