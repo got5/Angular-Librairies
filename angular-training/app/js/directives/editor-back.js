@@ -506,8 +506,7 @@ var EditorConstructor = function(editorConfig) {
 };
 
 /** Editor (with preview/tabs options) directive */
-directives.constant('editorConfig',{})
-    .directive('editor', function(editorConfig) {
+directives.directive('editor', function(editorConfig) {
 	var editor = new EditorConstructor(editorConfig);
 	editor.templateUrl = "js/directives/templates/editor-horizontal.html";
 	return editor;
