@@ -1,0 +1,5 @@
+This directory has to be empty. All dependencies must come from bower when possible
+
+list of dependency out of bower:
+
+ace   (can delete if update to 1.1.2)

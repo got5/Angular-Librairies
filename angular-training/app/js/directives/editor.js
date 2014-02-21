@@ -88,7 +88,7 @@ directives
         };
     }).constant('editorConfig', {});
 
-var EditorConstructor = function ($timeout, $location, editorConfig, saveService, completionService) {
+var EditorConstructor = function ($timeout, $location, editorConfig, saveService) {
     if (angular.isUndefined(window.ace)) {
         throw new Error('ace not found');
     }
@@ -130,6 +130,9 @@ var EditorConstructor = function ($timeout, $location, editorConfig, saveService
 
             var e = elm.find("pre")[0];
             acee = window.ace.edit(e);
+
+            var langTools = require("ace/ext/language_tools");
+
             session = acee.getSession();
 
             onChange = function (callback) {
@@ -258,99 +261,17 @@ var EditorConstructor = function ($timeout, $location, editorConfig, saveService
 
             if (opts.enableCompletion) {
                 /** Add auto-completion command to the acee. */
-                acee.commands.addCommand({
-                    name: 'autocompletion',
-                    bindKey: {
-                        win: 'Ctrl-Space',
-                        mac: 'Cmd-Space'
-                    },
-                    exec: function () {
-                        //scope.$apply(function() {
-                        if (!scope.showPopup) {
-                            var textBefore = getTextBeforeCursor();
-                            scope.suggestions = completionService.getSuggestions(
-                                textBefore, currentFile.type);
-
-                            if (scope.suggestions != null && scope.suggestions.length > 0) {
-
-                                //Auto-insert
-                                if (scope.suggestions.length == 1 && scope.suggestions[0].autoInsert == true) {
-                                    scope.chosenSuggestion = scope.suggestions[0];
-                                } else {
-                                    scope.startedWord = completionService.getStartedWord(textBefore, currentFile.type);
-                                    scope.showPopup = true;
-                                }
-                            }
-                        } else {
-                            scope.showPopup = false;
-                        }
-                        scope.$digest();
-                        // });
-                    }
+                acee.setOptions({
+                    enableBasicAutocompletion: true,
+                    enableSnippets:true
                 });
+                var ngCompleter = function(editor,session, pos, prefix, callback){
 
-                scope.$watch('showPopup', function (newValue, oldValue) {
-                    if (newValue != oldValue && newValue) {
-                        acee.focus();
-                    }
-                });
-
-                scope.$watch('userInput', function () {
-                    if (scope.userInput != undefined && scope.userInput != '') {
-                        $timeout(function () {
-                            acee.focus();
-                            acee.insert(scope.userInput);
-                            scope.userInput = '';
-                        });
-                    }
-                });
-
-                scope.$watch('chosenSuggestion', function () {
-                    if (scope.chosenSuggestion != undefined) {
-                        $timeout(function () {
-
-                            // Removes currently written word if replace is set to true.
-                            if (scope.chosenSuggestion.replace == true) {
-                                acee.removeWordLeft();
-                            }
-
-                            var codeToInsert = scope.chosenSuggestion.name.trim();
-
-                            // Expression suffix (for example, ="")
-                            if (scope.chosenSuggestion.suffix != undefined) {
-                                codeToInsert += scope.chosenSuggestion.suffix;
-                            }
-
-                            // If a part of the suggestion has already been written.
-                            if (scope.startedWord != undefined && scope.startedWord.length > 0) {
-                                codeToInsert = codeToInsert.substring(scope.startedWord.length);
-                            }
-
-                            if (scope.chosenSuggestion.addWhitespace == true) {
-                                var codeAfter = getTextAfterCursor();
-                                if (codeAfter.length > 0 && codeAfter[0] != " ") {
-                                    codeToInsert += " ";
-                                    scope.chosenSuggestion.cursorPosition--;
-                                }
-                            }
-
-                            acee.insert(codeToInsert);
-
-                            moveCursor(scope.chosenSuggestion.cursorPosition);
-
-                            scope.chosenSuggestion = undefined;
-                        });
-                    }
-                });
-            }
-
-            var moveCursor = function (pDelta) {
-                if (pDelta > 0) {
-                    acee.navigateRight(pDelta);
-                } else if (pDelta < 0) {
-                    acee.navigateLeft(-pDelta);
                 }
-            };
+                langTools.addCompleter(ngCompleter);
+           }
+
+
             /** Returns text after given position. */
             var getTextAfterPosition = function (position) {
                 var lines = currentFile.content.split('\n');
@@ -411,18 +332,6 @@ var EditorConstructor = function ($timeout, $location, editorConfig, saveService
             };
 
 
-            /** Updates started word written when suggestion popup is visible. Used to filter suggestions. */
-            var updateStartedWord = function () {
-                if (scope.showPopup) {
-                    var position = editor.selection.getCursor();
-                    position.column++; // Cursor position has not been yet
-                    // updated.
-                    // Used to filter suggestions in the auto-completion popup.
-                    scope.startedWord = completionService.getStartedWord(
-                        getTextBeforePosition(position), currentFile.type);
-                }
-            };
-
             /** Handler on editor content change. */
             var onEditorChange = function (event) {
                 if (bApply) {
@@ -435,7 +344,6 @@ var EditorConstructor = function ($timeout, $location, editorConfig, saveService
                             scope.code = editorContent;
                         }
 
-                        updateStartedWord();
                     });
                 }
             };
@@ -522,22 +430,22 @@ var EditorConstructor = function ($timeout, $location, editorConfig, saveService
 };
 
 /** Editor (with preview/tabs options) directive */
-directives.directive('editor', ['$timeout', '$location', 'editorConfig', 'saveService', 'completionService', function ($timeout, $location, editorConfig, saveService, completionService) {
-    var editor = new EditorConstructor($timeout, $location, editorConfig, saveService, completionService);
+directives.directive('editor', ['$timeout', '$location', 'editorConfig', 'saveService',  function ($timeout, $location, editorConfig, saveService) {
+    var editor = new EditorConstructor($timeout, $location, editorConfig, saveService);
     editor.templateUrl = "js/directives/templates/editor-horizontal.html";
     return editor;
 }]);
 
 /** Mobile Version Editor directive */
-directives.directive('editorMobile', ['$timeout', '$location', 'editorConfig', 'saveService', 'completionService', function ($timeout, $location, editorConfig, saveService, completionService) {
-    var editor = new EditorConstructor($timeout, $location, editorConfig, saveService, completionService);
+directives.directive('editorMobile', ['$timeout', '$location', 'editorConfig', 'saveService',  function ($timeout, $location, editorConfig, saveService) {
+    var editor = new EditorConstructor($timeout, $location, editorConfig, saveService);
     editor.templateUrl = "js/directives/templates/editor-mobile.html";
     return editor;
 }]);
 
 /** Editor with vertical layout. */
-directives.directive('editorVertical', ['$timeout', '$location', 'editorConfig', 'saveService', 'completionService', function ($timeout, $location, editorConfig, saveService, completionService) {
-    var editor = new EditorConstructor($timeout, $location, editorConfig, saveService, completionService);
+directives.directive('editorVertical', ['$timeout', '$location', 'editorConfig', 'saveService', function ($timeout, $location, editorConfig, saveService) {
+    var editor = new EditorConstructor($timeout, $location, editorConfig, saveService);
     editor.templateUrl = "js/directives/templates/editor-vertical.html";
     return editor;
 }]);
