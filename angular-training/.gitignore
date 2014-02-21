@@ -5,3 +5,5 @@ dist
 app/components
 *.iml
 .idea/
+demo/lib/
+demoFinished/lib/

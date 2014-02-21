@@ -1,0 +1,185 @@
+index.html :
+emmet :
+html:5>h1{AngularJS Demo}+div{Search: }>input+br+h3{Customers:}+table>tr>td*2
+
+CSS : animation.css
+
+JS: angular
+    angular-route
+    angular-animate
+
+
+préciser que ce qu'on va voir est basic
+
+1
+parler des scripts, on en parle plus tard
+on ajouter une directive appelé ng-app. Ceci est une applicaiton angular, active le scan..
+facile à oublier :)
+
+La fonctionnaité data binding
+    j'ajoute une directive ng-model
+    j'ajoute une databind expression {{}}
+
+    Sans Code javascript !
+
+    works !
+
+    PAS de JS
+
+2
+présenter le tableau
+ng-init ="customers=['Pierre','Nourredine','François','Emmanuel']"
+ng-repeat = "cust in customers
+bind expression {{cus}}
+
+    PAS de JS
+
+3
+Ca serait bien de pouvoir filtrer ! on va filtrer
+|filter:SearchText
+Ajouter ng-model dans l'input
+
+    PAS de JS
+
+4
+ON se doute que stocker des donnée dans l'html, c'est le mal..
+Nouveau fichier JS ou <script> suivant la visibilité
+
+on créé un module :
+
+var app = angular.module('customersApp',[]);
+
+un module est un conteneur, namescpace...
+expliquer les crochets
+
+Un module vide ne sert pas à grand chose. Créons un controller
+
+app.controller('CustomerController',function($scope){
+
+}):
+
+ajouter le controller dans le div
+
+expliquer $scope
+C'est un endroit où on peut placer nos données pour qu'elle puisse communiquer entre la vue et le controller
+C'est le modèle de la vue.
+
+
+get rid of ng-init
+and
+copy paste ce code
+g
+$scope.customers = [
+    {"id":1,"name":"Nourrdine","total":5.996},
+    {"id":2,"name":"Bruno","total":10.994},
+    {"id":3,"name":"François","total":15.54},
+    {"id":4,"name":"Emmanuel","total":12.884}
+];
+
+toujours hard codé, mais c'est mieux
+
+5
+On doit dire à angular d'utiliser notre module et non le module implicite
+
+ng-app="CustomersApp"
+
+ng-controller="CustomersController"
+
+demo
+
+
+Add td for name and total
+formater les nombre
+filtre, vous vous rappelez ?
+
+currency filter
+orderBy
+
+<10 ligne de code
+
+6
+C'est ok, mais on est un peu pauvre, SPA, mais on doit pouvoir afficher plusieurs vues
+Rappeler le script angular-route
+angular-route est un module comme CustomerApp
+On va ajouter le module de angular-route dans notre application
+
+angular.module('CustomerApp',['ngRoute']);
+présenter route
+
+7
+On va configurer notre module pour utiliser ngRoute
+
+app.config(function($routeProvider){
+    $routeProvider.when('/', {
+        templateUrl: 'views/customers.html',
+        controller: 'CustomerCtrl'
+    })
+    .when('/orders',{
+        templateUrl:'views/orders.html',
+        controller: 'OrdersController'
+    };
+};
+
+Ajouter un controller
+
+app.controller('OrdersController',function($scope){
+    $scope.customerId = 5;
+});
+
+8
+supprimer le dom à l'intérieur et le mettre dans customers.html
+on va ajouter un div à la place avec une nouvell directive : ng-view
+
+Rappel sur ce qu'est une directive. Expliquer ce que ng-view va faire.
+
+<div ng-view></div>
+demo
+
+Gérer les liens pour passer d'une page à l'autre
+
+9
+
+Factory
+
+Il y a 4 manière de réutiliser du code. (service, factory, provider).
+La factory est en fait un singleton. C'est bine de mettre les call ajax dans une factory
+
+
+app.factory('customersFactory',function($http){
+    var factory = {};
+    factory.getCustomers = function(){
+        return $http.get('/customers.json');
+    };
+    return factory;
+});
+
+expliquer $http (pourquoi pas $scope)
+
+il faut de l'ajax
+retourne une promise
+
+Injecter le service dans le controller
+
+récupérer les données
+
+customersFactory.getCustomers().success(function(data){
+$scope.customers = data;
+}
+
+
+10
+
+animation
+
+Ajouter le module ngAnimate
+
+ajouter la classe  dans le div de index.html:
+
+slide-animation
+
+ajouter ng-animate à coté de ng-repeat
+
+ng-animate="'animate'"
+
+
+

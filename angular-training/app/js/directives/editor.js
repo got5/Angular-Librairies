@@ -2,49 +2,55 @@
 
 
 /** Compile directive */
-directives.directive('compile', ['$compile', '$timeout', function ($compile, $timeout) {
+directives.directive('compile', function ($compile, $controller, $timeout) {
     // directive factory creates a link function
-    return function (scope, element, attrs) {
+    return {
+        terminal: true,
+        link: function (scope, element, attrs) {
+            var currentError, promise;
 
-        var currentError = null;
-        var promise = null;
-
-        /** Shows the error if there is one. */
-        var handleErrors = function () {
-            if (currentError) {
-                console.error(currentError.message);
-            }
-        };
-
-        scope.$watch(function (scope) {
-                // watch the 'compile' expression for changes
-                return scope.$eval(attrs.compile);
-            },
-
-            function (value) {
-                currentError = null;
-
-                /** Code has changed, we will wait another second before displaying errors. */
-                if (promise) {
-                    $timeout.cancel(promise);
-                    promise = null;
+            var handleErrors = function () {
+                if (currentError) {
+                    console.error(currentError.message);
                 }
+            };
+            scope.$watch(function (scope) {
+                    // watch the 'compile' expression for changes
+                    return scope.$eval(attrs.compile);
+                },
 
-                /** Waits for one second before displaying a potential error. */
-                promise = $timeout(handleErrors, 1000);
+                function (value) {
 
-                try {
-                    /** Assigns compile expression to the DOM. */
-                    element.html(value);
+                    if (value) {
+                        if(value.js != ''){
+                            var script = document.createElement('script');
+                            script[(script.textContent === undefined ? 'innerText' : 'textContent')] = '' + value.js;
+                            currentError = null;
+                            element.parent().append(script);
+                        }
 
-                    /** Compile the new DOM and link it to the current scope. */
-                    $compile(element.contents())(scope);
-                } catch (error) {
-                    currentError = error;
-                }
-            });
-    };
-}]);
+                        /** Code has changed, we will wait another second before displaying errors. */
+                        if (promise) {
+                            $timeout.cancel(promise);
+                            promise = null;
+                        }
+
+                        /** Waits for one second before displaying a potential error. */
+                        promise = $timeout(handleErrors, 1000);
+
+                        try {
+                            /** Assigns compile expression to the DOM. */
+                            element.html(value.html);
+
+                            /** Compile the new DOM and link it to the current scope. */
+                            $compile(element.contents())(scope);
+                        } catch (error) {
+                            currentError = error;
+                        }
+                    }
+                });
+        }}
+});
 
 directives
     .service('saveService', function () {
@@ -81,7 +87,7 @@ directives
         };
     }).constant('editorConfig', {});
 
-var EditorConstructor = function ($timeout,$location,editorConfig,saveService,completionService) {
+var EditorConstructor = function ($timeout, $location, editorConfig, saveService, completionService) {
     if (angular.isUndefined(window.ace)) {
         throw new Error('ace not found');
     }
@@ -436,13 +442,16 @@ var EditorConstructor = function ($timeout,$location,editorConfig,saveService,co
 
             /** Returns JS wrapped in HTML script tag. */
             var wrapJSScript = function (content) {
-                return "<script language='javascript' type='text/javascript'>"
-                    + content + "</script>";
+
+                var script = document.createElement('script');
+                script[(script.textContent === undefined ? 'innerText' : 'textContent')] = '' + content;
+                return script;
+
             };
 
             /** Returns editor content (concat every tab code, formats js, etc.). */
             var getEditorContent = function () {
-                var content = '';
+                var content = {html: '', js: ''};
 
                 for (var index = 0; index < scope.files.length; index++) {
                     var file = scope.files[index];
@@ -452,11 +461,19 @@ var EditorConstructor = function ($timeout,$location,editorConfig,saveService,co
                     }
 
                     if (file.type == "javascript") {
-                        content += wrapJSScript(file.content);
+                        var script = wrapJSScript(file.content);
+
+                        /**
+                         * The javascript code don't need to be compiled, so it's simply happend to the dom.
+                         * Still the DOM must be compiled if the javascript change, so we leave it in content !
+                         */
+                        content.js += file.content;
+
+
                     } else if (file.type == "html") {
-                        content += "<div class='html-content'>" + file.content + "</div>";
+                        content.html += "<div class='html-content'>" + file.content + "</div>";
                     } else {
-                        content += file.content;
+                        content.html += file.content;
                     }
                 }
                 return content;
@@ -490,7 +507,9 @@ var EditorConstructor = function ($timeout,$location,editorConfig,saveService,co
             resetServiceCache();
 
             if (opts.compileCode) {
-                scope.code = getEditorContent();
+                var content = getEditorContent();
+
+                scope.code = content;
             }
 
             acee.on("change", onEditorChange);
@@ -503,21 +522,21 @@ var EditorConstructor = function ($timeout,$location,editorConfig,saveService,co
 
 /** Editor (with preview/tabs options) directive */
 directives.directive('editor', ['$timeout', '$location', 'editorConfig', 'saveService', 'completionService', function ($timeout, $location, editorConfig, saveService, completionService) {
-    var editor = new EditorConstructor($timeout,$location,editorConfig,saveService,completionService);
+    var editor = new EditorConstructor($timeout, $location, editorConfig, saveService, completionService);
     editor.templateUrl = "js/directives/templates/editor-horizontal.html";
     return editor;
 }]);
 
 /** Mobile Version Editor directive */
 directives.directive('editorMobile', ['$timeout', '$location', 'editorConfig', 'saveService', 'completionService', function ($timeout, $location, editorConfig, saveService, completionService) {
-    var editor = new EditorConstructor($timeout,$location,editorConfig,saveService,completionService);
+    var editor = new EditorConstructor($timeout, $location, editorConfig, saveService, completionService);
     editor.templateUrl = "js/directives/templates/editor-mobile.html";
     return editor;
 }]);
 
 /** Editor with vertical layout. */
 directives.directive('editorVertical', ['$timeout', '$location', 'editorConfig', 'saveService', 'completionService', function ($timeout, $location, editorConfig, saveService, completionService) {
-    var editor = new EditorConstructor($timeout,$location,editorConfig,saveService,completionService);
+    var editor = new EditorConstructor($timeout, $location, editorConfig, saveService, completionService);
     editor.templateUrl = "js/directives/templates/editor-vertical.html";
     return editor;
 }]);
