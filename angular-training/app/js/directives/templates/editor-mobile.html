@@ -2,7 +2,9 @@
 	<table>
 		<tr>
 			<td>
-				<div class='mobile-preview' compile='code'/>
+				<div class='mobile-preview' ng-show='showPreview'>
+                    <div compile="code"></div>
+				</div>
 			</td>
 			<td width='100%'>
 				<div ng-show='showTabs'>

@@ -26,6 +26,7 @@ directives.directive('compile', function ($compile, $controller, $timeout) {
                             var script = document.createElement('script');
                             script[(script.textContent === undefined ? 'innerText' : 'textContent')] = '' + value.js;
                             currentError = null;
+                            element.parent().find('script').remove();
                             element.parent().append(script);
                         }
 

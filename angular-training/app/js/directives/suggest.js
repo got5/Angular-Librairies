@@ -11,7 +11,7 @@ var SuggestController = function($scope, $timeout, element) {
 				return true;
 			}
 			element = element.parentElement;
-		};
+		}
 		return false;
 	};
 	

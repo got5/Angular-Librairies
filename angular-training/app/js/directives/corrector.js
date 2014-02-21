@@ -1,12 +1,12 @@
 'use strict';
 
-var ValidationController = function ($scope, testUtils) {
+var ValidationController = function ($scope, $sce, testUtils) {
 	
 	$scope.showTestResults = false;
 	
 	var afterTests = function(pResult) {
 		$scope.showTestResults = true;
-		$scope.testResult = pResult;
+		$scope.testResult = $sce.trustAsHtml(pResult);
 	};
 	
 	$scope.validate = function() {
@@ -23,10 +23,10 @@ var ValidationController = function ($scope, testUtils) {
 directives.directive('buttonValid', function() {
 	return {
 		template : '<div><div class="right-header">Validate exercise: <button class="btn" ng-click="validate()"><img src="images/valid.png"/></button></div>' + 
-			'<div ng-if="showTestResults" class="test-result-popup"><img src="images/close.gif" ng-click="closePopup()" class="close-icon"/><span ng-bind-html-unsafe="testResult"></span></div></div>',
+			'<div ng-if="showTestResults" class="test-result-popup"><img src="images/close.gif" ng-click="closePopup()" class="close-icon"/><span ng-bind-html="testResult"></span></div></div>',
 		restrict : 'E',
-		controller : [ '$scope', 'TestUtils', function(scope, testUtils) {
-			return new ValidationController(scope, testUtils);
+		controller : [ '$scope', '$sce', 'TestUtils', function($scope, $sce, testUtils) {
+			return new ValidationController($scope, $sce, testUtils);
 		}]
 	};
 });
