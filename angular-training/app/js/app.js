@@ -1,6 +1,6 @@
 'use strict';
 var application = angular.module('angularTrainingApp',
-        [ 'ngRoute', 'ngAnimate', 'ui.bootstrap', 'firebase', 'directives', 'filters', 'services' ])
+        [ 'ngRoute', 'ngAnimate', 'ui.bootstrap', 'directives', 'filters', 'services' ])
     .config(function ($routeProvider, $locationProvider, $compileProvider, $injector, $provide) {
 
         var request = new XMLHttpRequest();

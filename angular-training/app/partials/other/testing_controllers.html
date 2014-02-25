@@ -16,9 +16,7 @@
         });
 
         $scope.userName = "Dalton";
-    });
-
-</file>
+    });</file>
 <file type="javascript" name="unit/userSpec.js">describe('Tests Controllers Application', function() {
     describe('UserCtrl',function(){
 	    var scope, ctrl, $httpBackend;
@@ -62,32 +60,18 @@
             expect(scope.roles[1]).toMatch("admin");
         });
     });
-});
-</file>
-<file type="javascript" name="e2e/userSpec.js">// test/e2e/controllers/userSpec.js
-describe("UserCtrl e2e Tests", function() {
-	beforeEach(function() {
-		browser().navigateTo('/');
-	});
-	
-	it('should have a users page with a users list.', function() {
-		browser().navigateTo('#/users');
-		expect(browser().location().path()).toBe("/users");
-		expect(element('#ng-view').html()).toContain('list-users');
-	});
-	
-	it('should have a add user button which displays a create form.', function() {
-		browser().navigateTo('#/users');
-		
-		// Click on the add button.
-		element('.btnAddUser').click();
-		
-		// Checks if the create form is displayed.
-		expect(element('#ng-view').html()).toContain('Submit user');
-	});
-});
+});</file>
+<file type="javascript" name="e2e/userSpec.js">describe("UserCtrl e2e Tests", function() {
 
-</file>
+	it('should have a users page with a users list.', function() {
+		browser.get('#/users');
+        var ngBindLink = element(by.css('.btnAddUser'));
+        ngBindLink.click();
+
+        var pageBody = element(by.css('h1'));
+        expect(pageBody.getText()).toEquals('Add User');
+    });
+});</file>
 </editor>
 	
 	</div>
