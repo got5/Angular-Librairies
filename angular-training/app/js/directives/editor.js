@@ -265,10 +265,6 @@ var EditorConstructor = function ($timeout, $location, editorConfig, saveService
                     enableBasicAutocompletion: true,
                     enableSnippets:true
                 });
-                var ngCompleter = function(editor,session, pos, prefix, callback){
-
-                }
-                langTools.addCompleter(ngCompleter);
            }
 
 

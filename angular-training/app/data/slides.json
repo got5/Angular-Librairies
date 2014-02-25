@@ -200,7 +200,7 @@
         "content": "other/test_overview"
     },
     {
-        "title": "Setting up your tests: Karma",
+        "title": "Setting up your unit tests: Karma",
         "content": "other/karma"
     },
     {
@@ -208,20 +208,24 @@
         "content": "other/karma_config_file"
     },
     {
-        "title": "e2e testing with ngScenario",
-        "content": "other/e2e_testing"
-    },
-    {
-        "title": "ngScenario main commands",
-        "content": "other/e2e_commands"
-    },
-    {
-        "title": "Testing application pages",
-        "content": "other/testing_pages"
+        "title": "Simple Unit Test",
+        "content": "other/simple_unit_test"
     },
     {
         "title": "Unit testing with angular-mocks",
         "content": "other/unit_testing"
+    },
+    {
+        "title": "protractor",
+        "content": "other/protractor"
+    },
+    {
+        "title": "protractor.conf.js",
+        "content": "other/protractor_conf_file"
+    },
+    {
+        "title": "e2e testing with Protractor",
+        "content": "other/e2e_testing"
     },
     {
         "title": "Testing controllers",

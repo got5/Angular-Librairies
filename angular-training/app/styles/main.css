@@ -292,6 +292,11 @@ td {
 	margin-left: 0;
 	margin-bottom: 5px;
 	list-style: none;
+    font-size: 0.7em;
+}
+
+.nav>li>a{
+    padding: 1px 10px;
 }
 
 .contents {

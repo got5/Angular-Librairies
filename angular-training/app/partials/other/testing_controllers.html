@@ -2,70 +2,67 @@
 	<div class="bloc-content text-content">
 	
 <editor editor-options="{showPreview:false , compileCode:false ,showTabs:true , height:430 }">
-<file type="javascript" name="UserCtrl.js">function UserCtrl($scope) {
-    $scope.users = [
-		{ "firstName": "Joe", "lastName": "Dalton" },
-		{ "firstName": "William", "lastName": "Dalton" },
-		{ "firstName": "Jack", "lastName": "Dalton" },
-		{ "firstName": "Averell", "lastName": "Dalton" }
-    ];
-    
-    $http.get('/api/roles').success(function(data) {
-		$scope.roles = data;
-	});
-     
-    $scope.userName = "Dalton";
-}
+<file type="javascript" name="UserCtrl.js">angular.module('testingController')
+    .controller('UserCtrl',function($scope) {
+        $scope.users = [
+            { "firstName": "Joe", "lastName": "Dalton" },
+            { "firstName": "William", "lastName": "Dalton" },
+            { "firstName": "Jack", "lastName": "Dalton" },
+            { "firstName": "Averell", "lastName": "Dalton" }
+        ];
+
+        $http.get('/api/roles').success(function(data) {
+            $scope.roles = data;
+        });
+
+        $scope.userName = "Dalton";
+    });
 
 </file>
-<file type="javascript" name="unit/userSpec.js">// test/unit/controllers/userSpec.js
-describe('UserCtrl Unit Tests', function() {
-	var scope;
-	var httpMock;
-	
-	// $httpBackend is in module ngMock (angular-mock.js)
-	// inject() is used to inject services in our function.
-	beforeEach(inject(function($rootScope, $controller, 
-		$httpBackend, $http) {
-		
-		// Creates a new scope for our test.
-		scope = $rootScope.$new();
-		
-		// Fake http backend implementation for unit testing.	
-		httpMock = $httpBackend;
-		httpMock.when('GET', '/api/roles')
-			.respond([ "user", "admin" ]);
-		
-		// Creates a new UserCtrl.
-		var ctrl = $controller(UserCtrl, 
-			{$scope: scope, $http: $http});
-	}));
-     
-	it('should have 4 users', function() {
-		// toBe: compare if x and y are the same object.
-		expect(scope.users.length).toBe(4);
-	});
-	 
-	it('should set default user name.', function() {
-		// toMatch: compare a string/regular expression.
-		expect(scope.userName).toMatch('Dalton');
-	});
-	
-	it('should return a list of roles.', function() {
-		// Creates a new request expectation for GET requests.
-		// See also expectPOST, expectPUT, etc.
-		httpMock.expectGET('api/roles');
-		
-		// Simulates the response returning from the backend.
-		// Calls the success function bound to the http request.
-		httpMock.flush();
-		
-		// Tests the result of the $http service.
-		expect(scope.roles[0]).toMatch("user");
-		expect(scope.roles[1]).toMatch("admin");
-	});
-});
+<file type="javascript" name="unit/userSpec.js">describe('Tests Controllers Application', function() {
+    describe('UserCtrl',function(){
+	    var scope, ctrl, $httpBackend;
 
+        //load our app module
+        beforeEach(module('testingController'));
+
+        // $httpBackend is in module ngMock (angular-mock.js)
+        // inject() is used to inject services in our function. (ignores leading and trailing underscores)
+        beforeEach(inject(function($rootScope, $controller, _$httpBackend_) {
+            $httpBackend = _$httpBackend_;
+            scope = $rootScope.$new();
+
+            $httpBackend.when('GET', '/api/roles')
+                .respond([ "user", "admin" ]);
+
+            ctrl = $controller('UserCtrl',{$scope: scope, $http: $http});
+        }));
+
+        it('should have 4 users', function() {
+            // toBe: compare if x and y are the same object.
+            expect(scope.users.length).toBe(4);
+        });
+
+        it('should set default user name.', function() {
+            // toMatch: compare a string/regular expression.
+            expect(scope.userName).toMatch('Dalton');
+        });
+
+        it('should return a list of roles.', function() {
+            // Creates a new request expectation for GET requests.
+            // See also expectPOST, expectPUT, etc.
+            $httpBackend.expectGET('api/roles');
+
+            // Simulates the response returning from the backend.
+            // Calls the success function bound to the http request.
+            $httpBackend.flush();
+
+            // Tests the result of the $http service.
+            expect(scope.roles[0]).toMatch("user");
+            expect(scope.roles[1]).toMatch("admin");
+        });
+    });
+});
 </file>
 <file type="javascript" name="e2e/userSpec.js">// test/e2e/controllers/userSpec.js
 describe("UserCtrl e2e Tests", function() {

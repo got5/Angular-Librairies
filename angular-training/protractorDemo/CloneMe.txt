@@ -1,0 +1,7 @@
+git clone https://github.com/juliemr/protractor-demo.git
+
+Make a demo at slide 56. e2e_testing
+http://localhost:3002/#/other/e2e_testing
+
+elementexplorer.js (at node_modules/protractor/bin/)
+Execute Tests
