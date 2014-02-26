@@ -9,12 +9,16 @@
 			<li>You can also use the <i>nodejs</i> plugin <a href="https://github.com/btford/ngmin" target=”_blank”>ngmin</a>,
 				which will add dependency injection annotations for you.</li>
 		</ul>
-		
-<editor editor-options="{showPreview:false , showTabs:false , height:180 }">
-	<file type="javascript" name="controllers.js">var DirectiveCtrl = function($scope, $http, userService) {
-	
+
+<editor editor-options="{showPreview:false , showTabs:true , height:140 }">
+	<file type="javascript" name="controllers1.js">var DirectiveCtrl = function($scope, $http, userService) {
 };
 DirectiveCtrl.$inject = [ '$scope', '$http', 'UserService' ];</file>
+    <file type="javascript" name="controllers2.js">var MyCtrl = function($scope,$http,userService){
+
+};
+var app = angular.module('myModule',[]);
+app.controller('MyCtrl',MyCtrl);</file>
 </editor>
 
 	</div>

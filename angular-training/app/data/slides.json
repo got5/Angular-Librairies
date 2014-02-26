@@ -267,6 +267,10 @@
         "content": "services/http_ex"
     },
     {
+        "title" : "RESTful services",
+        "content" : "services/restful"
+    },
+    {
         "title": "Main Angular services: $resource",
         "content": "services/resource"
     },

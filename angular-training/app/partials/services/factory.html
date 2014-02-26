@@ -6,17 +6,29 @@
 			<li>It can optionally take parameters which will be injected by Angular.</li>
 		</ul>
 		
-<editor editor-options="{showPreview:false , showTabs:false , height:200 }">
-	<file type="javascript" name="services.js">var appServices = angular.module('ecommerce.services', []);
+<editor editor-options="{showPreview:false , showTabs:true , height:200 }">
+	<file type="javascript" name="factory1.js">var appServices = angular.module('ecommerce.services', ['ngResource']);
 
-var UserService = function() {
-	//TODO
-};	
+appServices.factory('UserService', function($resource) {
+    var ret = {};
+    ret.login = function(login,password){
+       // ...
+    };
+    ret.register = function(newUser){
+        //...
+    };
+    return ret;
+});</file>
+    <file type="javascript" name="factory2.js">appServices.factory('apiToken', function(clientId) {
 
-appServices.factory('UserService', function() {
-	return new UserService();
-});
-</file>
+        var encrypt = function(data1, data2){
+            return (data1 + ':' + data2).toUpperCase();
+        };
+        var secret = window.localStorage.getItem('myApp.secret');
+        var apiToken = encrypt(clientId,secret);
+
+        return apiToken;
+        });</file>
 </editor>
 
 		<ul>

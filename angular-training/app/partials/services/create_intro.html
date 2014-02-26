@@ -6,7 +6,12 @@
 			<li>Anything that is either a <span class="text-red">primitive type</span>, <span class="text-red">function</span> or <span class="text-red">object</span> can be a service.</li>
 			<li><i>Warning</i>: Do not use the same name for two different services in the same application 
 				(even in different modules, they are not used as namespaces)!</li>
-			<li>Services are not directly referenced in the Angular injector. Instead, each service has a <i>provider</i>,
+			<li><i>Advice</i>: Prepend all of your services with a namespace. eg, your module name</li>
+            <ul>
+                <li>I have a module named <span class="text-red">sdcoService</span> which contains a bunch of services</li>
+                <li>The typical service name will be <span class="text-red">sdcoMyServiceName</span></li>
+            </ul>
+            <li>Services are not directly referenced in the Angular injector. Instead, each service has a <i>provider</i>,
 				which is created when its module is loaded.</li>
 		</ul>
 	</div>
