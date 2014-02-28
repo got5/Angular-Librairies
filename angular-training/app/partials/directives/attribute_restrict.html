@@ -10,8 +10,9 @@
 		</ul>
 	</ul>
 		
-<editor editor-options="{showPreview:true , showTabs:true , height:130 }"  ng-controller="DirectiveSlideController">
-	<file type="javascript" name="rating.js">application.directive('starRating', function () {
+<editor editor-options="{showPreview:false , showTabs:true , height:130, jsFiddle:true, module:'app'}" >
+	<file type="javascript" name="rating.js">angular.module('app',[])
+.directive('starRating', function () {
     return {
 		restrict: 'A, E',
 		link: function (scope, elem, attrs) {

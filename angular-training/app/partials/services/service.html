@@ -6,15 +6,27 @@
 				<i class="text-red">service(name, constructor)</i> method.</li>
 		</ul>
 		
-<editor editor-options="{showPreview:false , showTabs:false , height:200 }">
+<editor editor-options="{showPreview:false , showTabs:false , height:400 }">
 	<file type="javascript" name="services.js">var appServices = angular.module('ecommerce.services', []);
 
 var UserService = function() {
-	//TODO
+	var currentUser;
+
+    this.login = function(login,password){
+        //code here...
+    };
+    this.register = function(newUser){
+        //code here...
+    }
 };	
 
 appServices.service('UserService', UserService);
-</file>
+
+//similar to
+
+appServices.factory('UserService',function(){
+    return new UserService();
+});</file>
 </editor>
 		
 	</div>

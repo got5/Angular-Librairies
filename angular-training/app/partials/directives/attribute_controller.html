@@ -10,8 +10,9 @@
 		</ol>
 	</ul>
 		
-<editor editor-options="{showPreview:true , showTabs:true , height:150 }"  ng-controller="DirectiveSlideController">
-<file type="javascript" name="loginForm.js">application.directive('loginForm', function() {
+<editor editor-options="{showPreview:false , showTabs:true , height:150, jsFiddle:true, module:'app' }">
+<file type="javascript" name="loginForm.js">angular.module('app',[])
+.directive('loginForm', function() {
 	return {
 		template: "&lt;input type=\"text\" ng-model=\"login\" /&gt; {{login}}",
 		controller: function($scope, $element, $attrs, $transclude) {

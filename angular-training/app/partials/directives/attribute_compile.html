@@ -9,13 +9,14 @@
 		</ol>
 	</ul>
 		
-<editor editor-options="{showPreview:true , showTabs:true , height:180 }" ng-controller="DirectiveSlideController">
-<file type="javascript" name="gpsRepeat.js">application.directive('gpsRepeat', function() {
+<editor editor-options="{showPreview:false , showTabs:true , height:180, jsFiddle:true, module:'app' }">
+<file type="javascript" name="sdcoRepeat.js">angular.module('app',[])
+.directive('sdcoRepeat', function() {
 	return {
 		compile: function(element, attr) {
 			var parent = element.parent();
-			element.removeAttr('gps-repeat');
-			for (var index = 0; index &lt; (attr.gpsRepeat - 1); index++) {
+			element.removeAttr('sdco-repeat');
+			for (var index = 0; index &lt; (attr.sdcoRepeat - 1); index++) {
 				var clone = element.clone();
 				parent.append(clone);
 			}
@@ -24,7 +25,7 @@
 });
 </file>
 <file type="html" name="directive.html">&lt;div ng-controller="CompileTestCtrl"&gt;
-	&lt;button ng-class="buttonClass" ng-click="clickHandler()" gps-repeat="10"&gt;
+	&lt;button ng-class="buttonClass" ng-click="clickHandler()" sdco-repeat="10"&gt;
 		Click Me
 	&lt;/button&gt;
 &lt;/div&gt;

@@ -61,7 +61,7 @@ function UserServiceProvider() {
 };
 
 /** Registers our service in a new sub module. */
-angular.module('gpsServices', []).provider('UserService', UserServiceProvider);
+angular.module('sdcoServices', []).provider('UserService', UserServiceProvider);
 
 
 

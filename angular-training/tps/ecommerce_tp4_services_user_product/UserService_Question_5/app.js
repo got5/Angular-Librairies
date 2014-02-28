@@ -1,4 +1,4 @@
-var app = angular.module('app', [ 'gpsServices', 'ngCookies', 'localization', 'firebase', 'ui.bootstrap', 'ngResource' ]);
+var app = angular.module('app', [ 'sdcoServices', 'ngCookies', 'localization', 'firebase', 'ui.bootstrap', 'ngResource' ]);
 
 /** Services configuration */
 app.config(

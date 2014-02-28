@@ -9,7 +9,7 @@
     <file type="html" name="select.html">&lt;div ng-controller="SelectCtrl"&gt;
     &lt;select ng-model="user" 
     	ng-options="user.name group by user.country for user in users"&gt;
-    	&lt;option&gt;-- Choose user --&lt;/option&gt;
+    	&lt;option value=""&gt;-- Choose user --&lt;/option&gt;
     &lt;/select&gt;
     
     Selected: {{user}}

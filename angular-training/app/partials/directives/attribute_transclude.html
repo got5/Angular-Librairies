@@ -4,8 +4,9 @@
 			used with <i class="text-red">ngTransclude</i>.</li>
 	</ul>
 		
-<editor editor-options="{showPreview:true , showTabs:true , height:265 }" reset-cache="true" ng-controller="DirectiveSlideController">
-	<file type="javascript" name="rating.js">application.directive('starRating', function () {
+<editor editor-options="{showPreview:false , showTabs:true , height:265, jsFiddle:true, module:'app' }">
+	<file type="javascript" name="rating.js">angular.module('app',[])
+.directive('starRating', function () {
     return {
 		restrict: 'A, E',
 		transclude: true,

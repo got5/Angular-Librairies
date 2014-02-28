@@ -4,8 +4,9 @@
 			to the value of the property <i>productMarkCss</i> (in the <i>ProductRatingCtrl</i> scope).</li> 
 	</ul>
 	
-<editor editor-options="{showPreview:true , showTabs:true , height:200 }"  ng-controller="DirectiveSlideController">
-	<file type="javascript" name="starRating.js">application.directive('starRating', function () {
+<editor editor-options="{showPreview:false , showTabs:true , height:200, jsFiddle:true, module:'app' }">
+	<file type="javascript" name="starRating.js">angular.module('app',[])
+.directive('starRating', function () {
     return {
 		restrict: 'E',
 		transclude: true,
@@ -33,6 +34,37 @@
 	
 };
 </file>
+<file type="css" name="style.css">/* Ratings */
+p.rating {font-size: 0.75em;}
+.rating {
+    padding-left: 65px;
+    margin: 10px 0;
+}
+.rating a:link {color: #777; background: #FFF;}
+.five {
+    color: #000;
+    background: #FFF url(http://s29.postimg.org/jayhjd33r/bg_ratings.png) 0 -340px no-repeat;
+}
+.four {
+    color: #000;
+    background: #FFF url(http://s29.postimg.org/jayhjd33r/bg_ratings.png) 0 -262px no-repeat;
+}
+.three {
+    color: #000;
+    background: #FFF url(http://s29.postimg.org/jayhjd33r/bg_ratings.png) 0 -193px no-repeat;
+}
+.two {
+    color: #000;
+    background: #FFF url(http://s29.postimg.org/jayhjd33r/bg_ratings.png) 0 -127px no-repeat;
+}
+.one {
+    color: #000;
+    background: #FFF url(http://s29.postimg.org/jayhjd33r/bg_ratings.png) 0 -60px no-repeat;
+}
+.zero {
+    color: #000;
+    background: #FFF url(http://s29.postimg.org/jayhjd33r/bg_ratings.png) 0 1px no-repeat;
+}</file>
 </editor>
 
 <!-- 

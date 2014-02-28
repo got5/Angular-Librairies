@@ -4256,7 +4256,7 @@ function $CompileProvider($provide) {
    * Register a new directives with the compiler.
    *
    * @param {string} name Name of the directive in camel-case. (ie <code>ngBind</code> which will match as
-   *                <code>ng-bind</code>).
+   *                <code>xng-bind</code>).
    * @param {function} directiveFactory An injectable directive factory function. See {@link guide/directive} for more
    *                info.
    * @returns {ng.$compileProvider} Self for chaining.

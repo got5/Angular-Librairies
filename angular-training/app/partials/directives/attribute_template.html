@@ -5,8 +5,9 @@
 			asynchronously from the specified URL (relative from the index page).</li>
 	</ul>
 		
-<editor editor-options="{showPreview:true , showTabs:true , height:220 }" ng-controller="DirectiveSlideController">
-	<file type="javascript" name="rating.js">application.directive('starRating', function () {
+<editor editor-options="{showPreview:false , showTabs:true , height:220, jsFiddle:true, module:'app' }">
+	<file type="javascript" name="rating.js">angular.module('app',[])
+.directive('starRating', function () {
     return {
 		restrict: 'A, E',
 		template: '&lt;b&gt;Directive template content&lt;/b&gt;',

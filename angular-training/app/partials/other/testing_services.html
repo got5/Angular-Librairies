@@ -1,44 +1,66 @@
 <div class="bloc-content text-content">
 	<ul>
+        <li>We recommend you to learn from <a href="https://github.com/angular/angular.js/tree/master/test" target="_blank">Angular Own Unit Tests</a> as they is a plethora of tests available.</li>
+        <li>Take also a deep look of <a href="http://jasmine.github.io/2.0/introduction.html" target="_blank">Jasmine documentation</a></li>
 		<li>Easiest blocks of code to test.</li>
 	</ul>
 		
-<editor editor-options="{showPreview:false , compileCode:false ,showTabs:false , height:420 }">
-<file type="javascript" name="test/unit/appSpec.js">// test/unit/services/appStorageSpecs.js
-describe("AppStorage Unit Tests", function() {
+<editor editor-options="{showPreview:false , compileCode:false ,showTabs:true , height:420 }">
+<file type="javascript" name="app/js/services/myModule.js">angular.module('myModule', [], function($provide) {
+    $provide.factory('notify', ['$window', function(win) {
+        var msgs = [];
+        return function(msg) {
+            msgs.push(msg);
+         if (msgs.length == 3) {
+             win.alert(msgs.join("\n"));
+             msgs = [];
+         }
+        };
+    }]);
+});</file>
+<file type="javascript" name="test/unit/appSpec.js">describe("notify", function() {
 
-	// Loads app module before each test. Otherwise, service won't be found.
-	beforeEach(angular.module('app'));
-	
-	// Checks if the appStorage service has been registered.
-	it('should contain an $appStorage service', 
-		inject(function($appStorage) {
-		
-		expect($appStorage).not.toEqual(null);
-	}));
-	
-	// Checks the appStorage service functionnalities.
-	it('should store and save data properly', 
-		inject(['$appStorage',function($storage) {
-		
-		// Call service methods...
-		var key = 'key', value = 'value';
-		$storage.enableCaching();
-		$storage.put(key, value);
-		
-		// ... And after tests service results.
-		expect($storage.isPresent(key)).toEqual(true);
-		expect($storage.get(key)).toEqual(value);
+    var mock, notify;
 
-		$storage.erase(key);
-		expect($storage.isPresent(key)).toEqual(false);
+    beforeEach(function() {
+        mock = {alert: jasmine.createSpy()};
 
-		$storage.put(key, value);
-		$storage.flush();
-		expect($storage.isPresent(key)).to.equal(false);
-	}]));
-});
-</file>
+        module(function($provide) {
+            $provide.value('$window', mock);
+        });
+
+        inject(function($injector) {
+            notify = $injector.get('notify');
+        });
+    });
+
+    it('should not alert first two notifications', function() {
+        notify('one');
+        notify('two');
+
+        expect(mock.alert).not.toHaveBeenCalled();
+    });
+
+    it('should alert all after third notification', function() {
+        notify('one');
+        notify('two');
+        notify('three');
+
+        expect(mock.alert).toHaveBeenCalledWith("one\ntwo\nthree");
+    });
+
+    it('should clear messages after alert', function() {
+        notify('one');
+        notify('two');
+        notify('third');
+        notify('more');
+        notify('two');
+        notify('third');
+
+        expect(mock.alert.callCount).toEqual(2);
+        expect(mock.alert.mostRecentCall.args).toEqual(["more\ntwo\nthird"]);
+    });
+});</file>
 </editor>
 		
 </div>

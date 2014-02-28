@@ -645,22 +645,6 @@
         "content": "other/project_structure"
     },
     {
-        "title": "Wire up your backend with AngularFire",
-        "content": "firebase/introduction"
-    },
-    {
-        "title": "Setup AngularFire",
-        "content": "firebase/setup"
-    },
-    {
-        "title": "Using automatic synchronization",
-        "content": "firebase/automatic"
-    },
-    {
-        "title": "Control synchronization with Firebase",
-        "content": "firebase/control"
-    },
-    {
         "content": "conclusion"
     },
     {

@@ -1,4 +1,4 @@
-angular.module('app', [ 'gpsServices', 'ngCookies', 'localization', 'firebase', 'ui.bootstrap', 'ngResource' ])
+angular.module('app', [ 'sdcoServices', 'ngCookies', 'localization', 'firebase', 'ui.bootstrap', 'ngResource' ])
 	.config([
 	    '$routeProvider',
 	    '$locationProvider',

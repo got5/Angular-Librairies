@@ -4,11 +4,12 @@
 		<li>If <i class="text-red">true</i>, the template will replace the current element.</li>
 	</ul>
 		
-<editor editor-options="{showPreview:true , showTabs:true , height:260 }" ng-controller="DirectiveSlideController">
-	<file type="javascript" name="replace.js">application.directive('replaceTestFalse', function () {
+<editor editor-options="{showPreview:false , showTabs:true , height:260, jsFiddle:true, module:'app' }">
+<file type="javascript" name="replace.js">angular.module('app',[])
+.directive('replaceTestFalse', function () {
     return {
-		restrict: 'A',
-		template: '&lt;b&gt;Directive template content&lt;/b&gt;',
+        restrict: 'A',
+        template: '&lt;b&gt;Directive template content&lt;/b&gt;',
     };
 });
 

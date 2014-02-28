@@ -1,34 +1,39 @@
 /** Controller used for "create directives" slides. Resets the example directive each time the code is edited. */
-var DirectiveSlideController = function($scope, $timeout) {
-	
-	var directiveName = null;
-	
-	var bIsInit = false;
-	
-	var getDirectiveName = function(code) {
-		var index = code.indexOf('application.directive(');
-		if (index > 0) {
-			var dName = code.substring(index + 23);
-			dName = dName.substring(0, dName.indexOf('\''));
-			return dName;
-		}
-		return null;
- 	};
-	
-	/** Watcher on any editor code change. */
-	$scope.$watch('code', function(newValue, oldValue) {
-		if (newValue != oldValue || !bIsInit) {
-			bIsInit = true;
-			if (!directiveName && newValue) {
-				directiveName = getDirectiveName($scope.code);
-			}
-			if (directiveName) {
-				application.compileProvider.resetDirective(directiveName);
-				$timeout(function() {
-					$scope.code = $scope.code.replace('application.directive', 'application.compileProvider.directive');
-				});
-			}
-		}
-	});
+var DirectiveSlideController = function ($scope, $timeout) {
+
+    var directiveName = null,directiveFactory = null;
+
+    var bIsInit = false;
+
+    var getDirectiveName = function (js) {
+        var index = js.indexOf('application.directive(');
+        if (index >= 0) {
+            var dName = js.substring(index + 23);
+            dName = dName.substring(0, dName.indexOf('\''));
+            return dName;
+        }
+        return null;
+    };
+
+    var getDirectiveFactory = function(js){
+        var index = js.indexOf('function');
+        if (index >= 0) {
+            var fn = js.substring(index,js.lastIndexOf(')'));
+            return eval('(' + fn + ')');
+        }
+        return null;
+    };
+
+    /** Watcher on any editor code change. */
+    $scope.$watch('code.js', function (newValue, oldValue) {
+        if (newValue != oldValue || !bIsInit) {
+            bIsInit = true;
+            directiveName = getDirectiveName($scope.code.js);
+            directiveFactory = getDirectiveFactory($scope.code.js);
+            application.compileProvider.directive(directiveName,directiveFactory);
+
+        }
+
+    });
 };
 DirectiveSlideController.$inject = ['$scope', '$timeout'];

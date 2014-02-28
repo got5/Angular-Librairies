@@ -4,13 +4,14 @@
 			box on an element click. The dialog message has to be configurable.</li>
 	</ul>
 		
-<editor editor-options="{showPreview:true , showTabs:true , height:280 }" ng-controller="DirectiveSlideController">
+<editor editor-options="{showPreview:false , showTabs:true , height:280, jsFiddle:true, module:'app', uiBootstrap:true }">
 <file type="html" name="confirm.html">&lt;div ng-init="login='Bob'"&gt;
 	&lt;button class="btn" ng-click="login=''"&gt;Reset login&lt;/button&gt;
 	Login: {{login}}
 &lt;/div&gt;
 </file>
-<file type="javascript" name="confirm.js">application.directive('confirmClick', function($dialog) {
+<file type="javascript" name="confirm.js">angular.module('app',['ui.bootstrap'])
+.directive('confirmClick', function($dialog) {
     return {
         restrict: 'A',
         link: function(scope, elm, attrs) {

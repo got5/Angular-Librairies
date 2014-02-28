@@ -9,8 +9,9 @@
 			corresponding CSS class.</li> 
 	</ul>
 	
-<editor editor-options="{showPreview:true , showTabs:true , height:150 }"  ng-controller="DirectiveSlideController">
-	<file type="javascript" name="rating.js">application.directive('starRating', function () {
+<editor editor-options="{showPreview:false, showTabs:true , height:150,jsFiddle:true,module:'app'}" >
+	<file type="javascript" name="rating.js">angular.module('app',[])
+    .directive('starRating', function () {
     return {
 		link: function (scope, elem, attrs) {
 			// TODO

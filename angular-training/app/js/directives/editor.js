@@ -53,6 +53,17 @@ directives.directive('compile', function ($compile, $controller, $timeout) {
         }}
 });
 
+directives.value('escape', function(text) {
+    return text.replace(/\&/g, '&amp;').replace(/\</g, '&lt;').replace(/\>/g, '&gt;').replace(/"/g, '&quot;');
+}).factory('script', function() {
+    var version = '1.2.13';
+
+        return {
+            angular: '<script src="https://ajax.googleapis.com/ajax/libs/angularjs/' + version + '/angular.min.js"></script>\n',
+            uiBootstrap: '<script src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.10.0/ui-bootstrap-tpls.min.js"></script>\n'
+        };
+    });
+
 directives
     .service('saveService', function () {
 
@@ -88,7 +99,7 @@ directives
         };
     }).constant('editorConfig', {});
 
-var EditorConstructor = function ($timeout, $location, editorConfig, saveService) {
+var EditorConstructor = function ($timeout, $location, editorConfig, saveService, escape, script) {
     if (angular.isUndefined(window.ace)) {
         throw new Error('ace not found');
     }
@@ -101,6 +112,11 @@ var EditorConstructor = function ($timeout, $location, editorConfig, saveService
         require: '?ngModel',
         replace: true,
         transclude: true,
+        controller: function($scope){
+            this.getCode = function(){
+                return $scope.code;
+            }
+        },
         link: function (scope, elm, attrs, controller, transcludeFn) {
             var options, opts, acee, session, onChange;
 
@@ -111,7 +127,6 @@ var EditorConstructor = function ($timeout, $location, editorConfig, saveService
                 showPreview: false,
                 showTabs: false,
                 showPopup: false,
-                resetCache: false,
                 enableCompletion: true,
                 compileCode: true,
                 height: '200'};
@@ -134,6 +149,10 @@ var EditorConstructor = function ($timeout, $location, editorConfig, saveService
             var langTools = require("ace/ext/language_tools");
 
             session = acee.getSession();
+
+            var hiddenField = function (name, value) {
+                return '<input type="hidden" name="' +  name + '" value="' + escape(value) + '">';
+            };
 
             onChange = function (callback) {
                 return function (e) {
@@ -332,7 +351,6 @@ var EditorConstructor = function ($timeout, $location, editorConfig, saveService
             var onEditorChange = function (event) {
                 if (bApply) {
                     scope.$apply(function () {
-                        resetServiceCache();
 
                         var editorContent = getEditorContent();
                         if (opts.compileCode) {
@@ -356,7 +374,7 @@ var EditorConstructor = function ($timeout, $location, editorConfig, saveService
 
             /** Returns editor content (concat every tab code, formats js, etc.). */
             var getEditorContent = function () {
-                var content = {html: '', js: ''};
+                var content = {html: '', js: '', css: ''};
 
                 for (var index = 0; index < scope.files.length; index++) {
                     var file = scope.files[index];
@@ -377,6 +395,8 @@ var EditorConstructor = function ($timeout, $location, editorConfig, saveService
 
                     } else if (file.type == "html") {
                         content.html += "<div class='html-content'>" + file.content + "</div>";
+                    } else if(file.type == "css") {
+                        content.css += file.content;
                     } else {
                         content.html += file.content;
                     }
@@ -385,36 +405,49 @@ var EditorConstructor = function ($timeout, $location, editorConfig, saveService
             };
 
 
-            /** Removes all services/directives created in the editor. */
-            var resetServiceCache = function () {
-                if (opts.resetCache) {
-                    /*
-                     * var services = application.injector.getRegisteredServices(); for
-                     * (var index = services.length - 1; index > -1; index--) { if
-                     * (services[index] == 'editorDirectiveProvider') { break; }
-                     * application.injector.resetService(services[index]); }
-                     * application.compileProvider.resetDirective('starRatingDirective');
-                     * application.compileProvider.resetDirective('starRatingDirectiveProvider');
-                     * application.injector.resetService('starRatingDirective');
-                     * application.injector.resetService('starRatingDirectiveProvider');
-                     */
-                    // TODO: Autocomplete
-                    // TODO: remove service
-                    // TODO: exceptionhandler
-                }
-            };
 
             /** Used to correct a resize problem on the editor. */
             var onFocus = function (event) {
                 acee.resize(true);
             };
 
-            resetServiceCache();
-
             if (opts.compileCode) {
                 var content = getEditorContent();
 
                 scope.code = content;
+            }
+
+            if(angular.isDefined(opts.jsFiddle) && opts.jsFiddle){
+                var name = '',
+                    stylesheet = '<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css">\n',
+                    fields = {
+                        html: '',
+                        css: scope.code.css,
+                        js: scope.code.js
+                    };
+
+                fields.html +=
+                    '<div ng-app' + (opts.module ? '="' + opts.module + '"' : '') + '>\n' + scope.code.html + '</div>\n';
+
+
+                var jf = angular.element('<div><div class="right-header">' +
+                        '<form class="jsfiddle" method="post" action="http://jsfiddle.net/api/post/library/pure/" target="_blank">' +
+                        hiddenField('title', 'AngularJS Example: ' + name) +
+                        hiddenField('css', '</style> <!-- Ugly Hack due to jsFiddle issue: http://goo.gl/BUfGZ --> \n' +
+                            stylesheet +
+                            script.angular +
+                            (opts.uiBootstrap ? script.uiBootstrap : '') +
+                            '<style>\n' +
+                            fields.css) +
+                        hiddenField('html', fields.html) +
+                        hiddenField('js', fields.js) +
+                        'JsFiddle: <button class="btn">' +
+                        '<i class="icon-white icon-pencil"></i> ' +
+                        '<img src="images/play.png"/>' +
+                        '</button>' +
+                        '</form></div></div>');
+                elm.parent().after(jf);
+
             }
 
             acee.on("change", onEditorChange);
@@ -426,22 +459,22 @@ var EditorConstructor = function ($timeout, $location, editorConfig, saveService
 };
 
 /** Editor (with preview/tabs options) directive */
-directives.directive('editor', ['$timeout', '$location', 'editorConfig', 'saveService',  function ($timeout, $location, editorConfig, saveService) {
-    var editor = new EditorConstructor($timeout, $location, editorConfig, saveService);
+directives.directive('editor', ['$timeout', '$location', 'editorConfig', 'saveService', 'escape', 'script',  function ($timeout, $location, editorConfig, saveService, escape, script) {
+    var editor = new EditorConstructor($timeout, $location, editorConfig, saveService, escape, script);
     editor.templateUrl = "js/directives/templates/editor-horizontal.html";
     return editor;
 }]);
 
 /** Mobile Version Editor directive */
-directives.directive('editorMobile', ['$timeout', '$location', 'editorConfig', 'saveService',  function ($timeout, $location, editorConfig, saveService) {
-    var editor = new EditorConstructor($timeout, $location, editorConfig, saveService);
+directives.directive('editorMobile', ['$timeout', '$location', 'editorConfig', 'saveService', 'escape', 'script',  function ($timeout, $location, editorConfig, saveService, escape, script) {
+    var editor = new EditorConstructor($timeout, $location, editorConfig, saveService, escape, script);
     editor.templateUrl = "js/directives/templates/editor-mobile.html";
     return editor;
 }]);
 
 /** Editor with vertical layout. */
-directives.directive('editorVertical', ['$timeout', '$location', 'editorConfig', 'saveService', function ($timeout, $location, editorConfig, saveService) {
-    var editor = new EditorConstructor($timeout, $location, editorConfig, saveService);
+directives.directive('editorVertical', ['$timeout', '$location', 'editorConfig', 'saveService', 'escape', 'script',  function ($timeout, $location, editorConfig, saveService, escape, script) {
+    var editor = new EditorConstructor($timeout, $location, editorConfig, saveService, escape, script);
     editor.templateUrl = "js/directives/templates/editor-vertical.html";
     return editor;
 }]);
