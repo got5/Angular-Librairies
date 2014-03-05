@@ -8,31 +8,35 @@
 		
 <editor editor-options="{showPreview:false , compileCode:false ,showTabs:false , height:420 }">
 <file type="javascript" name="filtersSpec.js">// test/unit/filters/filtersSpec.js
-describe('Filters Unit Tests', function() {
+describe('Filters: split', function() {
 
-	// Loads app module before each test.
-	beforeEach(angular.mock.module('App'));
+    var filter, text = "Hello Worldline";
 
+    beforeEach(inject(function($filter){
+        filter = $filter('split');
+    }));
 
-	describe('Currency Filter Unit Tests', function() {
-		
-		it('should have a currency filter', inject(function($filter) {
-			expect($filter('currency')).not.toEqual(null);
-		}));
-		
-		it('should format the number as a currency',
-			inject(function($filter) {
-			
-			var filterResult = $filter('currency')(1234.56);
-			expect(filterResult).toMatch('$1,234.56');
-			
-			filterResult = $filter('currency')(1234.56, "USD$");
-			expect(filterResult).toMatch('USD$1,234.56');
-		}));
-	});
-});
+    it('should have the correct length', function(){
 
-</file>
+        expect(filter(text,'','').length).toBe(3);
+        expect(filter(text).length).toBe(text.length);
+        expect(filter(text,5).length).toBe(text.length+3);
+        expect(filter(text,20).length).toBe(text.length);
+    });
+
+    it('should troncate the result when necessary and add dots', function(){
+
+        expect(filter(text,20)).toBe(text);
+
+        var done = text.substring(0, 10) + "...";
+        expect(filter(text,10)).toBe(done);
+    });
+
+    it('should put text uppercase when asked',function(){
+
+        expect(filter(text,20,true)).toBe(text.toUpperCase());
+    });
+});</file>
 </editor>
 		
 	</div>

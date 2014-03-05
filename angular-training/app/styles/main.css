@@ -8,7 +8,7 @@ body, .header, h1 {
 body {
     padding: 0;
     overflow: hidden;
-    background-color: #F2F5A9;
+    background-color: #F5F1DE;
     font-family: 'Calibri', sans-serif;
     /*line-height: 1.5;*/
     font-size: 3.5em;
@@ -94,7 +94,7 @@ iframe {
 
 .popover {
 	border: 10px solid #B40404;
-	background-color: #F2F5A9;
+	background-color: #F5F1DE;
 	font-size: 20px;
 }
 

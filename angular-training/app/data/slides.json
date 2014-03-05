@@ -589,6 +589,10 @@
         "content": "other/services_decoration"
     },
     {
+        "title": "Directives decoration",
+        "content": "other/directives_decoration"
+    },
+    {
         "title": "Lazy Loading",
         "content": "other/lazy_loading"
     },

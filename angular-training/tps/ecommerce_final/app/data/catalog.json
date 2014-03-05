@@ -15,8 +15,7 @@
 					"comment": "Test comment"
 				}
 			]
-		
-		}, 
+		},
 		"2": {
 			"id": 2,
 			"name": "Angularjs in Action",

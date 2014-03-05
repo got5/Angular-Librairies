@@ -6,9 +6,9 @@ var DirectiveSlideController = function ($scope, $timeout) {
     var bIsInit = false;
 
     var getDirectiveName = function (js) {
-        var index = js.indexOf('application.directive(');
+        var index = js.indexOf("angular.module('angularTrainingApp').directive(");
         if (index >= 0) {
-            var dName = js.substring(index + 23);
+            var dName = js.substring(index + 48);
             dName = dName.substring(0, dName.indexOf('\''));
             return dName;
         }

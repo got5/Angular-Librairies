@@ -3,7 +3,7 @@
 var filters = angular.module('filters', []);
 
 /** Filter example */
-filters.filter('concat', function() {
+filters.filter('split', function() {
 	return function(input, nbChars, uppercase) {
 		var out = input;
 		if (input.length > nbChars) {

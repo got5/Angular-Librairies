@@ -7,11 +7,11 @@
 		</ul>
 		
 <editor editor-options="{showPreview:true , showTabs:true , height:180 }">
-<file type="html" name="testFilter.html">{{ "Deinstitutionalization" | concat:10 }}&lt;br/&gt;
-{{ "Deinstitutionalization" | concat:5:true }}&lt;br/&gt;
+<file type="html" name="testFilter.html">{{ "Deinstitutionalization" | split:10 }}&lt;br/&gt;
+{{ "Deinstitutionalization" | split:5:true }}&lt;br/&gt;
 </file>
 <file type="javascript" name="filters.js">angular.module('users.filters', []).
-	filter('concat', function() {
+	filter('split', function() {
 		return function(input, nbChars, uppercase) {
 			var out = input;
 			if (input.length &gt; nbChars) {

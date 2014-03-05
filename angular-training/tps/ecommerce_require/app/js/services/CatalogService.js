@@ -7,7 +7,7 @@ define(['app'], function(app)
 		var CATALOG_URL = 'data/catalog.json';
 		
 		/** Firebase catalog url */
-		var FIREBASE_BASE_URL = "https://ecommerce-training.firebaseio.com/products/";
+		var FIREBASE_BASE_URL = "https://ecommerce-angular-training.firebaseio.com/products/";
 		
 		/** Returns all products. Uses the JSON file */
 		this.getCatalog = function () {
