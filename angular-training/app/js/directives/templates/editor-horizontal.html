@@ -7,5 +7,5 @@
 			<tab ng-repeat='file in files' active='file.isCurrent' heading='{{file.name}}' select='switchToFile(file)'/>
 		</tabset>
 	</div>
-	<pre id='editor' ng-transclude ng-style="{'height': height}"/></pre>
+	<pre id='editor' ng-transclude ng-style="{'height': height+'px'}"/></pre>
 </div>

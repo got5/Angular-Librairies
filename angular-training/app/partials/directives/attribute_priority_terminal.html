@@ -6,18 +6,16 @@
 			with lesser <i class="text-red">priority</i> will not be compiled.</li>
 	</ul>
 		
-<editor editor-options="{showPreview:false , showTabs:true , height:210, jsFiddle:true, module:'app' }">
-	<file type="javascript" name="priority.js">var application = angular.module('app',[])
-.directive('priorityTest', function () {
+<editor editor-options="{showPreview:false , showTabs:true , height:310, jsFiddle:true, module:'app' }">
+	<file type="javascript" name="priority.js">angular.module('app',[]).directive('priorityTest', function () {
     return {
 		priority: 10,
 		link: function (scope, elem, attrs) {
 			console.log("Directive priorityTest has been compiled!");
 		}
     };
-});
-
-application.directive('priorityTestBis', function () {
+})
+.directive('priorityTestBis', function () {
     return {
 		priority: 20,
 		terminal: true,
@@ -25,8 +23,7 @@ application.directive('priorityTestBis', function () {
 			console.log("Directive priorityTestBis has been compiled!");
 		}
     };
-});
-</file>
+});</file>
 <file type="html" name="priority.html">&lt;span priority-test priority-test-bis&gt;Let's create a directive!&lt;/span&gt;
 </file>
 </editor>

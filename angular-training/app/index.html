@@ -14,7 +14,7 @@
          popover-trigger="mouseenter">
         <a ng-click="gotoSelectedSlide()">
             <progressbar value="slideIndexAsPc" type="danger" class="progress-slideshow active">
-                <span style="color:black; white-space:nowrap;">{{slideIndex}} / {{slides.length}}</span></progressbar>
+                {{height()}} <span style="color:black; white-space:nowrap;">{{slideIndex}} / {{slides.length}}</span></progressbar>
         </a>
     </div>
 
