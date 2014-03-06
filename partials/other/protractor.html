@@ -1,0 +1,25 @@
+<div class="bloc-content text-content">
+    <ul>
+        <li><a href="https://github.com/angular/protractor" target=”_blank”>Protractor</a> is the E2E framework test for Angular</li>
+        <li>Built on WebdriverJS aka Selenium Server</li>
+        <li>Replace ngScenario, the initial way to perform E2E test</li>
+        <li>Introduced at AngularJS v1.2 release presentation</li>
+        <li>Allows running tests targeting remote addresses</li>
+        <li>Has it's own runner, no need for Karma</li>
+        <li>Can run tests on browsers in parallels (thanks to selenium grid)</li>
+    </ul>
+    <h4>Getting started</h4>
+
+    <editor editor-options="{showPreview:false , showTabs:false , compileCode:false , height:100,theme:'terminal'}">
+        <file type="sh" name="terminal">&gt; npm install protractor --save-dev
+&gt; ./node_modules/protractor/bin/webdriver-manager update
+&gt; ./node_modules/protractor/bin/webdriver-manager start</file>
+    </editor>
+
+    <ul><li>The update may fail behind proxy for now. In that case please download : </li>
+        <ul>
+            <li>The Selenium server at :  <a href="https://code.google.com/p/selenium/downloads/detail?name=selenium-server-standalone-2.39.0.jar&can=2&q=" target=”_blank”>selenium-server-standalone-2.39.0.jar</a></li>
+            <li>A Browser Driver at : <a href="https://chromedriver.storage.googleapis.com/2.0/chromedriver_win32.zip" target=”_blank”>chromedriver_win32.zip</a></li>
+        </ul>
+    </ul>
+</div>
