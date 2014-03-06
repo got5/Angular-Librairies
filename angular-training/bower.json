@@ -11,7 +11,6 @@
   "dependencies": {
     "angular": "1.2.13",
     "angular-resource": "1.2.13",
-    "ace-builds": "~1.1.1",
     "lodash": "~2.4.1",
     "angular-route": "1.2.13",
     "angular-ui-bootstrap-bower": "~0.10.0",
