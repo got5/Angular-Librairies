@@ -8,9 +8,9 @@
 </head>
 <body ng-app="angularTrainingApp">
 
-<div class="slide" ng-cloak ng-controller="MainController">
+<div class="slide" ng-controller="MainController">
 
-    <div popover-placement="bottom" popover="{{popupText}}" ng-mousemove="setPopupText($event)"
+    <div  ng-cloak popover-placement="bottom" popover="{{popupText}}" ng-mousemove="setPopupText($event)"
          popover-trigger="mouseenter">
         <a ng-click="gotoSelectedSlide()">
             <progressbar value="slideIndexAsPc" type="danger" class="progress-slideshow active">
@@ -26,11 +26,11 @@
         <div class="right-triangle"></div>
     </a>
 
-    <div class="header" ng-show="slides[slideIndex].title">
+    <div ng-cloak class="header" ng-show="slides[slideIndex].title">
         <h1 class="title">{{slideIndex}}. {{slides[slideIndex].title}}</h1>
     </div>
 
-    <div ng-view ng-class="getAnimation()"></div>
+    <div ng-cloak ng-view ng-class="getAnimation()"></div>
 </div>
 
 

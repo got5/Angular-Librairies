@@ -9,11 +9,11 @@
   "license": "MIT",
   "private": true,
   "dependencies": {
-    "angular": "1.2.13",
-    "angular-resource": "1.2.13",
+    "angular": "1.2.14",
+    "angular-resource": "1.2.14",
     "lodash": "~2.4.1",
-    "angular-route": "1.2.13",
+    "angular-route": "1.2.14",
     "angular-ui-bootstrap-bower": "~0.10.0",
-    "angular-animate": "~1.2.13"
+    "angular-animate": "~1.2.14"
   }
 }
