@@ -14,6 +14,10 @@ body {
     font-size: 3.5em;
 }
 
+[ng\:cloak], [ng-cloak], .ng-cloak {
+  display: none !important;
+}
+
 iframe {
     border: none;
 }
@@ -236,8 +240,8 @@ a:hover {
 
 .back-image {
     border-radius: 15px;
-    display: block; 
-    margin-left: auto; 
+    display: block;
+    margin-left: auto;
     margin-right: auto;
 }
 
