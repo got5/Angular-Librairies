@@ -90,7 +90,7 @@ var MainController = function ($scope, $route, $location, $document, $window) {
     /** Updates popup text with slide title (depends on mouse position on the progress bar). */
     $scope.setPopupText = function (e) {
         if ($scope.slides != undefined) {
-            indexSlide = Math.floor((e.x * $scope.slides.length) / $window.innerWidth) + 1;
+            indexSlide = Math.floor((e.clientX * $scope.slides.length) / $window.innerWidth) + 1;
             var progressBarSlide = $scope.slides[indexSlide];
             if (progressBarSlide != undefined) {
                 $scope.popupText = indexSlide + (progressBarSlide.title != undefined ? " : " + progressBarSlide.title : '');
