@@ -1,5 +1,5 @@
 /**
- * @license AngularJS v1.2.14-build.2320+sha.1b1413a
+ * @license AngularJS v1.2.14
  * (c) 2010-2014 Google, Inc. http://angularjs.org
  * License: MIT
  */
@@ -30,7 +30,7 @@
  * should all be static strings, not variables or general expressions.
  *
  * @param {string} module The namespace to use for the new minErr instance.
- * @returns {function(string, string, ...): Error} instance
+ * @returns {function(code:string, template:string, ...templateArgs): Error} minErr instance
  */
 
 function minErr(module) {
@@ -68,7 +68,7 @@ function minErr(module) {
       return match;
     });
 
-    message = message + '\nhttp://errors.angularjs.org/1.2.14-build.2320+sha.1b1413a/' +
+    message = message + '\nhttp://errors.angularjs.org/1.2.14/' +
       (module ? module + '/' : '') + code;
     for (i = 2; i < arguments.length; i++) {
       message = message + (i == 2 ? '?' : '&') + 'p' + (i-2) + '=' +
@@ -368,7 +368,7 @@ function reverseParams(iteratorFn) {
  * the number string gets longer over time, and it can also overflow, where as the nextId
  * will grow much slower, it is a string, and it will never overflow.
  *
- * @returns an unique alpha-numeric string
+ * @returns {string} an unique alpha-numeric string
  */
 function nextUid() {
   var index = uid.length;
@@ -1065,7 +1065,7 @@ function toJson(obj, pretty) {
  * Deserializes a JSON string.
  *
  * @param {string} json JSON string to deserialize.
- * @returns {Object|Array|Date|string|number} Deserialized thingy.
+ * @returns {Object|Array|string|number} Deserialized thingy.
  */
 function fromJson(json) {
   return isString(json)
@@ -1132,7 +1132,7 @@ function tryDecodeURIComponent(value) {
 
 /**
  * Parses an escaped url query string into key-value pairs.
- * @returns Object.<(string|boolean)>
+ * @returns {Object.<string,boolean|Array>}
  */
 function parseKeyValue(/**string*/keyValue) {
   var obj = {}, key_value, key;
@@ -1428,9 +1428,9 @@ function assertNotHasOwnProperty(name, context) {
 /**
  * Return the value accessible from the object by path. Any undefined traversals are ignored
  * @param {Object} obj starting object
- * @param {string} path path to traverse
- * @param {boolean=true} bindFnToScope
- * @returns value as accessible by path
+ * @param {String} path path to traverse
+ * @param {boolean} [bindFnToScope=true]
+ * @returns {Object} value as accessible by path
  */
 //TODO(misko): this function needs to be removed
 function getter(obj, path, bindFnToScope) {
@@ -1455,7 +1455,7 @@ function getter(obj, path, bindFnToScope) {
 /**
  * Return the DOM siblings between the first and last node in the given array.
  * @param {Array} array like object
- * @returns jQlite object containing the elements
+ * @returns {DOMElement} object containing the elements
  */
 function getBlockElements(nodes) {
   var startNode = nodes[0],
@@ -1880,11 +1880,11 @@ function setupModuleLoader(window) {
  * - `codeName` – `{string}` – Code name of the release, such as "jiggling-armfat".
  */
 var version = {
-  full: '1.2.14-build.2320+sha.1b1413a',    // all of these placeholder strings will be replaced by grunt's
+  full: '1.2.14',    // all of these placeholder strings will be replaced by grunt's
   major: 1,    // package task
   minor: 2,
   dot: 14,
-  codeName: 'snapshot'
+  codeName: 'feisty-cryokinesis'
 };
 
 
@@ -2848,10 +2848,15 @@ forEach({
   removeClass: jqLiteRemoveClass,
 
   toggleClass: function(element, selector, condition) {
-    if (isUndefined(condition)) {
-      condition = !jqLiteHasClass(element, selector);
+    if (selector) {
+      forEach(selector.split(' '), function(className){
+        var classCondition = condition;
+        if (isUndefined(classCondition)) {
+          classCondition = !jqLiteHasClass(element, className);
+        }
+        (classCondition ? jqLiteAddClass : jqLiteRemoveClass)(element, className);
+      });
     }
-    (condition ? jqLiteAddClass : jqLiteRemoveClass)(element, selector);
   },
 
   parent: function(element) {
@@ -2969,7 +2974,7 @@ HashMap.prototype = {
 
   /**
    * @param key
-   * @returns the value for the key
+   * @returns {Object} the value for the key
    */
   get: function(key) {
     return this[hashKey(key)];
@@ -3154,7 +3159,7 @@ function annotate(fn) {
  * @description
  * Invoke the method and supply the method arguments from the `$injector`.
  *
- * @param {!function} fn The function to invoke. Function parameters are injected according to the
+ * @param {!Function} fn The function to invoke. Function parameters are injected according to the
  *   {@link guide/di $inject Annotation} rules.
  * @param {Object=} self The `this` for the invoked method.
  * @param {Object=} locals Optional object. If preset then any argument names are read from this
@@ -3181,7 +3186,7 @@ function annotate(fn) {
  * operator and supplies all of the arguments to the constructor function as specified by the
  * constructor annotation.
  *
- * @param {function} Type Annotated constructor function.
+ * @param {Function} Type Annotated constructor function.
  * @param {Object=} locals Optional object. If preset then any argument names are read from this
  * object first, before the `$injector` is consulted.
  * @returns {Object} new instance of `Type`.
@@ -3261,7 +3266,7 @@ function annotate(fn) {
  *    ).toEqual(['$compile', '$rootScope']);
  * ```
  *
- * @param {function|Array.<string|Function>} fn Function for which dependent service names need to
+ * @param {Function|Array.<string|Function>} fn Function for which dependent service names need to
  * be retrieved as described above.
  *
  * @returns {Array.<string>} The names of the services which the function requires.
@@ -3303,7 +3308,7 @@ function annotate(fn) {
  * * {@link auto.$provide#factory factory(fn)} - registers a service **factory function**, `fn`,
  *     that will be wrapped in a **service provider** object, whose `$get` property will contain the
  *     given factory function.
- * * {@link auto.$provide#service service(class)} - registers a **constructor function**, `class` that
+ * * {@link auto.$provide#service service(class)} - registers a **constructor function**, `class`
  *     that will be wrapped in a **service provider** object, whose `$get` property will instantiate
  *      a new object using the given constructor function.
  *
@@ -3932,7 +3937,7 @@ var $AnimateProvider = ['$provide', function($provide) {
    * ```
    *
    * @param {string} name The name of the animation.
-   * @param {function} factory The factory function that will be executed to return the animation
+   * @param {Function} factory The factory function that will be executed to return the animation
    *                           object.
    */
   this.register = function(name, factory) {
@@ -4001,7 +4006,7 @@ var $AnimateProvider = ['$provide', function($provide) {
        *   a child (if the after element is not present)
        * @param {DOMElement} after the sibling element which will append the element
        *   after itself
-       * @param {function=} done callback function that will be called after the element has been
+       * @param {Function=} done callback function that will be called after the element has been
        *   inserted into the DOM
        */
       enter : function(element, parent, after, done) {
@@ -4024,7 +4029,7 @@ var $AnimateProvider = ['$provide', function($provide) {
        * @description Removes the element from the DOM. Once complete, the done() callback will be
        *   fired (if provided).
        * @param {DOMElement} element the element which will be removed from the DOM
-       * @param {function=} done callback function that will be called after the element has been
+       * @param {Function=} done callback function that will be called after the element has been
        *   removed from the DOM
        */
       leave : function(element, done) {
@@ -4047,7 +4052,7 @@ var $AnimateProvider = ['$provide', function($provide) {
        *   inserted into (if the after element is not present)
        * @param {DOMElement} after the sibling element where the element will be
        *   positioned next to
-       * @param {function=} done the callback function (if provided) that will be fired after the
+       * @param {Function=} done the callback function (if provided) that will be fired after the
        *   element has been moved to its new position
        */
       move : function(element, parent, after, done) {
@@ -4066,7 +4071,7 @@ var $AnimateProvider = ['$provide', function($provide) {
        * @param {DOMElement} element the element which will have the className value
        *   added to it
        * @param {string} className the CSS class which will be added to the element
-       * @param {function=} done the callback function (if provided) that will be fired after the
+       * @param {Function=} done the callback function (if provided) that will be fired after the
        *   className value has been added to the element
        */
       addClass : function(element, className, done) {
@@ -4089,7 +4094,7 @@ var $AnimateProvider = ['$provide', function($provide) {
        * @param {DOMElement} element the element which will have the className value
        *   removed from it
        * @param {string} className the CSS class which will be removed from the element
-       * @param {function=} done the callback function (if provided) that will be fired after the
+       * @param {Function=} done the callback function (if provided) that will be fired after the
        *   className value has been removed from the element
        */
       removeClass : function(element, className, done) {
@@ -4113,7 +4118,7 @@ var $AnimateProvider = ['$provide', function($provide) {
        *   removed from it
        * @param {string} add the CSS classes which will be added to the element
        * @param {string} remove the CSS class which will be removed from the element
-       * @param {function=} done the callback function (if provided) that will be fired after the
+       * @param {Function=} done the callback function (if provided) that will be fired after the
        *   CSS classes have been set on the element
        */
       setClass : function(element, add, remove, done) {
@@ -4384,7 +4389,7 @@ function Browser(window, document, $log, $sniffer) {
    * Returns current <base href>
    * (always relative - without domain)
    *
-   * @returns {string=} current <base href>
+   * @returns {string} The current base href
    */
   self.baseHref = function() {
     var href = baseElement.attr('href');
@@ -5212,10 +5217,10 @@ function $TemplateCacheProvider() {
  *
  *
  * @param {string|DOMElement} element Element or HTML string to compile into a template function.
- * @param {function(angular.Scope[, cloneAttachFn]} transclude function available to directives.
- * @param {number} maxPriority only apply directives lower then given priority (Only effects the
+ * @param {function(angular.Scope, cloneAttachFn=)} transclude function available to directives.
+ * @param {number} maxPriority only apply directives lower than given priority (Only effects the
  *                 root element(s), not their children)
- * @returns {function(scope[, cloneAttachFn])} a link function which is used to bind template
+ * @returns {function(scope, cloneAttachFn=)} a link function which is used to bind template
  * (a DOM element/tree) to a scope. Where:
  *
  *  * `scope` - A {@link ng.$rootScope.Scope Scope} to bind to.
@@ -5293,7 +5298,7 @@ function $CompileProvider($provide, $$sanitizeUriProvider) {
    * @param {string|Object} name Name of the directive in camel-case (i.e. <code>ngBind</code> which
    *    will match as <code>ng-bind</code>), or an object map of directives where the keys are the
    *    names and the values are the factories.
-   * @param {function|Array} directiveFactory An injectable directive factory function. See
+   * @param {Function|Array} directiveFactory An injectable directive factory function. See
    *    {@link guide/directive} for more info.
    * @returns {ng.$compileProvider} Self for chaining.
    */
@@ -5640,13 +5645,13 @@ function $CompileProvider($provide, $$sanitizeUriProvider) {
      * function, which is the a linking function for the node.
      *
      * @param {NodeList} nodeList an array of nodes or NodeList to compile
-     * @param {function(angular.Scope[, cloneAttachFn]} transcludeFn A linking function, where the
+     * @param {function(angular.Scope, cloneAttachFn=)} transcludeFn A linking function, where the
      *        scope argument is auto-generated to the new child of the transcluded parent scope.
      * @param {DOMElement=} $rootElement If the nodeList is the root of the compilation tree then
      *        the rootElement must be set the jqLite collection of the compile root. This is
      *        needed so that the jqLite collection items can be replaced with widgets.
      * @param {number=} maxPriority Max directive priority.
-     * @returns {?function} A composite linking function of all of the matched directives or null.
+     * @returns {Function} A composite linking function of all of the matched directives or null.
      */
     function compileNodes(nodeList, transcludeFn, $rootElement, maxPriority, ignoreDirective,
                             previousCompileContext) {
@@ -5890,7 +5895,7 @@ function $CompileProvider($provide, $$sanitizeUriProvider) {
      *        this needs to be pre-sorted by priority order.
      * @param {Node} compileNode The raw DOM node to apply the compile functions to
      * @param {Object} templateAttrs The shared attribute function
-     * @param {function(angular.Scope[, cloneAttachFn]} transcludeFn A linking function, where the
+     * @param {function(angular.Scope, cloneAttachFn=)} transcludeFn A linking function, where the
      *                                                  scope argument is auto-generated to the new
      *                                                  child of the transcluded parent scope.
      * @param {JQLite} jqCollection If we are working on the root of the compile tree then this
@@ -5902,7 +5907,7 @@ function $CompileProvider($provide, $$sanitizeUriProvider) {
      * @param {Array.<Function>} postLinkFns
      * @param {Object} previousCompileContext Context used for previous compilation of the current
      *                                        node
-     * @returns linkFn
+     * @returns {Function} linkFn
      */
     function applyDirectivesToNode(directives, compileNode, templateAttrs, transcludeFn,
                                    jqCollection, originalReplaceDirective, preLinkFns, postLinkFns,
@@ -6348,7 +6353,7 @@ function $CompileProvider($provide, $$sanitizeUriProvider) {
      *   * `A': attribute
      *   * `C`: class
      *   * `M`: comment
-     * @returns true if directive was added.
+     * @returns {boolean} true if directive was added.
      */
     function addDirective(tDirectives, name, location, maxPriority, ignoreDirective, startAttrName,
                           endAttrName) {
@@ -7010,7 +7015,7 @@ function headersGetter(headers) {
  *
  * @param {*} data Data to transform.
  * @param {function(string=)} headers Http headers getter fn.
- * @param {(function|Array.<function>)} fns Function or an array of functions.
+ * @param {(Function|Array.<Function>)} fns Function or an array of functions.
  * @returns {*} Transformed data.
  */
 function transformData(data, headers, fns) {
@@ -8447,93 +8452,93 @@ function $IntervalProvider() {
       * @returns {promise} A promise which will be notified on each iteration.
       *
       * @example
-      <example module="time">
-        <file name="index.html">
-          <script>
-            function Ctrl2($scope,$interval) {
-              $scope.format = 'M/d/yy h:mm:ss a';
-              $scope.blood_1 = 100;
-              $scope.blood_2 = 120;
-
-              var stop;
-              $scope.fight = function() {
-                // Don't start a new fight if we are already fighting
-                if ( angular.isDefined(stop) ) return;
-
-                stop = $interval(function() {
-                  if ($scope.blood_1 > 0 && $scope.blood_2 > 0) {
-                      $scope.blood_1 = $scope.blood_1 - 3;
-                      $scope.blood_2 = $scope.blood_2 - 4;
-                  } else {
-                      $scope.stopFight();
-                  }
-                }, 100);
-              };
-
-              $scope.stopFight = function() {
-                if (angular.isDefined(stop)) {
-                  $interval.cancel(stop);
-                  stop = undefined;
-                }
-              };
-
-              $scope.resetFight = function() {
-                $scope.blood_1 = 100;
-                $scope.blood_2 = 120;
-              }
-
-              $scope.$on('$destroy', function() {
-                // Make sure that the interval is destroyed too
-                $scope.stopFight();
-              });
-            }
-
-            angular.module('time', [])
-              // Register the 'myCurrentTime' directive factory method.
-              // We inject $interval and dateFilter service since the factory method is DI.
-              .directive('myCurrentTime', function($interval, dateFilter) {
-                // return the directive link function. (compile function not needed)
-                return function(scope, element, attrs) {
-                  var format,  // date format
-                  stopTime; // so that we can cancel the time updates
-
-                  // used to update the UI
-                  function updateTime() {
-                    element.text(dateFilter(new Date(), format));
-                  }
-
-                  // watch the expression, and update the UI on change.
-                  scope.$watch(attrs.myCurrentTime, function(value) {
-                    format = value;
-                    updateTime();
-                  });
-
-                  stopTime = $interval(updateTime, 1000);
-
-                  // listen on DOM destroy (removal) event, and cancel the next UI update
-                  // to prevent updating time ofter the DOM element was removed.
-                  element.bind('$destroy', function() {
-                    $interval.cancel(stopTime);
-                  });
-                }
-              });
-          </script>
-
-          <div>
-            <div ng-controller="Ctrl2">
-              Date format: <input ng-model="format"> <hr/>
-              Current time is: <span my-current-time="format"></span>
-              <hr/>
-              Blood 1 : <font color='red'>{{blood_1}}</font>
-              Blood 2 : <font color='red'>{{blood_2}}</font>
-              <button type="button" data-ng-click="fight()">Fight</button>
-              <button type="button" data-ng-click="stopFight()">StopFight</button>
-              <button type="button" data-ng-click="resetFight()">resetFight</button>
-            </div>
-          </div>
-
-        </file>
-      </example>
+      * <example module="time">
+      *   <file name="index.html">
+      *     <script>
+      *       function Ctrl2($scope,$interval) {
+      *         $scope.format = 'M/d/yy h:mm:ss a';
+      *         $scope.blood_1 = 100;
+      *         $scope.blood_2 = 120;
+      *
+      *         var stop;
+      *         $scope.fight = function() {
+      *           // Don't start a new fight if we are already fighting
+      *           if ( angular.isDefined(stop) ) return;
+      *
+      *           stop = $interval(function() {
+      *             if ($scope.blood_1 > 0 && $scope.blood_2 > 0) {
+      *                 $scope.blood_1 = $scope.blood_1 - 3;
+      *                 $scope.blood_2 = $scope.blood_2 - 4;
+      *             } else {
+      *                 $scope.stopFight();
+      *             }
+      *           }, 100);
+      *         };
+      *
+      *         $scope.stopFight = function() {
+      *           if (angular.isDefined(stop)) {
+      *             $interval.cancel(stop);
+      *             stop = undefined;
+      *           }
+      *         };
+      *
+      *         $scope.resetFight = function() {
+      *           $scope.blood_1 = 100;
+      *           $scope.blood_2 = 120;
+      *         }
+      *
+      *         $scope.$on('$destroy', function() {
+      *           // Make sure that the interval is destroyed too
+      *           $scope.stopFight();
+      *         });
+      *       }
+      *
+      *       angular.module('time', [])
+      *         // Register the 'myCurrentTime' directive factory method.
+      *         // We inject $interval and dateFilter service since the factory method is DI.
+      *         .directive('myCurrentTime', function($interval, dateFilter) {
+      *           // return the directive link function. (compile function not needed)
+      *           return function(scope, element, attrs) {
+      *             var format,  // date format
+      *             stopTime; // so that we can cancel the time updates
+      *
+      *             // used to update the UI
+      *             function updateTime() {
+      *               element.text(dateFilter(new Date(), format));
+      *             }
+      *
+      *             // watch the expression, and update the UI on change.
+      *             scope.$watch(attrs.myCurrentTime, function(value) {
+      *               format = value;
+      *               updateTime();
+      *             });
+      *
+      *             stopTime = $interval(updateTime, 1000);
+      *
+      *             // listen on DOM destroy (removal) event, and cancel the next UI update
+      *             // to prevent updating time ofter the DOM element was removed.
+      *             element.bind('$destroy', function() {
+      *               $interval.cancel(stopTime);
+      *             });
+      *           }
+      *         });
+      *     </script>
+      *
+      *     <div>
+      *       <div ng-controller="Ctrl2">
+      *         Date format: <input ng-model="format"> <hr/>
+      *         Current time is: <span my-current-time="format"></span>
+      *         <hr/>
+      *         Blood 1 : <font color='red'>{{blood_1}}</font>
+      *         Blood 2 : <font color='red'>{{blood_2}}</font>
+      *         <button type="button" data-ng-click="fight()">Fight</button>
+      *         <button type="button" data-ng-click="stopFight()">StopFight</button>
+      *         <button type="button" data-ng-click="resetFight()">resetFight</button>
+      *       </div>
+      *     </div>
+      *
+      *   </file>
+      * </example>
       */
     function interval(fn, delay, count, invokeApply) {
       var setInterval = $window.setInterval,
@@ -8840,11 +8845,6 @@ function LocationHashbangUrl(appBase, hashPrefix) {
       throw $locationMinErr('ihshprfx', 'Invalid url "{0}", missing hash prefix "{1}".', url,
           hashPrefix);
     }
-
-    if (withoutHashUrl === '' && withoutBaseUrl.charAt(0) === '?') {
-      withoutHashUrl = withoutBaseUrl;
-    }
-
     parseAppUrl(withoutHashUrl, this, appBase);
 
     this.$$path = removeWindowsDriveName(this.$$path, withoutHashUrl, appBase);
@@ -8895,14 +8895,10 @@ function LocationHashbangUrl(appBase, hashPrefix) {
    */
   this.$$compose = function() {
     var search = toKeyValue(this.$$search),
-        hash = this.$$hash ? '#' + encodeUriSegment(this.$$hash) : '',
-        url = '';
+        hash = this.$$hash ? '#' + encodeUriSegment(this.$$hash) : '';
 
     this.$$url = encodePath(this.$$path) + (search ? '?' + search : '') + hash;
-    if (this.$$url) {
-      url = this.$$path ? hashPrefix + this.$$url : this.$$url;
-    }
-    this.$$absUrl = appBase + url;
+    this.$$absUrl = appBase + (this.$$url ? hashPrefix + this.$$url : '');
   };
 
   this.$$rewrite = function(url) {
@@ -9501,7 +9497,7 @@ function $LogProvider(){
       // Note: reading logFn.apply throws an error in IE11 in IE8 document mode.
       // The reason behind this is that console.log has type "object" in IE8...
       try {
-        hasApply = !! logFn.apply;
+        hasApply = !!logFn.apply;
       } catch (e) {}
 
       if (hasApply) {
@@ -10308,6 +10304,10 @@ Parser.prototype = {
     var allConstant = true;
     if (this.peekToken().text !== ']') {
       do {
+        if (this.peek(']')) {
+          // Support trailing commas per ES5.1.
+          break;
+        }
         var elementFn = this.expression();
         elementFns.push(elementFn);
         if (!elementFn.constant) {
@@ -10334,6 +10334,10 @@ Parser.prototype = {
     var allConstant = true;
     if (this.peekToken().text !== '}') {
       do {
+        if (this.peek('}')) {
+          // Support trailing commas per ES5.1.
+          break;
+        }
         var token = this.expect(),
         key = token.string || token.text;
         this.consume(':');
@@ -10969,7 +10973,7 @@ function $QProvider() {
 /**
  * Constructs a promise manager.
  *
- * @param {function(function)} nextTick Function for executing functions in the next turn.
+ * @param {function(Function)} nextTick Function for executing functions in the next turn.
  * @param {function(...*)} exceptionHandler Function into which unexpected exceptions are passed for
  *     debugging purposes.
  * @returns {object} Promise manager.
@@ -11727,7 +11731,7 @@ function $RootScopeProvider(){
        * ```
        *
        *
-       * @param {string|Function(scope)} obj Evaluated as {@link guide/expression expression}. The
+       * @param {string|function(scope)} obj Evaluated as {@link guide/expression expression}. The
        *    expression value should evaluate to an object or an array which is observed on each
        *    {@link ng.$rootScope.Scope#$digest $digest} cycle. Any shallow change within the
        *    collection will trigger a call to the `listener`.
@@ -13020,10 +13024,10 @@ function $SceDelegateProvider() {
  *      being tested (substring matches are not good enough.)
  *    - There are exactly **two wildcard sequences** - `*` and `**`.  All other characters
  *      match themselves.
- *    - `*`: matches zero or more occurances of any character other than one of the following 6
+ *    - `*`: matches zero or more occurrences of any character other than one of the following 6
  *      characters: '`:`', '`/`', '`.`', '`?`', '`&`' and ';'.  It's a useful wildcard for use
  *      in a whitelist.
- *    - `**`: matches zero or more occurances of *any* character.  As such, it's not
+ *    - `**`: matches zero or more occurrences of *any* character.  As such, it's not
  *      not appropriate to use in for a scheme, domain, etc. as it would match too much.  (e.g.
  *      http://**.example.com/ would match http://evil.com/?ignore=.example.com/ and that might
  *      not have been the intention.)  It's usage at the very end of the path is ok.  (e.g.
@@ -13917,7 +13921,7 @@ function $WindowProvider(){
  * Register filter factory function.
  *
  * @param {String} name Name of the filter.
- * @param {function} fn The filter factory function which is injectable.
+ * @param {Function} fn The filter factory function which is injectable.
  */
 
 
@@ -15413,8 +15417,8 @@ var nullFormCtrl = {
  *
  */
 //asks for $scope to fool the BC controller module
-FormController.$inject = ['$element', '$attrs', '$scope'];
-function FormController(element, attrs) {
+FormController.$inject = ['$element', '$attrs', '$scope', '$animate'];
+function FormController(element, attrs, $scope, $animate) {
   var form = this,
       parentForm = element.parent().controller('form') || nullFormCtrl,
       invalidCount = 0, // used to easily determine if we are valid
@@ -15437,9 +15441,8 @@ function FormController(element, attrs) {
   // convenience method for easy toggling of classes
   function toggleValidCss(isValid, validationErrorKey) {
     validationErrorKey = validationErrorKey ? '-' + snake_case(validationErrorKey, '-') : '';
-    element.
-      removeClass((isValid ? INVALID_CLASS : VALID_CLASS) + validationErrorKey).
-      addClass((isValid ? VALID_CLASS : INVALID_CLASS) + validationErrorKey);
+    $animate.removeClass(element, (isValid ? INVALID_CLASS : VALID_CLASS) + validationErrorKey);
+    $animate.addClass(element, (isValid ? VALID_CLASS : INVALID_CLASS) + validationErrorKey);
   }
 
   /**
@@ -15540,7 +15543,8 @@ function FormController(element, attrs) {
    * state (ng-dirty class). This method will also propagate to parent forms.
    */
   form.$setDirty = function() {
-    element.removeClass(PRISTINE_CLASS).addClass(DIRTY_CLASS);
+    $animate.removeClass(element, PRISTINE_CLASS);
+    $animate.addClass(element, DIRTY_CLASS);
     form.$dirty = true;
     form.$pristine = false;
     parentForm.$setDirty();
@@ -15561,7 +15565,8 @@ function FormController(element, attrs) {
    * saving or resetting it.
    */
   form.$setPristine = function () {
-    element.removeClass(DIRTY_CLASS).addClass(PRISTINE_CLASS);
+    $animate.removeClass(element, DIRTY_CLASS);
+    $animate.addClass(element, PRISTINE_CLASS);
     form.$dirty = false;
     form.$pristine = true;
     forEach(controls, function(control) {
@@ -15616,6 +15621,8 @@ function FormController(element, attrs) {
  *  - `ng-pristine` is set if the form is pristine.
  *  - `ng-dirty` is set if the form is dirty.
  *
+ * Keep in mind that ngAnimate can detect each of these classes when added and removed.
+ *
  *
  * # Submitting a form and preventing the default action
  *
@@ -15649,15 +15656,49 @@ function FormController(element, attrs) {
  * @param {string=} name Name of the form. If specified, the form controller will be published into
  *                       related scope, under this name.
  *
+ * ## Animation Hooks
+ *
+ * Animations in ngForm are triggered when any of the associated CSS classes are added and removed.
+ * These classes are: `.ng-pristine`, `.ng-dirty`, `.ng-invalid` and `.ng-valid` as well as any
+ * other validations that are performed within the form. Animations in ngForm are similar to how
+ * they work in ngClass and animations can be hooked into using CSS transitions, keyframes as well
+ * as JS animations.
+ *
+ * The following example shows a simple way to utilize CSS transitions to style a form element
+ * that has been rendered as invalid after it has been validated:
+ *
+ * <pre>
+ * //be sure to include ngAnimate as a module to hook into more
+ * //advanced animations
+ * .my-form {
+ *   transition:0.5s linear all;
+ *   background: white;
+ * }
+ * .my-form.ng-invalid {
+ *   background: red;
+ *   color:white;
+ * }
+ * </pre>
+ *
  * @example
-    <example>
+    <example deps="angular-animate.js" animations="true" fixBase="true">
       <file name="index.html">
        <script>
          function Ctrl($scope) {
            $scope.userType = 'guest';
          }
        </script>
-       <form name="myForm" ng-controller="Ctrl">
+       <style>
+        .my-form {
+          -webkit-transition:all linear 0.5s;
+          transition:all linear 0.5s;
+          background: transparent;
+        }
+        .my-form.ng-invalid {
+          background: red;
+        }
+       </style>
+       <form name="myForm" ng-controller="Ctrl" class="my-form">
          userType: <input name="input" ng-model="userType" required>
          <span class="error" ng-show="myForm.input.$error.required">Required!</span><br>
          <tt>userType = {{userType}}</tt><br>
@@ -15689,6 +15730,9 @@ function FormController(element, attrs) {
         });
       </file>
     </example>
+ *
+ * @param {string=} name Name of the form. If specified, the form controller will be published into
+ *                       related scope, under this name.
  */
 var formDirectiveFactory = function(isNgForm) {
   return ['$timeout', function($timeout) {
@@ -16628,8 +16672,9 @@ var VALID_CLASS = 'ng-valid',
  * @property {*} $modelValue The value in the model, that the control is bound to.
  * @property {Array.<Function>} $parsers Array of functions to execute, as a pipeline, whenever
        the control reads value from the DOM.  Each function is called, in turn, passing the value
-       through to the next. Used to sanitize / convert the value as well as validation.
-       For validation, the parsers should update the validity state using
+       through to the next. The last return value is used to populate the model.
+       Used to sanitize / convert the value as well as validation. For validation,
+       the parsers should update the validity state using
        {@link ngModel.NgModelController#$setValidity $setValidity()},
        and return `undefined` for invalid values.
 
@@ -16753,8 +16798,8 @@ var VALID_CLASS = 'ng-valid',
  *
  *
  */
-var NgModelController = ['$scope', '$exceptionHandler', '$attrs', '$element', '$parse',
-    function($scope, $exceptionHandler, $attr, $element, $parse) {
+var NgModelController = ['$scope', '$exceptionHandler', '$attrs', '$element', '$parse', '$animate',
+    function($scope, $exceptionHandler, $attr, $element, $parse, $animate) {
   this.$viewValue = Number.NaN;
   this.$modelValue = Number.NaN;
   this.$parsers = [];
@@ -16817,9 +16862,8 @@ var NgModelController = ['$scope', '$exceptionHandler', '$attrs', '$element', '$
   // convenience method for easy toggling of classes
   function toggleValidCss(isValid, validationErrorKey) {
     validationErrorKey = validationErrorKey ? '-' + snake_case(validationErrorKey, '-') : '';
-    $element.
-      removeClass((isValid ? INVALID_CLASS : VALID_CLASS) + validationErrorKey).
-      addClass((isValid ? VALID_CLASS : INVALID_CLASS) + validationErrorKey);
+    $animate.removeClass($element, (isValid ? INVALID_CLASS : VALID_CLASS) + validationErrorKey);
+    $animate.addClass($element, (isValid ? VALID_CLASS : INVALID_CLASS) + validationErrorKey);
   }
 
   /**
@@ -16878,7 +16922,8 @@ var NgModelController = ['$scope', '$exceptionHandler', '$attrs', '$element', '$
   this.$setPristine = function () {
     this.$dirty = false;
     this.$pristine = true;
-    $element.removeClass(DIRTY_CLASS).addClass(PRISTINE_CLASS);
+    $animate.removeClass($element, DIRTY_CLASS);
+    $animate.addClass($element, PRISTINE_CLASS);
   };
 
   /**
@@ -16909,7 +16954,8 @@ var NgModelController = ['$scope', '$exceptionHandler', '$attrs', '$element', '$
     if (this.$pristine) {
       this.$dirty = true;
       this.$pristine = false;
-      $element.removeClass(PRISTINE_CLASS).addClass(DIRTY_CLASS);
+      $animate.removeClass($element, PRISTINE_CLASS);
+      $animate.addClass($element, DIRTY_CLASS);
       parentForm.$setDirty();
     }
 
@@ -16975,7 +17021,7 @@ var NgModelController = ['$scope', '$exceptionHandler', '$attrs', '$element', '$
  *   require.
  * - Providing validation behavior (i.e. required, number, email, url).
  * - Keeping the state of the control (valid/invalid, dirty/pristine, validation errors).
- * - Setting related css classes on the element (`ng-valid`, `ng-invalid`, `ng-dirty`, `ng-pristine`).
+ * - Setting related css classes on the element (`ng-valid`, `ng-invalid`, `ng-dirty`, `ng-pristine`) including animations.
  * - Registering the control with its parent {@link ng.directive:form form}.
  *
  * Note: `ngModel` will try to bind to the property given by evaluating the expression on the
@@ -16998,6 +17044,67 @@ var NgModelController = ['$scope', '$exceptionHandler', '$attrs', '$element', '$
  *  - {@link ng.directive:select select}
  *  - {@link ng.directive:textarea textarea}
  *
+ * # CSS classes
+ * The following CSS classes are added and removed on the associated input/select/textarea element
+ * depending on the validity of the model.
+ *
+ *  - `ng-valid` is set if the model is valid.
+ *  - `ng-invalid` is set if the model is invalid.
+ *  - `ng-pristine` is set if the model is pristine.
+ *  - `ng-dirty` is set if the model is dirty.
+ *
+ * Keep in mind that ngAnimate can detect each of these classes when added and removed.
+ *
+ * ## Animation Hooks
+ *
+ * Animations within models are triggered when any of the associated CSS classes are added and removed
+ * on the input element which is attached to the model. These classes are: `.ng-pristine`, `.ng-dirty`,
+ * `.ng-invalid` and `.ng-valid` as well as any other validations that are performed on the model itself.
+ * The animations that are triggered within ngModel are similar to how they work in ngClass and
+ * animations can be hooked into using CSS transitions, keyframes as well as JS animations.
+ *
+ * The following example shows a simple way to utilize CSS transitions to style an input element
+ * that has been rendered as invalid after it has been validated:
+ *
+ * <pre>
+ * //be sure to include ngAnimate as a module to hook into more
+ * //advanced animations
+ * .my-input {
+ *   transition:0.5s linear all;
+ *   background: white;
+ * }
+ * .my-input.ng-invalid {
+ *   background: red;
+ *   color:white;
+ * }
+ * </pre>
+ *
+ * @example
+ * <example deps="angular-animate.js" animations="true" fixBase="true">
+     <file name="index.html">
+       <script>
+        function Ctrl($scope) {
+          $scope.val = '1';
+        }
+       </script>
+       <style>
+         .my-input {
+           -webkit-transition:all linear 0.5s;
+           transition:all linear 0.5s;
+           background: transparent;
+         }
+         .my-input.ng-invalid {
+           color:white;
+           background: red;
+         }
+       </style>
+       Update input to see transitions when valid/invalid.
+       Integer is a valid value.
+       <form name="testForm" ng-controller="Ctrl">
+         <input ng-model="val" ng-pattern="/^\d+$/" name="anim" class="my-input" />
+       </form>
+     </file>
+ * </example>
  */
 var ngModelDirective = function() {
   return {
@@ -18594,7 +18701,7 @@ var ngIfDirective = ['$animate', function($animate) {
     restrict: 'A',
     $$tlb: true,
     link: function ($scope, $element, $attr, ctrl, $transclude) {
-        var block, childScope;
+        var block, childScope, previousElements;
         $scope.$watch($attr.ngIf, function ngIfWatchAction(value) {
 
           if (toBoolean(value)) {
@@ -18612,14 +18719,19 @@ var ngIfDirective = ['$animate', function($animate) {
               });
             }
           } else {
-
-            if (childScope) {
+            if(previousElements) {
+              previousElements.remove();
+              previousElements = null;
+            }
+            if(childScope) {
               childScope.$destroy();
               childScope = null;
             }
-
-            if (block) {
-              $animate.leave(getBlockElements(block.clone));
+            if(block) {
+              previousElements = getBlockElements(block.clone);
+              $animate.leave(previousElements, function() {
+                previousElements = null;
+              });
               block = null;
             }
           }
@@ -18805,15 +18917,23 @@ var ngIncludeDirective = ['$http', '$templateCache', '$anchorScroll', '$animate'
       return function(scope, $element, $attr, ctrl, $transclude) {
         var changeCounter = 0,
             currentScope,
+            previousElement,
             currentElement;
 
         var cleanupLastIncludeContent = function() {
-          if (currentScope) {
+          if(previousElement) {
+            previousElement.remove();
+            previousElement = null;
+          }
+          if(currentScope) {
             currentScope.$destroy();
             currentScope = null;
           }
           if(currentElement) {
-            $animate.leave(currentElement);
+            $animate.leave(currentElement, function() {
+              previousElement = null;
+            });
+            previousElement = currentElement;
             currentElement = null;
           }
         };
@@ -20094,12 +20214,31 @@ var ngSwitchDirective = ['$animate', function($animate) {
       var watchExpr = attr.ngSwitch || attr.on,
           selectedTranscludes,
           selectedElements,
+          previousElements,
           selectedScopes = [];
 
       scope.$watch(watchExpr, function ngSwitchWatchAction(value) {
-        for (var i= 0, ii=selectedScopes.length; i<ii; i++) {
-          selectedScopes[i].$destroy();
-          $animate.leave(selectedElements[i]);
+        var i, ii = selectedScopes.length;
+        if(ii > 0) {
+          if(previousElements) {
+            for (i = 0; i < ii; i++) {
+              previousElements[i].remove();
+            }
+            previousElements = null;
+          }
+
+          previousElements = [];
+          for (i= 0; i<ii; i++) {
+            var selected = selectedElements[i];
+            selectedScopes[i].$destroy();
+            previousElements[i] = selected;
+            $animate.leave(selected, function() {
+              previousElements.splice(i, 1);
+              if(previousElements.length === 0) {
+                previousElements = null;
+              }
+            });
+          }
         }
 
         selectedElements = [];
@@ -20568,7 +20707,7 @@ var selectDirective = ['$compile', '$parse', function($compile,   $parse) {
       function setupAsOptions(scope, selectElement, ctrl) {
         var match;
 
-        if (! (match = optionsExp.match(NG_OPTIONS_REGEXP))) {
+        if (!(match = optionsExp.match(NG_OPTIONS_REGEXP))) {
           throw ngOptionsMinErr('iexp',
             "Expected expression in form of " +
             "'_select_ (as _label_)? for (_key_,)?_value_ in _collection_'" +

@@ -14,8 +14,6 @@ directives.directive('compile', function ($compile, $controller, $timeout) {
                     console.error(currentError.message);
                 }
             };
-
-
             scope.$watch(function (scope) {
                     // watch the 'compile' expression for changes
                     return scope.$eval(attrs.compile);
@@ -284,19 +282,23 @@ var EditorConstructor = function ($timeout, $location, editorConfig, saveService
                 var height = function (elm) {
                     return Math.max(elm.scrollHeight, elm.offsetHeight);
                 };
-                var hBody = height(document.body);
-                var diff = hWin - hBody;
-                var newHeight;
-                //var editorHeight = angular.element(document.querySelector('#editor'))[0].clientHeight;
-                if (diff < 0) {
-                    newHeight = opts.height + (diff - hWin / hBody * 25);
-                } else {
-                    newHeight = opts.height;
-                }
 
-                if (newHeight > 0) {
-                        scope.height = newHeight;
-                }
+                $timeout(function () {
+                    var hBody = height(document.body);
+                    var diff = hWin - hBody;
+                    var newHeight;
+                    if (diff < 0) {
+                        newHeight = opts.height + (diff - ((hWin / hBody) * 25));
+                    } else {
+                        newHeight = opts.height;
+                    }
+                    var editorHeight = angular.element(document.querySelector('#editor'))[0].clientHeight;
+                    console.log('hWin :' + hWin + 'HBody :' + hBody + ' diff : ' + diff + ' newHeight : ' + newHeight + ' scope.height :' + scope.height + ' editorHeight : ' + editorHeight);
+
+                    if (newHeight > 0) {
+                            scope.height = newHeight;
+                    }
+                },100);
 
             },true);
 
