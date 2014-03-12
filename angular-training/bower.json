@@ -13,6 +13,7 @@
     "lodash": "~2.4.1",
     "angular-route": "1.2.14",
     "angular-ui-bootstrap-bower": "~0.10.0",
-    "angular-animate": "~1.2.14"
+    "angular-animate": "~1.2.14",
+    "ace-builds": "~1.1.3"
   }
 }

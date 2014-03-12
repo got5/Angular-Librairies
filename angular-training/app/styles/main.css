@@ -5,6 +5,10 @@ body, .header, h1 {
     margin: 0;
 }
 
+[ng\:cloak], [ng-cloak], .ng-cloak {
+    display: none !important;
+}
+
 body {
     padding: 0;
     overflow: hidden;
