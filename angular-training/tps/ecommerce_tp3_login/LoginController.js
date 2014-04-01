@@ -2,7 +2,7 @@
 var LoginController = function($scope, $http, $location, $cookies, $log)
 {
 	$scope.errorMsg = null;
-	
+
 	/** Called on a click on the Login button. */
 	$scope.logUser = function() {
 		/** Gets all users... */

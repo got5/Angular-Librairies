@@ -5,10 +5,10 @@
 		<input type="number" id="nbFilter" name="nbFilter" /> Filter by name:
 		<br />
 		<!-- TODO -->
-		<input type="text" id="nameFilter" name="nameFilter" /> <br /> Order
+		<input type="text" id="nameFilter" name="nameFilter" ng-model="" /> <br /> Order
 		by: <br />
 		<!-- TODO -->
-		<select name="bookOrderBy" id="bookOrderBy">
+		<select name="bookOrderBy" id="bookOrderBy" ng-model="orderSearch">
 			<option>name</option>
 			<option>price</option>
 			<option>rating</option>

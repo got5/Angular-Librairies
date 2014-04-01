@@ -3,10 +3,26 @@
     <editor editor-options="{showPreview:false , showTabs:false , compileCode:false , height:580 }">
         <file type="javascript" name="protractor.conf.js">// An example configuration file.
 exports.config = {
-    // The address of a running selenium server.
-    seleniumAddress: 'http://localhost:4444/wd/hub',
+    // The location of the selenium standalone server .jar file.
+    // http://docs.seleniumhq.org/download/
+    seleniumServerJar: './script/selenium-server-standalone-2.40.0.jar',
 
-    // Capabilities to be passed to the webdriver instance.
+    // The port to start the selenium server on, or null if the server should
+    // find its own unused port.
+    seleniumPort: 4444,
+
+
+    //For Windows
+    //chromeDriver: './script/Chromedriver.exe',
+    // For Linux or OSX
+    chromeDriver: './script/Chromedriver',
+
+    // Additional command line options to pass to selenium. For example,
+    // if you need to change the browser timeout, use
+    // seleniumArgs: ['-browserTimeout=60'],
+    seleniumArgs: [],
+
+            // Capabilities to be passed to the webdriver instance.
     capabilities: {
         'browserName': 'chrome'
     },
