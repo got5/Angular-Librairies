@@ -11,14 +11,14 @@
 &lt;/div&gt;
 </file>
 <file type="javascript" name="confirm.js">angular.module('app',['ui.bootstrap'])
-.directive('confirmClick', function($dialog) {
+.directive('confirmClick', function($modal) {
     return {
         restrict: 'A',
         link: function(scope, elm, attrs) {
             var button = elm[0];
 
-            //TODO: use onclick function on the button.
-            //TODO: display a confirm box using $dialog.messageBox.
+            //TODO: use 'on' function on the button.
+            //TODO: display a confirm box using $modal service
             //TODO: if OK is clicked, evaluate the content of the ng-click with scope.$eval.
             //TODO: if Cancel is clicked, nothing happens.
         }
@@ -30,27 +30,34 @@
 </div>
 
 <!-- 
-application.directive('confirmClick', function($dialog) {
+angular.module('app',['ui.bootstrap'])
+.directive('confirmClick', function($modal) {
     return {
         restrict: 'A',
+        priority:1,
+        terminal:true,
         link: function(scope, elm, attrs) {
             var button = elm[0];
-            
+
+
             var clickHandler = attrs.ngClick;
+
             attrs.ngClick = null;
-            
-            var confirmMsg = (attrs.confirmClick == null | attrs.confirmClick.length == 0) ? "Are you sure?" : attrs.confirmClick;
-            
-            button.onclick = function(event) {
-        		var msgBox = $dialog.messageBox('Confirm', confirmMsg, [{label: 'OK', result: true},{label: 'Cancel', result: false}]);
-                msgBox.open().then(function(result) {
-                	if (result) {
-                		scope.$eval(clickHandler);
-                	}
+            elm.on('click',function($event){
+
+                var modal = $modal.open({
+                    template: ' <div><h3>Are you sure ?</h3></div><div class="modal-footer">' +
+                              '<button class="btn btn-primary" ng-click="$close()">OK</button>' +
+                              '<button class="btn btn-warning" ng-click="$dismiss()">Cancel</button></div>'
                 });
-            };
+
+                modal.result.then(function(){
+                    scope.$eval(clickHandler);
+                });
+
+            });
         }
-    };
-});
+    }
+    });
 
  -->
