@@ -1,8 +1,9 @@
 'use strict';
 
-var application = angular.module('angularTrainingApp',
-        [ 'ngRoute', 'ngAnimate', 'ui.bootstrap', 'directives', 'filters', 'services' ])
-    .config(function ($routeProvider, $locationProvider, $compileProvider, $injector, $provide) {
+var application = angular.module('trainingApp',
+        [ 'ngRoute', 'ngAnimate', 'ui.bootstrap', 'training.editor' ])
+    .config(['$routeProvider','$locationProvider','$compileProvider','$injector',
+        function ($routeProvider, $locationProvider, $compileProvider, $injector) {
 
         var request = new XMLHttpRequest();
         request.open("GET", "data/slides.json", false);
@@ -22,24 +23,4 @@ var application = angular.module('angularTrainingApp',
         application.compileProvider = $compileProvider;
         application.injector = $injector;
 
-        $provide.decorator('$log', [ '$delegate',
-            'configurationData', function ($delegate, config) {
-                return {
-                    error: function (text) {
-                        return $delegate.error(text);
-                    },
-                    warn: function (text) {
-                        return $delegate.warn(text);
-                    },
-                    log: function (text) {
-                        return $delegate.log(text);
-                    },
-                    info: function (text) {
-                        if (config.mode == 'development') {
-                            $delegate.info("[INFO] " + text);
-                        }
-                    }
-                };
-            }
-        ]);
-    });
+    }]);

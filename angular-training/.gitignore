@@ -1,9 +1,10 @@
-node_modules
-dist
+node_modules/
+prod/
 .tmp
 .sass-cache
-app/components
+app/vendor/
 *.iml
 .idea/
 demo/lib/
 demoFinished/lib/
+tmp/

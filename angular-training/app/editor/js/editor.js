@@ -2,7 +2,7 @@
 
 
 /** Compile directive */
-directives.directive('compile', function ($compile, $controller, $timeout) {
+directives.directive('compile',['$compile','$controller','$timeout', function ($compile, $controller, $timeout) {
     // directive factory creates a link function
     return {
         terminal: true,
@@ -22,6 +22,32 @@ directives.directive('compile', function ($compile, $controller, $timeout) {
                 function (value) {
 
                     if (value) {
+
+                        var compileDom = function(currentError, promise) {
+                            /** Code has changed, we will wait another second before displaying errors. */
+                            if (promise) {
+                                $timeout.cancel(promise);
+                                promise = null;
+                            }
+
+                            /** Waits for one second before displaying a potential error. */
+                            promise = $timeout(handleErrors, 1000);
+
+                            try {
+                                /** Assigns compile expression to the DOM. */
+                                element.html(value.html);
+                                /** Compile the new DOM and link it to the current scope. */
+                                $compile(element.contents())(scope);
+
+                            } catch (error) {
+                                currentError = error;
+                            }
+
+                        };
+
+                        if(!scope.angularApp){
+                            compileDom(promise,currentError);
+                        }
                         if (value.js != '') {
                             var script = document.createElement('script');
                             script[(script.textContent === undefined ? 'innerText' : 'textContent')] = '' + value.js;
@@ -30,37 +56,35 @@ directives.directive('compile', function ($compile, $controller, $timeout) {
                             element.parent().append(script);
                         }
 
-                        /** Code has changed, we will wait another second before displaying errors. */
-                        if (promise) {
-                            $timeout.cancel(promise);
-                            promise = null;
+                        if (value.css != '') {
+                            var style = document.createElement('style');
+                            style[(style.textContent === undefined ? 'innerText' : 'textContent')] = '' + value.css;
+                            currentError = null;
+                            element.parent().find('style').remove();
+                            element.parent().append(style);
                         }
 
-                        /** Waits for one second before displaying a potential error. */
-                        promise = $timeout(handleErrors, 1000);
-
-                        try {
-                            /** Assigns compile expression to the DOM. */
-                            element.html(value.html);
-
-                            /** Compile the new DOM and link it to the current scope. */
-                            $compile(element.contents())(scope);
-                        } catch (error) {
-                            currentError = error;
-                        }
+                       if(scope.angularApp){
+                           compileDom(promise,currentError);
+                       }
                     }
                 });
         }}
-});
+}]);
 
 directives.value('escape', function (text) {
     return text.replace(/\&/g, '&amp;').replace(/\</g, '&lt;').replace(/\>/g, '&gt;').replace(/"/g, '&quot;');
 }).factory('script', function () {
-    var version = '1.2.13';
+    var version = {
+        angular:'1.2.16',
+        jquery:'1.11.1',
+        uiBootstrap:'0.10.0'
+    }
 
     return {
-        angular: '<script src="https://ajax.googleapis.com/ajax/libs/angularjs/' + version + '/angular.min.js"></script>\n',
-        uiBootstrap: '<script src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.10.0/ui-bootstrap-tpls.min.js"></script>\n'
+        jquery:'<script src="//ajax.googleapis.com/ajax/libs/jquery/' + version.jquery + '/jquery.min.js"></script>',
+        angular: '<script src="https://ajax.googleapis.com/ajax/libs/angularjs/' + version.angular + '/angular.min.js"></script>\n',
+        uiBootstrap: '<script src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/' + version.uiBootstrap + '/ui-bootstrap-tpls.min.js"></script>\n'
     };
 });
 
@@ -123,6 +147,7 @@ var EditorConstructor = function ($timeout, $location, editorConfig, saveService
                 showTabs: false,
                 showPopup: false,
                 enableCompletion: true,
+                angular:true,
                 compileCode: true,
                 height: '200'};
 
@@ -137,6 +162,7 @@ var EditorConstructor = function ($timeout, $location, editorConfig, saveService
             scope.showPreview = opts.showPreview;
             scope.showTabs = opts.showTabs;
             scope.showPopup = opts.showPopup;
+            scope.angularApp = opts.angular;
 
             var e = elm.find("pre")[0];
             acee = window.ace.edit(e);
@@ -233,7 +259,8 @@ var EditorConstructor = function ($timeout, $location, editorConfig, saveService
 
 
             var getFileContent = function (file) {
-                return file.childNodes[0] != undefined && file.childNodes[0].nodeValue != undefined ? file.childNodes[0].nodeValue : file.outerText;
+                var ret = file.childNodes[0] != undefined && file.childNodes[0].nodeValue != undefined ? file.childNodes[0].nodeValue.trim() : file.outerText.trim();
+                return ret;
             };
 
             /** Transclude function. Used to init the editor content. */
@@ -273,11 +300,11 @@ var EditorConstructor = function ($timeout, $location, editorConfig, saveService
                 acee.renderer.updateFull();
             }, true);
 
-            scope.$watch(function(){
+            scope.$watch(function () {
 
                 var hWin = window.innerHeight;
                 return hWin
-            },function(hWin){
+            }, function (hWin) {
 
                 var height = function (elm) {
                     return Math.max(elm.scrollHeight, elm.offsetHeight);
@@ -295,11 +322,11 @@ var EditorConstructor = function ($timeout, $location, editorConfig, saveService
                     var editorHeight = angular.element(document.querySelector('#editor'))[0].clientHeight;
 
                     if (newHeight > 0) {
-                            scope.height = newHeight;
+                        scope.height = newHeight;
                     }
-                },100);
+                }, 100);
 
-            },true);
+            }, true);
 
             if (opts.enableCompletion) {
                 /** Add auto-completion command to the acee. */
@@ -393,6 +420,12 @@ var EditorConstructor = function ($timeout, $location, editorConfig, saveService
 
             };
 
+            var wrapCSS = function (content) {
+                var style = document.createElement('style');
+                style[(script.textContent === undefined ? 'innerText' : 'textContent')] = '' + content;
+                return style;
+            };
+
             /** Returns editor content (concat every tab code, formats js, etc.). */
             var getEditorContent = function () {
                 var content = {html: '', js: '', css: ''};
@@ -408,7 +441,7 @@ var EditorConstructor = function ($timeout, $location, editorConfig, saveService
                         var script = wrapJSScript(file.content);
 
                         /**
-                         * The javascript code don't need to be compiled, so it's simply happend to the dom.
+                         * The javascript code don't need to be compiled, so it's simply happen to the dom.
                          * Still the DOM must be compiled if the javascript change, so we leave it in content !
                          */
                         content.js += file.content;
@@ -445,8 +478,8 @@ var EditorConstructor = function ($timeout, $location, editorConfig, saveService
                     stylesheet = '<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css">\n',
                     fields = {
                         html: '',
-                        css: scope.code.css,
-                        js: scope.code.js
+                        css: scope.code.css ? scope.code.css : '',
+                        js: scope.code.js ? scope.code.js : ''
                     };
 
                 fields.html +=
@@ -458,7 +491,7 @@ var EditorConstructor = function ($timeout, $location, editorConfig, saveService
                     hiddenField('title', 'AngularJS Example: ' + name) +
                     hiddenField('css', '</style> <!-- Ugly Hack due to jsFiddle issue: http://goo.gl/BUfGZ --> \n' +
                         stylesheet +
-                        script.angular +
+                        (opts.angular ? script.angular : '' ) +
                         (opts.uiBootstrap ? script.uiBootstrap : '') +
                         '<style>\n' +
                         fields.css) +
@@ -484,20 +517,13 @@ var EditorConstructor = function ($timeout, $location, editorConfig, saveService
 /** Editor (with preview/tabs options) directive */
 directives.directive('editor', ['$timeout', '$location', 'editorConfig', 'saveService', 'escape', 'script', function ($timeout, $location, editorConfig, saveService, escape, script) {
     var editor = new EditorConstructor($timeout, $location, editorConfig, saveService, escape, script);
-    editor.templateUrl = "js/directives/templates/editor-horizontal.html";
-    return editor;
-}]);
-
-/** Mobile Version Editor directive */
-directives.directive('editorMobile', ['$timeout', '$location', 'editorConfig', 'saveService', 'escape', 'script', function ($timeout, $location, editorConfig, saveService, escape, script) {
-    var editor = new EditorConstructor($timeout, $location, editorConfig, saveService, escape, script);
-    editor.templateUrl = "js/directives/templates/editor-mobile.html";
+    editor.templateUrl = "editor/templates/editor-horizontal.html";
     return editor;
 }]);
 
 /** Editor with vertical layout. */
 directives.directive('editorVertical', ['$timeout', '$location', 'editorConfig', 'saveService', 'escape', 'script', function ($timeout, $location, editorConfig, saveService, escape, script) {
     var editor = new EditorConstructor($timeout, $location, editorConfig, saveService, escape, script);
-    editor.templateUrl = "js/directives/templates/editor-vertical.html";
+    editor.templateUrl = "editor/templates/editor-vertical.html";
     return editor;
 }]);

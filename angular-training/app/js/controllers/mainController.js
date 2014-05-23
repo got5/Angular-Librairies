@@ -81,8 +81,8 @@ var MainController = function ($scope, $route, $location, $document, $window) {
 
     /** Changes selected slide index. */
     $scope.gotoSelectedSlide = function () {
-        $scope.getAnimation($scope.slideIndex < indexSlide);
 
+        $scope.getAnimation($scope.slideIndex < indexSlide);
         $scope.slideIndex = indexSlide;
     };
 
@@ -112,6 +112,7 @@ var MainController = function ($scope, $route, $location, $document, $window) {
             }
             var indexURL = getSlideIndexFromURL(url);
             if (indexURL > -1 && indexURL != $scope.slideIndex) {
+                $scope.getAnimation($scope.slideIndex < indexURL);
                 $scope.slideIndex = indexURL;
             }
         }
@@ -128,4 +129,4 @@ var MainController = function ($scope, $route, $location, $document, $window) {
         return animation;
     };
 };
-MainController.$inject = [ '$scope', '$route', '$location', '$document', '$window', '$animate' ];
+MainController.$inject = [ '$scope', '$route', '$location', '$document', '$window' ];

@@ -1,20 +1,20 @@
 'use strict';
 
 var ValidationController = function ($scope, $sce, testUtils) {
-	
+
 	$scope.showTestResults = false;
-	
+
 	var afterTests = function(pResult) {
 		$scope.showTestResults = true;
 		$scope.testResult = $sce.trustAsHtml(pResult);
 	};
-	
+
 	$scope.validate = function() {
 		if ($scope.getTests != undefined) {
 			testUtils.doTests($scope.getTests(), afterTests.bind(this));
 		}
 	};
-	
+
 	$scope.closePopup = function() {
 		$scope.showTestResults = false;
 	};
@@ -22,7 +22,7 @@ var ValidationController = function ($scope, $sce, testUtils) {
 
 directives.directive('buttonValid', function() {
 	return {
-		template : '<div><div class="right-header">Validate exercise: <button class="btn" ng-click="validate()"><img src="images/valid.png"/></button></div>' + 
+		template : '<div><div class="right-header">Validate exercise: <button class="btn" ng-click="validate()"><img src="../../images/valid.png"/></button></div>' +
 			'<div ng-if="showTestResults" class="test-result-popup"><img src="images/close.gif" ng-click="closePopup()" class="close-icon"/><span ng-bind-html="testResult"></span></div></div>',
 		restrict : 'E',
 		controller : [ '$scope', '$sce', 'TestUtils', function($scope, $sce, testUtils) {
@@ -33,18 +33,18 @@ directives.directive('buttonValid', function() {
 
 /** Test VO */
 var TestVO = function(pTestName, pSetupFunction, pVerifyFunction) {
-	
+
 	/** Tests name */
 	this.testName = pTestName;
-	
+
 	this.setupFunction = pSetupFunction != null ? pSetupFunction : function() {};
-	
+
 	this.verifyFunction = pVerifyFunction != null ? pVerifyFunction : function() {};
 };
 
 /** Utility functions to test DOM. */
 var TestUtils = function($timeout) {
-	
+
 	/** Tests report. */
 	var textResult = "";
 	/** Tests errors number. */
@@ -57,18 +57,18 @@ var TestUtils = function($timeout) {
 	var tests;
 	/** Function called after the tests are finished. */
 	var callback;
-	
+
 	/** Add info line in current test report. */
 	this.info = function(pInfo) {
 		textResult += "[INFO] " + pInfo + "<br/>";
 	};
-	
+
 	/** Add error line in current test report. */
 	this.error = function(pError) {
 		textResult += "<span style='color: red'>[ERROR] " + pError + "</span><br/>";
 		nbErrors++;
 	};
-	
+
 	/** Launches tests. */
 	this.doTests = function(pTests, pCallback) {
 		textResult = "";
@@ -79,7 +79,7 @@ var TestUtils = function($timeout) {
 		this.info("Starting tests...<br/>");
 		this.doNextTest();
 	};
-	
+
 	this.doNextTest = function() {
 		currentTestIndex++;
 		if (tests) {
@@ -90,16 +90,16 @@ var TestUtils = function($timeout) {
 				if (test instanceof TestVO) {
 					if (typeof(test.setupFunction) == 'function' && typeof(test.verifyFunction) == 'function') {
 						self.info("Setup test: " + test.testName);
-						
+
 						var potentialPromise = test.setupFunction();
-						
+
 						var afterWaiting = function() {
 							self.info("Checking test: " + test.testName);
 							test.verifyFunction();
 							self.info("Ending test: " + test.testName + "<br/>");
 							self.doNextTest();
 						};
-						
+
 						if (potentialPromise == null) {
 							this.waitForAngularToUpdate().then(afterWaiting);
 						} else {
@@ -114,7 +114,7 @@ var TestUtils = function($timeout) {
 			}
 		}
 	};
-	
+
 	/** Checks if all promises have been done, and finishes the tests if so. */
 	this.finishTests = function() {
 		self.info("Ending tests...");
@@ -124,7 +124,7 @@ var TestUtils = function($timeout) {
 			callback(textResult);
 		}
 	};
-	
+
 	this.getEltPropertyValue = function(pHtml, pPropertyNames) {
 		if (pHtml != null && pPropertyNames != null) {
 			var properties = pHtml.trim().substring(pHtml.indexOf(' ')).split('"');
@@ -138,12 +138,12 @@ var TestUtils = function($timeout) {
 		}
 		return null;
 	};
-	
+
 	this.getAngularPropertyValue = function(pHtml, pProp) {
-		return this.getEltPropertyValue(pHtml, 
+		return this.getEltPropertyValue(pHtml,
 				[ 'ng-' + pProp, 'ng:' + pProp, 'ng_' + pProp, 'x-ng-' + pProp, 'data-ng-' + pProp ]);
 	};
-	
+
 	this.changeInputModel = function(pId, pValue) {
 		var input = document.getElementById(pId);
 		if (input != null) {
@@ -153,14 +153,14 @@ var TestUtils = function($timeout) {
 			}
 		}
 	};
-	
+
 	this.changeScopeValue = function(pId, pKey, pValue) {
 		var scope = this.getElementScope(pId);
 		if (scope) {
 			this.affectScopeValue(scope, pKey, pValue);
 		}
 	};
-	
+
 	/** Changes the value of a property of all scopes. */
 	this.changeScopesValue = function(pKey, pValue) {
 		var scopes = this.getScopes();
@@ -168,7 +168,7 @@ var TestUtils = function($timeout) {
 			this.affectScopeValue(scopes[index], pKey, pValue);
 		}
 	};
-	
+
 	/** Changes the value of a property of a given scope. */
 	this.affectScopeValue = function(pScope, pKey, pValue) {
 		var keys = pKey.split(".");
@@ -185,7 +185,7 @@ var TestUtils = function($timeout) {
 			}
 		}
 	};
-	
+
 	/** Returns all page scopes. */
 	this.getScopes = function() {
 		var elements = document.getElementsByClassName('ng-scope');
@@ -196,7 +196,7 @@ var TestUtils = function($timeout) {
 		}
 		return scopes;
 	};
-	
+
 	/** Returns scope of element whose id is equals to pId. */
 	this.getElementScope = function(pId) {
 		var elements = document.getElementsByClassName('ng-scope');
@@ -213,12 +213,12 @@ var TestUtils = function($timeout) {
 		}
 		return null;
 	};
-	
+
 	/** Waits the end of the next digest cycle. */
 	this.waitForAngularToUpdate = function() {
 		return $timeout(function() {});
 	};
-	
+
 	/** Simulates click on element with id equals to pId. */
 	this.clickOnButton = function(pId) {
 		var button = document.getElementById(pId);
@@ -230,22 +230,22 @@ var TestUtils = function($timeout) {
 			}
 		}
 	};
-	
+
 	this.hasValue = function(pId, pValue) {
 		var element = document.getElementById(pId);
 		return element && element.value.indexOf(pValue) > -1;
 	};
-	
+
 	this.hasInnerHTML = function(pId, pValue) {
 		var element = document.getElementById(pId);
 		return element && element.innerHTML.indexOf(pValue) > -1;
 	};
-	
+
 	this.hasNotInnerHTML = function(pId, pValue) {
 		var element = document.getElementById(pId);
 		return element && element.innerHTML.indexOf(pValue) == -1;
 	};
-	
+
 	this.expectTrue = function(pValue, pError) {
 		if (!pValue) {
 			this.error(pError);
