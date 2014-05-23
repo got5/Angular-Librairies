@@ -41,8 +41,6 @@ module.exports = function(grunt){
             },
             dep: {
                 src: [
-                    '<%= yeoman.app %>/vendor/modernizr/modernizr.js',
-                    '<%= yeoman.app %>/vendor/jquery/dist/jquery.min.js',
                     '<%= yeoman.app %>/vendor/ace-builds/src-min/ace.js',
                     '<%= yeoman.app %>/vendor/ace-builds/src-min/ext-language_tools.js',
                     '<%= yeoman.app %>/vendor/angular/angular.min.js',
@@ -189,9 +187,7 @@ module.exports = function(grunt){
                 files: {
                     src: [
                         '<%= yeoman.dist %>/js/{,*/}*.js',
-                        '<%= yeoman.dist %>/styles/{,*/}*.css',
-                        '<%= yeoman.dist %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}',
-                        '<%= yeoman.dist %>/styles/fonts/*'
+                        '<%= yeoman.dist %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}'
                     ]
                 }
             }
@@ -217,7 +213,7 @@ module.exports = function(grunt){
         "copy:prod",
         "imagemin",
         //"cssmin",
-        "uglify:prod",
+      //  "uglify:prod",
         "rev",
         "clean:temp",
         "copy:ace",

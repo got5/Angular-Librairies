@@ -22,7 +22,7 @@ var ValidationController = function ($scope, $sce, testUtils) {
 
 directives.directive('buttonValid', function() {
 	return {
-		template : '<div><div class="right-header">Validate exercise: <button class="btn" ng-click="validate()"><img src="../../images/valid.png"/></button></div>' +
+		template : '<div><div class="right-header">Validate exercise: <button class="btn" ng-click="validate()"><img src="../images/valid.png"/></button></div>' +
 			'<div ng-if="showTestResults" class="test-result-popup"><img src="images/close.gif" ng-click="closePopup()" class="close-icon"/><span ng-bind-html="testResult"></span></div></div>',
 		restrict : 'E',
 		controller : [ '$scope', '$sce', 'TestUtils', function($scope, $sce, testUtils) {
