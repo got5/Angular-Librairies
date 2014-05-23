@@ -5,6 +5,10 @@ body, .header, h1 {
     margin: 0;
 }
 
+[ng\:cloak], [ng-cloak], .ng-cloak {
+    display: none !important;
+}
+
 body {
     padding: 0;
     overflow: hidden;
@@ -12,10 +16,6 @@ body {
     font-family: 'Calibri', sans-serif;
     /*line-height: 1.5;*/
     font-size: 3.5em;
-}
-
-[ng\:cloak], [ng-cloak], .ng-cloak {
-  display: none !important;
 }
 
 iframe {
@@ -233,15 +233,19 @@ a:hover {
     border: 1px solid #578;
     border-radius: 8px;
 }
-.note {
-    font-size: 1em;
+
+[contenteditable] {
+    background-color: white;
+    font-family: 'source code pro',sans-serif;
+    font-size: 0.5em;
     margin: 10px;
 }
 
+
 .back-image {
     border-radius: 15px;
-    display: block;
-    margin-left: auto;
+    display: block; 
+    margin-left: auto; 
     margin-right: auto;
 }
 
