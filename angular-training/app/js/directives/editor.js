@@ -293,7 +293,6 @@ var EditorConstructor = function ($timeout, $location, editorConfig, saveService
                         newHeight = opts.height;
                     }
                     var editorHeight = angular.element(document.querySelector('#editor'))[0].clientHeight;
-                    console.log('hWin :' + hWin + 'HBody :' + hBody + ' diff : ' + diff + ' newHeight : ' + newHeight + ' scope.height :' + scope.height + ' editorHeight : ' + editorHeight);
 
                     if (newHeight > 0) {
                             scope.height = newHeight;
