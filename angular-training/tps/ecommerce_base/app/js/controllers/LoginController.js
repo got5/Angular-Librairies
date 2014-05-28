@@ -1,8 +1,11 @@
-var LoginController = function($scope)
-{
-	// TODO: logUser function.
-};
-LoginController.$inject = ['$scope'];
+(function () {
+    "use strict";
+
+    angular.module('app')
+        .controller('LoginController', ['$scope' , function ($scope) {
+
+        }]);
+}());
 
 
 

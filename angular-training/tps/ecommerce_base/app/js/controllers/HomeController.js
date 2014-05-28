@@ -1,5 +1,11 @@
-/** Home view controller */
-var HomeController = function($scope) {
-	$scope.message = "Welcome in our shop!!!";
-};
-HomeController.$inject = ['$scope'];
+(function () {
+    "use strict";
+
+    /** Home view controller */
+    angular.module('app')
+        .controller('HomeController', ['$scope', function ($scope) {
+
+            $scope.message = "Welcome in our shop!!!";
+
+        }]);
+}());

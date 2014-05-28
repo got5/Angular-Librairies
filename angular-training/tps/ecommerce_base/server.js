@@ -1,93 +1,171 @@
 var express = require('express');
-var app     = express();
-var maxAge  = 31557600000;
+var fs = require("fs");
+var app = express();
+var maxAge = 31557600000;
 
-var news = [
-	{ id: 0, author: 'Bruno', category: 'Troll', content: "I hate Javascript!", likes: 8 },
-	{ id: 1, author: 'Pierre', category: 'Hope', content: "My survey application will be used... I hope.", likes: 0 },
-	{ id: 2, author: 'Pierre', category: 'True fact', content: "Angular training is bullsh**.", likes: 1200 }
-];
-
-var getNewsIndex = function(pId) {
-	for (var index = 0; index < news.length; index++) {
-		var n = news[index];
-		if (n.id == pId) {
-			return index;
-		}
-	}
-	return -1;
+function s4() {
+    return Math.floor((1 + Math.random()) * 0x10000)
+        .toString(16)
+        .substring(1);
 };
 
-var getNews = function(pId) {
-	var index = getNewsIndex(pId);
-	return index > -1 ? news[index] : null;
+function guid() {
+    return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
+        s4() + '-' + s4() + s4() + s4();
+}
+
+function readJsonFileSync(filepath, encoding) {
+
+    if (typeof (encoding) == 'undefined') {
+        encoding = 'utf8';
+    }
+    var file = fs.readFileSync(filepath, encoding);
+    return JSON.parse(file);
+}
+
+function loadFile(file) {
+
+    var filePath = __dirname + "/app/" + file;
+    return readJsonFileSync(filePath);
+}
+
+var news = loadFile('data/news.json');
+var catalog = loadFile('data/catalog.json');
+var users = loadFile('data/users.json');
+
+
+var getIndexFromCol = function (col, pId) {
+    for (var index = 0; index < col.length; index++) {
+        var n = col[index];
+        if (n.id == pId) {
+            return index;
+        }
+    }
+    return -1;
 };
+
+var auth = function (login) {
+    for (var index = 0; index < users.length; index++) {
+        var user = users[index];
+        if (user.login == login) {
+            return user;
+        } else {
+            return false;
+        }
+    }
+};
+
+var getFromCol = function (col, pId) {
+    var index = getIndexFromCol(col, pId);
+    return index > -1 ? col[index] : null;
+};
+
 
 app.use(express.compress());
 app.use(express.bodyParser());
 app.use(express.methodOverride());
-app.use(express.static(__dirname + '/app' ));
+app.use(express.static(__dirname + '/app'));
 
-app.get('/', function(req,res)
-{
+app.get('/', function (req, res) {
     res.sendfile(__dirname + '/app/index.html');
 });
 
-app.get('/news', function(req, res) {
-	res.json(news);
+app.post('/api/login', function (req, res) {
+
+    if (!req.body.hasOwnProperty('login') || !req.body.hasOwnProperty('password')) {
+        res.statusCode = 400;
+        return res.send('Error 400: Post syntax incorrect.');
+    } else {
+        var login = req.body.login;
+        var password = req.body.password;
+        var user = auth(login);
+        if (user.password === password) {
+            user.token = guid();
+            return res.send(user);
+        } else {
+            res.statusCode = 403;
+            return res.send('Error 403: Not allowed.');
+        }
+    }
+
 });
 
-app.get('/news/random', function(req, res) {
-	var id = Math.floor(Math.random() * quotes.length);
-	var n = news[id];
-	res.json(n);
+/*______________________*/
+
+app.get('/api/news', function (req, res) {
+    res.json(news);
 });
 
-app.get('/news/:id', function(req, res) {
-	if(news.length <= req.params.id || req.params.id < 0) {
-		res.statusCode = 404;
-		return res.send('Error 404: No quote found');
-	}
-
-	var n = getNews(req.params.id);
-	res.json(n);
+app.get('/api/news/random', function (req, res) {
+    var id = Math.floor(Math.random() * news.length);
+    var n = news[id];
+    res.json(n);
 });
 
-app.post('/news', function(req, res) {
-	if(!req.body.hasOwnProperty('author') || !req.body.hasOwnProperty('content')
-			|| !req.body.hasOwnProperty('category')|| !req.body.hasOwnProperty('id')) {
-		res.statusCode = 400;
-		return res.send('Error 400: Post syntax incorrect.');
-	}
-	
-	var idNews = req.body.id;
-	
-	/*for (var key in req.body) {
-		console.log(key + "=>" + req.body[key]);
-	}*/
-	
-	if (idNews == -1) {
-		var newNews = {
-				id: news.length,
-				author : req.body.author,
-				category : req.body.category,
-				content : req.body.content,
-				likes : 0
-			};
-		news.push(newNews);
-		
-		res.json(newNews);
-	} else {
-		var updatedNews = getNews(req.body.id);
-		updatedNews.likes = req.body.likes;
-		
-		res.json(updatedNews);
-	}
+app.get('/api/news/:id', function (req, res) {
+    if (news.length <= req.params.id || req.params.id < 0) {
+        res.statusCode = 404;
+        return res.send('Error 404: No quote found');
+    }
+
+    var n = getFromCol(news, req.params.id);
+    res.json(n);
 });
 
-app.delete('/news', function(req, res) {
-	news.splice(getNewsIndex(req.body.id), 1);
-	res.json(true);
+app.post('/api/news', function (req, res) {
+    if (!req.body.hasOwnProperty('author') || !req.body.hasOwnProperty('content')
+        || !req.body.hasOwnProperty('category')) {
+        res.statusCode = 400;
+        return res.send('Error 400: Post syntax incorrect.');
+    }
+    var newNews = {
+        id: news.length,
+        author: req.body.author,
+        category: req.body.category,
+        content: req.body.content,
+        likes: 0
+    };
+    news.push(newNews);
+
+    res.json(newNews);
+
+});
+
+app.get('/api/news/like/:id', function (req, res) {
+
+    var idNews = req.params.id;
+
+    var updatedNews = getFromCol(news, idNews);
+    if (!updatedNews) {
+        res.statusCode = 400;
+        return res.send('Error 400: News not found');
+    }
+    updatedNews.likes += 1;
+
+    res.json(updatedNews);
+
+});
+
+
+app.delete('/api/news/:id', function (req, res) {
+    var index = getIndexFromCol(news, req.params.id);
+    news.splice(index, 1);
+    res.json(true);
+});
+
+
+app.get('/api/catalog', function (req, res) {
+    res.json(catalog);
+});
+
+app.get('/api/catalog/:id', function (req, res) {
+    if (catalog.length <= req.params.id || req.params.id < 0) {
+        res.statusCode = 404;
+        return res.send('Error 404: No quote found');
+    }
+
+    var n = getFromCol(catalog, req.params.id);
+    res.json(n);
 });
 
 app.listen(3000);

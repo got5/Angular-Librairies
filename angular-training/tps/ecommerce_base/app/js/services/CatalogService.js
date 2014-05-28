@@ -1,27 +1,22 @@
-/** Products catalog service. */
-var CatalogService = function(http, angularFire) {
-	
-	/** json catalog url */
-	var CATALOG_URL = 'data/catalog.json';
-	
-	/** Firebase catalog url */
-	var FIREBASE_BASE_URL = "https://ecommerce-angular-training.firebaseio.com/products/";
-	
-	/** Returns all products. Uses the JSON file */
-	this.getCatalog = function () {
-		return http.get(CATALOG_URL).success(function(data) {
-			console.log('Catalog loaded successfully.');
-		}).error(function(data) {
-			console.error('ERROR loading catalog: ' + data);
-		});
-	};
+(function () {
+    "use strict";
 
-	/** Returns product with given id. Uses Firebase. */
-	this.getProduct = function(pId, pScope, pProperty) {
-		angularFire(FIREBASE_BASE_URL + pId, pScope, pProperty, {});
-	};
-};
+    var app = angular.module('app');
 
-app.factory('CatalogService', ['$http', 'angularFire', function($http, angularFire) {
-	return new CatalogService($http, angularFire);
-}]);
+    /** Products catalog service. */
+    var CatalogService = function (http) {
+
+        /** Returns all products. Uses the JSON file */
+        this.getCatalog = function () {
+            return http.get('api/catalog');
+        };
+
+        this.getProduct = function (pId) {
+            return http.get('api/catalog/' + pId);
+        };
+    };
+
+    app.factory('catalogService', ['$http', function ($http) {
+        return new CatalogService($http);
+    }]);
+}());

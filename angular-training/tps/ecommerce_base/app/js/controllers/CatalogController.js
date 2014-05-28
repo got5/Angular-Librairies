@@ -1,12 +1,13 @@
-/** Catalog view controller */
-var CatalogController = function($scope, catalogService) {
+(function () {
+    "use strict";
 
-	/** Returns all products. */
-	catalogService.getCatalog().success(function(result) {
-		$scope.products = [];
-		for(var id in result.products) {
-			$scope.products.push(result.products[id]);
-		}
-	});
-};
-CatalogController.$inject = ['$scope', 'CatalogService'];
+    /** Catalog view controller */
+    angular.module('app')
+        .controller('CatalogController', ['$scope', '$location', 'catalogService', function ($scope, $location, catalogService) {
+
+            /** Returns all products. */
+            catalogService.getCatalog().success(function (result) {
+                $scope.products = result;
+            });
+        }]);
+}());

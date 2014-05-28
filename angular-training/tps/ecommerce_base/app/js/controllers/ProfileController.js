@@ -1,10 +1,14 @@
-/** Profile view controller */
-var ProfileController = function($scope) {
+(function () {
+    "use strict";
 
-	$scope.user = null; // TODO
+    /** Profile view controller */
+    angular.module('app')
+        .controller('ProfileController', ['$scope', function ($scope) {
 
-	$scope.updateUser = function() {
-		// TODO
-	};
-};
-ProfileController.$inject = [ '$scope' ];
+            $scope.user = null; // TODO
+
+            $scope.updateUser = function () {
+                // TODO
+            };
+        }]);
+}());

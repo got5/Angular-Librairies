@@ -14,7 +14,7 @@
 			</dd>
 			<dd class="k-quantity">
 				Quantity: 
-				<input type="number" ng-model="item.qty" class="product-qty" />
+				<input type="number" min="0" ng-model="item.qty" class="product-qty" />
 			</dd>
 			<dd class="price">{{item.qty * item.price | currency}}</dd>
 		</dl>
