@@ -1,9 +1,14 @@
-/** Profile view controller */
-angular.module('app').controller('ProfileController', [ '$scope', function($scope) {
+(function () {
+    "use strict";
 
-	$scope.user = null; // TODO
+    /** Profile view controller */
+    angular.module('app')
+        .controller('ProfileController', ['$scope', function ($scope) {
 
-	$scope.updateUser = function() {
-		// TODO
-	};
-}]);
+            $scope.user = null; // TODO
+
+            $scope.updateUser = function () {
+                // TODO
+            };
+        }]);
+}());

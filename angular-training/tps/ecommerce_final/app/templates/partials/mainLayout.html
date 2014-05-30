@@ -1,20 +1,20 @@
 <div id="container">
 
 	<header role="banner">
-		<h1>SDCO Book Store <small>{{ '_Slogan_' | i18n}}</small></h1>
+		<h1>SDCO Book Store <small>{{ '_Slogan_' | translate}}</small></h1>
 		
 		<p ng-if="user != null" class="k-basket-sum">
-			<a href="/basket" title="See basket details"><strong>{{nbItems}}</strong> {{ '_Basket_Items_' | i18n}}</a>
+			<a href="/basket" title="See basket details"><strong>{{nbItems}}</strong> {{ '_Basket_Items_' | translate}}</a>
 		</p>
 		<p ng-if="user != null" class="k-login-data">
 			Welcome, 
 			<span id="user-name">
 				<a href="#/profile">{{user.firstName}} {{user.lastName}}</a>
 			</span> 
-			[<strong><a href="#" ng-click="logout()">{{ '_Logout_' | i18n}}</a></strong>]
+			[<strong><a href="#" ng-click="logout()">{{ '_Logout_' | translate}}</a></strong>]
 		</p>
 		<p ng-if="user == null" id="loginLink">
-			<a href="#/login">{{ '_Sign_In_' | i18n}}</a>
+			<a href="#/login">{{ '_Sign_In_' | translate}}</a>
 		</p>
 	</header>
 	

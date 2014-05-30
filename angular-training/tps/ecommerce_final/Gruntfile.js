@@ -1,132 +1,252 @@
-// Generated on 2013-07-29 using generator-angular 0.3.1
 'use strict';
-var LIVERELOAD_PORT = 35729;
-var lrSnippet = require('connect-livereload')({ port: LIVERELOAD_PORT });
-var mountFolder = function (connect, dir) {
-    return connect.static(require('path').resolve(dir));
-};
+var proxySnippet = require('grunt-connect-proxy/lib/utils').proxyRequest;
 
-module.exports = function (grunt) {
-    // load all grunt tasks
-    require('matchdep').filterDev('grunt-*').forEach(grunt.loadNpmTasks);
-
-    // configurable paths
-    var yeomanConfig = {
-        app: 'app'
-    };
-
-    try {
-        yeomanConfig.app = require('./bower.json').appPath || yeomanConfig.app;
-    } catch (e) {
-    }
+module.exports = function(grunt){
 
     grunt.initConfig({
-        yeoman: yeomanConfig,
-        watch: {
 
-            livereload: {
+        pkg: grunt.file.readJSON("package.json"),
+
+        concat: {
+            js: {
+                src: ['app/vendor/**/*.js', 'app/js/**/*.js'],
+                dest: 'prod/<%= pkg.name %>.js'
+            },
+            css: {
+                src: ['app/style/**/*.css'],
+                dest: 'prod/style/styles.css'
+            }
+        },
+
+        watch: {
+            js: {
+                files: ['app/js/**/*.js', 'test/unit/**/*.js'],
+                tasks: ['karma:unit:run'],
                 options: {
-                    livereload: LIVERELOAD_PORT
+                    livereload: true
+                }
+            },
+            css: {
+                files: ['app/style/**/*.css'],
+                tasks: [],
+                options: {
+                    livereload: true
+                }
+            }
+        },
+
+        copy: {
+            prod: {
+                cwd: 'app/',
+                expand: true,
+                src: ['**'],
+                dest: 'prod/'
+            }
+        },
+
+        eslint: {
+            all: ['app/js/**/*.js'],
+            options: {
+                config: "config/eslint-browser.json"
+            }
+        },
+
+        uglify: {
+            prod: {
+                files: [{
+                    expand: true,
+                    cwd: 'prod/js',
+                    src: '**/*.js',
+                    dest: 'prod/js'
+                }],
+                options: {
+                    mangle: true
+                }
+            }
+        },
+
+        cssmin: {
+            combine: {
+                options: {
+                    banner: '/* CSS Minified stylesheet */'
                 },
-                files: [
-                    '<%= yeoman.app %>/{,*/}*.html',
-                    '{.tmp,<%= yeoman.app %>}/styles/{,*/}*.css',
-                    ' {.tmp,<%= yeoman.app %>}/scripts/{,*/}*.js',
-                    '<%= yeoman.app %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}'
+                files: {
+                    'prod/style/styles.css': ['prod/style/styles.css']
+                }
+            }
+        },
+
+        htmlmin: {
+            prod: {
+                options: {                                 // Target options
+                    removeComments: true,
+                    collapseWhitespace: true
+                },
+                files: [{
+                    expand: true,
+                    cwd: 'prod/',
+                    src: ['index.html', 'templates/**/*.html'],
+                    dest: 'prod/'
+                }
                 ]
             }
         },
-        connect: {
-            options: {
-                port: 9000,
-
-                // Change this to '0.0.0.0' to access the server from outside.
-                hostname: 'localhost'
-            },
-            livereload: {
+        csslint: {
+            strict: {
                 options: {
-                    middleware: function (connect) {
-                        return [
-                            lrSnippet,
-                            mountFolder(connect, '.tmp'),
-                            mountFolder(connect, yeomanConfig.app)
-                        ];
-                    }
-                }
-            },
-            test: {
-                options: {
-                    middleware: function (connect) {
-                        return [
-                            mountFolder(connect, '.tmp'),
-                            mountFolder(connect, 'test')
-                        ];
-                    }
-                }
-            }
-        },
-        open: {
-            server: {
-                url: 'http://localhost:<%= connect.options.port %>'
+                    import: 2
+                },
+                src: ['app/style/*.css']
             }
         },
         clean: {
-            server: '.tmp'
+            prodpre: {
+                src: ["prod/*"]
+            }
         },
+
         karma: {
             unit: {
-                configFile: 'test/karma.conf.js',
+                configFile: 'config/karma.conf.js',
                 singleRun: true
+            }
+        },
+
+        protractor: {
+            options: {
+                configFile: "node_modules/protractor/referenceConf.js", // Default config file
+                keepAlive: true, // If false, the grunt process stops when the test fails.
+                args: {
+                    // Arguments passed to the command
+                }
             },
-            e2e: {
-                configFile: 'test/karma.e2e.conf.js',
-                singleRun: true
+            run: {
+                configFile: "config/protractor-conf.js",
+                options: {
+                    args: {
+
+                    }
+                }
+            }
+        },
+
+        connect: {
+            server: {
+                options: {
+                    port: 9001,
+                    base: 'app',
+                    livereload: false,
+                    open: false,
+                    middleware: function (connect, options) {
+                        var proxy = require('grunt-connect-proxy/lib/utils').proxyRequest;
+                        return [
+                            // Include the proxy first
+                            proxy,
+                            // Serve static files.
+                            connect.static(options.base),
+                            // Make empty directories browsable.
+                            connect.directory(options.base)
+                        ];
+                    }
+
+                },
+                proxies: [
+                    {
+                        context: '/api',
+                        host: 'localhost',
+                        port: 3000,
+                        https: false,
+                        changeOrigin: false,
+                        xforward: false
+                        /*,rewrite: {
+                            '^/api': '/api'
+                        }*/
+                    }
+                ]
             },
-            midway: {
-                configFile: 'test/karma-midway.conf.js',
-                autoWatch: false,
-                singleRun: true
+            prod: {
+                options: {
+                    port: 9002,
+                    base: 'prod',
+                    livereload: false,
+                    open: true,
+                    middleware: function (connect, options) {
+                        var proxy = require('grunt-connect-proxy/lib/utils').proxyRequest;
+                        return [
+                            // Include the proxy first
+                            proxy,
+                            // Serve static files.
+                            connect.static(options.base),
+                            // Make empty directories browsable.
+                            connect.directory(options.base)
+                        ];
+                    }
+                },
+                proxies: [
+                    {
+                        context: '/api',
+                        host: '127.0.0.1',
+                        port: 3000,
+                        https: false,
+                        changeOrigin: false,
+                        xforward: false
+                        /*,rewrite: {
+                            '^/api': '/api'
+                        }*/
+                    }
+                ]
+
             }
         }
     });
 
-    grunt.registerTask('server', function (target) {
-        if (target === 'dist') {
-            return grunt.task.run(['build', 'open:server', 'connect:dist:keepalive']);
-        }
+    require('matchdep').filterDev('grunt-contrib-*').forEach(grunt.loadNpmTasks);
+    grunt.loadNpmTasks('grunt-connect-proxy');
+    grunt.loadNpmTasks('grunt-karma');
+    grunt.loadNpmTasks('grunt-protractor-runner');
+    grunt.loadNpmTasks('eslint-grunt');
 
-        grunt.task.run([
-            'clean:server',
-            'connect:livereload',
-            'open:server',
-            'watch'
-        ]);
-    });
+    grunt.registerTask("build", [
+        "test",
+        "clean:prodpre",
+        "check",
+        "copy:prod",
+        "cssmin",
+        "htmlmin:prod",
+        "uglify:prod"
+    ]);
 
-    grunt.registerTask('test:unit', [
-        'clean:server',
-        'connect:test',
-        'karma:unit'
+    grunt.registerTask("check", [
+        "eslint:all"
+        /*,"csslint"*/
+    ]);
+
+    grunt.registerTask("test:unit", [
+        'karma'
     ]);
 
     grunt.registerTask('test:e2e', [
-        'clean:server',
-        //'livereload-start',
-        'connect:livereload',
-        'karma:e2e'
+        'configureProxies:server',
+        'connect:server',
+        'protractor:run'
     ]);
 
-    grunt.registerTask('test:midway', [
-        'clean:server',
-        'connect:test',
-        'karma:midway'
+    grunt.registerTask("test", [
+        'connect:server',
+        'karma',
+        'protractor:run'
+    ]);
+
+    grunt.registerTask("default", [
+        'configureProxies:server',
+        "connect:server",
+        "watch"
     ]);
 
 
-    grunt.registerTask('default', [
-
-        'test:unit',
-        //'test:e2e',
-        //'test:midway',
+    grunt.registerTask("runProd", [
+        "build",
+        "connect:prod",
+        "watch"
     ]);
 };

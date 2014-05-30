@@ -17,7 +17,6 @@ module.exports = function(config) {
 
 		// list of files / patterns to load in the browser
 		files : [ 
-		    'lib/firebase.js', 
 		    '../test/lib/jquery/jquery.js',
 		    'lib/angular/angular.js', 'lib/**/*.js', 
 		    'js/**/*.js',

@@ -1,6 +1,5 @@
-{
-	"products":{
-		"1": {
+[
+		 {
 			"id": 1,
 			"name": "AngularJS",
 			"author": "Brad Green, Shyam Seshadri",
@@ -13,10 +12,16 @@
 					"rate": 2,
 					"user": "Laurent Wroblewski",
 					"comment": "Test comment"
-				}
+				},
+                {
+                    "rate": 4,
+                    "user": "Pierre Marot",
+                    "comment": "my comment..."
+                }
 			]
-		},
-		"2": {
+		
+		}, 
+		{
 			"id": 2,
 			"name": "Angularjs in Action",
 			"author": "Brian Ford, Lukas Ruebbelke",
@@ -24,9 +29,16 @@
 			"description": "Description...", 
 			"category": "book", 
 			"isNew": true,
-			"comments": null
+			"comments": [
+
+                {
+                    "rate": 2,
+                    "user": "Pierre Marot",
+                    "comment": "my comment..."
+                }
+            ]
 		}, 
-		"3": {
+		 {
 			"id": 3,
 			"name": "Instant AngularJS Starter",
 			"author": "Dan Menard",
@@ -36,7 +48,7 @@
 			"isNew": false,
 			"comments": null
 		}, 
-		"4": {
+		 {
 			"id": 4,
 			"name": "Javascript: The Definitive Guide",
 			"author": "David Flanagan",
@@ -46,7 +58,7 @@
 			"isNew": false,
 			"comments": null
 		}, 
-		"5": {
+		 {
 			"id": 5,
 			"name": "JavaScript and HTML5 Now",
 			"author": "Kyle Simpson",
@@ -56,7 +68,7 @@
 			"isNew": false,
 			"comments": null
 		}, 
-		"6": {
+		{
 			"id": 6,
 			"name": "Tapestry in Action",
 			"author": "Lewis M Ship",
@@ -66,7 +78,7 @@
 			"isNew": false,
 			"comments": null
 		}, 
-		"7": {
+		 {
 			"id": 7,
 			"name": "High Performance Flash",
 			"author": "Elad Elrom, R.J. Owen",
@@ -76,7 +88,7 @@
 			"isNew": true,
 			"comments": null
 		}, 
-		"8": {
+		 {
 			"id": 8,
 			"name": "Programming Windows 8 Apps",
 			"author": "Kraig Brockschmidt",
@@ -86,7 +98,7 @@
 			"isNew": false,
 			"comments": null
 		}, 
-		"9": {
+		 {
 			"id": 9,
 			"name": "Functional JavaScript",
 			"author": "Michael Fogus",
@@ -96,5 +108,4 @@
 			"isNew": false,
 			"comments": null
 		}
-	}
-}
+]

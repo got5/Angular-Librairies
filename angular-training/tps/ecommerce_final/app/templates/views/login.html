@@ -3,22 +3,22 @@
 		<h3>{{errorMsg}}</h3>
 	</div>
 
-	<form id="login" class="k-login" method="post" action="">
+	<form  class="k-login">
 		<fieldset>
 			<legend>Sign in</legend>
 			<p>
-				<label for="userid-tag">User identifier</label> 
-				<input type="text" ng-model="login" />
+				<label for="login">User identifier</label>
+				<input id="login" type="text" />
 			</p>
 			<p>
-				<label for="password-tag">Password</label> 
-				<input type="password" ng-model="password" /> 
+				<label for="password">Password</label>
+				<input id="password" type="password"  />
 				<span class="lost-password">
 					<a href="#">Forgot your password?</a>
 				</span>
 			</p>
 			<p>
-				<button class="btn" ng-click="logUser()">Login</button>
+				<button type="submit" class="btn">Login</button>
 			</p>
 		</fieldset>
 		<p class="to-register">

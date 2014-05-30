@@ -1,0 +1,7 @@
+[
+    { "id": 0, "author": "Bruno", "category": "Troll", "content": "I hate Javascript!", "likes": 8 },
+    { "id": 1, "author": "Pierre", "category": "Success", "content": "My survey application is finally deployed.", "likes": 10 },
+    { "id": 2, "author": "Régis", "category": "True fact", "content": "Angular training is bullsh**.", "likes": 1200 },
+    { "id": 3, "author": "Régis", "category": "Hater", "content": "Unit Tests are useless", "likes": 1},
+    { "id": 4, "author": "Emmanuel", "category": "Romance", "content": "My world for Kazan", "likes": 200}
+]
