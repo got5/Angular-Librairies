@@ -1,4 +1,17 @@
-angular.module('templates-directives', ['editor/templates/editor-horizontal.html', 'editor/templates/editor-vertical.html']);
+angular.module('templates-directives', ['editor/templates/button-valid.html', 'editor/templates/editor-horizontal.html', 'editor/templates/editor-vertical.html']);
+
+angular.module("editor/templates/button-valid.html", []).run(["$templateCache", function($templateCache) {
+  $templateCache.put("editor/templates/button-valid.html",
+    "<div>\n" +
+    "    <div class=\"right-header\">Validate exercise:\n" +
+    "        <button class=\"btn\" ng-click=\"validate()\"><img src=\"images/valid.png\"/></button>\n" +
+    "    </div>\n" +
+    "    <div ng-if=\"showTestResults\" class=\"test-result-popup\">\n" +
+    "        <img src=\"images/close.gif\" ng-click=\"closePopup()\" class=\"close-icon\"/>\n" +
+    "        <span ng-bind-html=\"testResult\"></span>\n" +
+    "    </div>\n" +
+    "</div>");
+}]);
 
 angular.module("editor/templates/editor-horizontal.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("editor/templates/editor-horizontal.html",

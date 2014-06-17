@@ -233,10 +233,14 @@ a:hover {
     border: 1px solid #578;
     border-radius: 8px;
 }
-.note {
-    font-size: 1em;
+
+[contenteditable] {
+    background-color: white;
+    font-family: 'source code pro',sans-serif;
+    font-size: 0.5em;
     margin: 10px;
 }
+
 
 .back-image {
     border-radius: 15px;

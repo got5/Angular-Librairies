@@ -95,6 +95,12 @@ module.exports = function(grunt){
                 src:['**'],
                 dest: '<%= yeoman.dist %>/'
 
+            },
+            editor:{
+                cwd:'<%= yeoman.app %>/editor/',
+                expand:true,
+                src:['images/**/*'],
+                dest:'<%= yeoman.dist %>/'
             }
         },
 
@@ -218,6 +224,7 @@ module.exports = function(grunt){
         "clean:temp",
         "copy:ace",
         "usemin",
+        "copy:editor",
         "htmlmin"
     ]);
 
