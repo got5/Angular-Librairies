@@ -1,12 +1,12 @@
 'use strict';
 
 var application = angular.module('trainingApp',
-        [ 'ngRoute', 'ngAnimate', 'ui.bootstrap', 'training.editor' ])
+        [ 'ngRoute', 'ngAnimate', 'ngSanitize', 'ui.bootstrap', 'training.editor' ])
     .config(['$routeProvider','$locationProvider','$compileProvider','$injector',
         function ($routeProvider, $locationProvider, $compileProvider, $injector) {
 
         var request = new XMLHttpRequest();
-        request.open("GET", "data/slides.json", false);
+        request.open("GET", "/slides", false);
         request.send(null);
         application.slides = JSON.parse(request.responseText);
         $locationProvider.html5Mode(false); // TODO
@@ -24,3 +24,10 @@ var application = angular.module('trainingApp',
         application.injector = $injector;
 
     }]);
+
+//Get options content
+var request = new XMLHttpRequest();
+request.open("GET", "/options", false);
+request.send(null);
+
+application.constant('customOptions', angular.fromJson(request.responseText));    

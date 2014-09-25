@@ -1,8 +1,9 @@
 var express = require('express'),
-	app     = express(),
-	slidesManager= require('./more/slidesManager'),
-	maxAge  = 31557600000,
-	base= __dirname + '/..';
+	path= require('path'),
+	slidesManager= require('./more/slidesManager');
+
+var app     = express(),
+	base= path.resolve(__dirname + '/..');
 
 app.use(express.compress());
 app.use(express.bodyParser());
@@ -29,10 +30,10 @@ app.get('/options',
 
 app.get('/*', function(req,res)
 {
-    res.sendfile(__dirname + '/app/index.html');
+    res.sendfile(base + '/app/index.html');
 });
 
 
-app.listen(3002);
-
-console.log('Listening on port 3002');
+var port= 3002;
+app.listen(port);
+console.log('Listening on ' + 3002);

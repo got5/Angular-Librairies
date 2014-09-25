@@ -4,8 +4,8 @@ prod/
 .tmp
 .sass-cache
 .*sublime*
-app/components
 *.iml
 .idea/
+app/vendor
 demo/lib/
 demoFinished/lib/
