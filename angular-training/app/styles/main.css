@@ -343,6 +343,7 @@ td {
 	cursor: pointer;
 }
 
+
 /* Ratings */
 p.rating {font-size: 0.75em;}
 .rating {
@@ -373,4 +374,21 @@ p.rating {font-size: 0.75em;}
 .zero {
 	color: #000;
 	background: #FFF url(../images/bg_ratings.png) 0 1px no-repeat;
+}
+
+
+/* Remarks */
+
+.remarks {
+    float: right;
+    margin-right: 5px;
+    
+}
+
+.remarks-content {
+    font-size: small;
+}
+
+.remarks-content li{
+    line-height: 20px;
 }

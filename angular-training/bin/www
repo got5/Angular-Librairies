@@ -1,0 +1,38 @@
+var express = require('express'),
+	app     = express(),
+	slidesManager= require('./more/slidesManager'),
+	maxAge  = 31557600000,
+	base= __dirname + '/..';
+
+app.use(express.compress());
+app.use(express.bodyParser());
+app.use(express.methodOverride());
+app.use(express.static(base + '/app' ));
+
+app.get('/slides', function(req, res){
+		var slidesPath= base + '/app/data/slides.json';
+		slidesManager.getSlides(slidesPath, function(data){
+			res.json(data);
+		});
+	}
+);
+
+app.get('/options',
+	function(req, res){
+		res.json(
+			{
+				'disableRemarks': slidesManager.disableRemarks
+			}
+		);
+	}
+);
+
+app.get('/*', function(req,res)
+{
+    res.sendfile(__dirname + '/app/index.html');
+});
+
+
+app.listen(3002);
+
+console.log('Listening on port 3002');

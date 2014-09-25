@@ -1,6 +1,10 @@
 'use strict';
 
-var MainController = function ($scope, $route, $location, $document, $window) {
+
+var MainController = 
+        function($scope, $route, $location, $document, $window, $animate, $modal, customOptions) {
+
+    $scope.options= customOptions;
 
     var animation = "view-animate";
     var currentLocation = $location.url();
@@ -127,5 +131,55 @@ var MainController = function ($scope, $route, $location, $document, $window) {
         }
         return animation;
     };
+
+
+
+
+
+    $scope.displayRemarksIcon= function(){
+        return (
+            $scope.slides &&
+            $scope.slides[$scope.slideIndex] &&
+            $scope.slides[$scope.slideIndex].remarks
+        );
+    }
+
+
+    $scope.showRemarks= function(){
+
+
+        var modalCtrl= function($scope, $modalInstance, route){
+
+            $scope.closeModal= function(){
+                $modalInstance.close();
+            }
+
+
+            $scope.getRemarks= function(){
+                if (route && route.remarks){
+                    return route.remarks;
+                }
+                else{
+                    return "N/A";
+                }            
+
+            }
+        }
+
+
+        $scope.myModal= $modal.open(
+            {
+                templateUrl:'partials/modals/standard.html',
+                controller: modalCtrl,
+                resolve:{
+                    route: function(){
+                        return $scope.slides[$scope.slideIndex];
+                    }
+                }
+            }
+        );
+    }
+
 };
-MainController.$inject = [ '$scope', '$route', '$location', '$document', '$window', '$animate' ];
+
+MainController.$inject = [ '$scope', '$route', '$location', '$document', '$window', '$animate', '$modal', 'customOptions' ];

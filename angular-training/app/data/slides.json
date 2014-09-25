@@ -340,7 +340,26 @@
     },
     {
         "title": "Creating Angular Services",
-        "content": "services/types"
+        "content": "services/types",
+        "remarks": "Il y a 5 manières de créer un service, \
+                dont 4 sont réellement différentes. <br/> \
+        Pour déclarer un type de service particulier, il faut utiliser la méthode adéquate du module: \
+        <ul> \
+        <li>Pour un provider: angular.module('monModule').provider(...)</li>\
+        <li>Pour un 'service factory': angular.module('monModule').factory(...) </li>\
+        <li>Pour une 'factory function': angular.module('monModule').service(...) ou angular.module('monModule').factory(...) (voir exemple plus loin)</li>\
+        <li>Pour une value: angular.module('monModule').value(...) </li>\
+        <li>Pour une constante: angular.module('monModule').constant(...)\
+        </ul>\
+        'service factory' et 'factory function' ont les mêmes fonctionalités, seule la syntaxe diffère entre eux. <br />\
+        Le provider est le plus complet, car il permet de faire de l'injection de dépendance \
+        (le service ainsi défini peut en utiliser d'autres) et il est configurable.\
+         La configuration d'un service est une étape qui se fait au chargement de l'application,\
+         (voir la configuration des routes dans l'application ecommerce pour un exemple).\
+         Cette configuration ne s'effectue pas sur l'instance du service, mais sur son provider\
+         (voir plus loin, le provider est l'objet qui contient le service). Par convention, cet objet\
+         provider est nommé [nom du service]Provider par angular. <br/>\
+         Official documentation <a href='https://docs.angularjs.org/guide/providers'>here</a>"
     },
     {
         "title": "provider()",
@@ -348,19 +367,51 @@
     },
     {
         "title": "provider()",
-        "content": "services/provider_2"
+        "content": "services/provider_2",
+        "remarks":"\
+        Ici on déclare 2 providers. L'un sous forme de fonction et l'autre sous forme d'objet.\
+        L'essentiel étant que dans un cas comme dans l'autre, notre provider contienne bien une \
+        méthode 'get'. Cette méthode retournera le service qui nous intéresse et que nous avons défini.<br/>\
+        Ce qu'il faut remarquer ici, c'est que dans le 2nd exemple, le provider est configurabe.\
+        En effet, le provider associé à 'CartService' contient deux attributs ainsi que la méthode\
+        setMode qui sera donc utilisable au chargement de l'application (encore une fois, voir exemple de\
+        la configuration des routes au chargement d'ecommerce)."
     },
     {
         "title": "factory()",
-        "content": "services/factory"
+        "content": "services/factory",
+        "remarks": "\
+        Dans le cas ou on utilise la méthode factory() pour définir notre service, il faut associer\
+        au nom de notre service (ici 'UserService') une fonction qui retournera le service en question.\
+        L'intéret de cette manière de faire et que cette fonction bénéficie du mécanisme d'IOC d'Angular,\
+        on peut donc y injecter d'autres services. <br />\
+        TODO: Vérifier s'ils sont configurables, car provider est utilisé pour les définir."
     },
     {
         "title": "service()",
-        "content": "services/service"
+        "content": "services/service",
+        "remarks": "\
+        The 'service' method is almost the same than the factory one. \
+        The difference is that you don't have to define a function which returns\
+        the service, but you specify directly the service function to use.\
+        If you use DI with the service method then Angular will automatically\
+        use the new operator with the specified parameters: <br />\
+        <ul>\
+        <li>With -> myModule.service('myService', ['myDependency', MyService]) )</li>\
+        <li>Angular does -> new MyService(myDependency) </li>\
+        </ul>\
+        It is just a little bit easier in this specific case, nothing more.\
+        "
     },
     {
         "title": "value()",
-        "content": "services/value"
+        "content": "services/value",
+        "remarks":"\
+        To use when you have already something (function/object), maybe coming from\
+        an external library, and that you to make a service from it.\
+        The main difference with factory() and service() is that here you\
+        can't use DI to include other services, your service has to be independant of\
+        other ones"
     },
     {
         "title": "constant()",
@@ -459,7 +510,13 @@
     },
     {
         "title": "Writing directives",
-        "content": "directives/create"
+        "content": "directives/create",
+        "remarks": "\
+        By default, if you don't restrict it, the scope accessible in the directive\
+        template is the same than the one of the controller where you use this directive element\
+        If you need more info concerning directives, the official documentation is \
+        <a href='https://docs.angularjs.org/guide/directive'>here</a> \
+        "
     },
     {
         "title": "Using the link function",
