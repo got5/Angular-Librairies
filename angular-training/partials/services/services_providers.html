@@ -1,0 +1,15 @@
+
+	<div class="bloc-content text-content">
+		<ul>
+			<li>Providers are used to <span class="text-red">instantiate and configure</span> services.</li>
+			<li>They have a method called <i class="text-red">$get</i>, used to create and return the service.</li>
+			<li>The provider is referenced in the dependency injector, with the same name as the instance they create and suffix <i class="text-red">"Provider"</i>.</li>
+			<li>Angular dependency injection works as followed:</li>
+			<ol>
+				<li>A controller/directive/service/etc. need a service named <i>UserService</i>...</li>
+				<li>Angular will search for the provider called <i>UserServiceProvider</i> in the provider cache...</li>
+				<li>It calls its method <i>$get</i> to create <i>UserService</i> instance...</li>
+				<li>And stores it in the services cache, for further use (services are singletons).</li>
+			</ol>
+		</ul>
+	<p contenteditable></p></div>

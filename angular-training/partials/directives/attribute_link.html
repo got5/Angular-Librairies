@@ -1,0 +1,24 @@
+<div class="bloc-content text-content">
+	<ul>
+		<li>Function used to <span class="text-red">update the DOM</span> and <span class="text-red">register DOM 
+			listeners</span>. Other treatments should be done in the directive controller.</li>
+		<li>Executed after the directive has been compiled.</li>
+		<li>Can have optional following parameters (identified by their order):</li>
+		<ol>
+			<li><i class="text-red">scope</i>: scope used by the directive.</li>
+			<li><i class="text-red">iElement</i>: Instance element. Can be manipulated, as well as its children.</li>
+			<li><i class="text-red">iAttrs</i>: Instance attributes. </li>
+			<li><i class="text-red">controller</i>: Controller instance. <i>Only if at least one directive on the
+				element has defined a controller.</i> This controller is shared among all directives. Used with
+				<i class="text-red">require</i> attribute.</li>
+		</ol>
+	</ul>
+		
+<editor editor-options="{showPreview:false , showTabs:false , height:60 }">
+<file type="javascript" name="directive.js">function link(scope, iElement, iAttrs, controller) {
+	//TODO : DOM manipulation, listeners, etc.
+}
+</file>
+</editor>
+
+<p contenteditable></p></div>

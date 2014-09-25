@@ -1,0 +1,29 @@
+<div class="bloc-content text-content">
+	<ul>
+		<li>Registers an existing instance (primitive/object/function) as a service, using the method <span class="text-red">value(name, value)</span>.</li>
+		<li>The service instance already exists before the first use of the service.</li>
+		<li>Used for simple objects which do not need any other services, like utility method libraries.</li>
+	</ul>
+		
+<editor editor-options="{showPreview:false , showTabs:false , height:440 }">
+	<file type="javascript" name="service.js">var appServices = angular.module('ecommerce.services', []);
+
+// Simple object, which do not need any DI.
+appServices.value('nbProductsPerPage', 5);
+
+// Utility methods library.
+var ProductUtils = function() {
+	//TODO
+};
+appServices.value('ProductUtils', new ProductUtils());
+
+//Controller using value services.
+function ProductBisCtrl(nbProductsPerPage, ProductUtils) {
+	$scope.setNbProductsPerPage = function(value) {
+		nbProductsPerPage = value;
+	};
+}	
+</file>
+</editor>
+
+<p contenteditable></p></div>
