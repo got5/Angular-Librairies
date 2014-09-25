@@ -84,7 +84,7 @@ module.exports = function(grunt){
                     '.htaccess',
                     '*.html',
                     'partials/**/*.html',
-                    'images/{,*/}*.{webp}',
+                    'images/*',
                     'fonts/*'
                 ],
                 dest: '<%= yeoman.dist %>/'
@@ -145,16 +145,16 @@ module.exports = function(grunt){
                 }]
             }
         },
-        imagemin: {
-            dist: {
-                files: [{
-                    expand: true,
-                    cwd: '<%= yeoman.app %>/images',
-                    src: '{,*/}*.{png,jpg,jpeg,gif}',
-                    dest: '<%= yeoman.dist %>/images'
-                }]
-            }
-        },
+        // imagemin: {
+        //     dist: {
+        //         files: [{
+        //             expand: true,
+        //             cwd: '<%= yeoman.app %>/images',
+        //             src: '{,*/}*.{png,jpg,jpeg,gif}',
+        //             dest: '<%= yeoman.dist %>/images'
+        //         }]
+        //     }
+        // },
         svgmin: {
             dist: {
                 files: [{
@@ -217,7 +217,7 @@ module.exports = function(grunt){
         'useminPrepare',
         "concat",
         "copy:prod",
-        "imagemin",
+        //"imagemin",
         //"cssmin",
       //  "uglify:prod",
         "rev",
