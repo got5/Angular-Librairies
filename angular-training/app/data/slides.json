@@ -3,6 +3,9 @@
         "content": "title"
     },
     {
+        "content": "notes"
+    },
+    {
         "title": "Contents",
         "content": "contents"
     },

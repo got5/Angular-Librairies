@@ -8,6 +8,7 @@ var UserService = function($http, $q, $log,isDebugMode) {
 		// temp user, if not logged.
 		if (!currentUser) {
 			currentUser = new User();
+            $cook
 		}
 		return currentUser;
 	};

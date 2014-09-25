@@ -1,9 +1,8 @@
 'use strict';
 
-var filters = angular.module('filters', []);
 
 /** Filter example */
-filters.filter('split', function() {
+application.filter('split', function() {
 	return function(input, nbChars, uppercase) {
 		var out = input;
 		if (input.length > nbChars) {

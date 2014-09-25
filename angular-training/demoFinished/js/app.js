@@ -29,11 +29,11 @@ app.controller('CustomersController',function($scope,customersFactory){
     })
 });
 
-app.factory('customersFactory',function($http){
+app.factory('customersFactory', function ($http) {
     var factory = {};
-    
-    factory.query = function(){
-       return  $http.get('/customers.json')
-    }
+
+    factory.query = function () {
+        return  $http.get('/customers.json')
+    };
     return factory;
-})
+});

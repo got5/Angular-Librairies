@@ -1,31 +1,37 @@
-/** Login view controller */
-var LoginController = function($scope, $http, $location, $cookies, $log)
-{
-	$scope.errorMsg = null;
-	
-	/** Called on a click on the Login button. */
-	$scope.logUser = function() {
-		/** Gets all users... */
-		$http.get('/data/users.json')
-			.success(function(users) {
-				/** ... And checks if one of them has the good login/password. */
-				for (var index = 0; index < users.length; index++) {
-					var user = users[index];
-					if (user.login == $scope.login && user.password == $scope.password) {
-						/** Login is registered in a cookie. */
-						$cookies.login = $scope.login;
-						/** Redirects on home page. */
-						$location.path("/");
-					}
-				}
-				$scope.errorMsg = "User not found.";
-			})
-			.error(function(reason) {
-				$log.error('Unable to load users...');
-			});
-	};
-};
-LoginController.$inject = ['$scope', '$http', '$location', '$cookies', '$log'];
+(function () {
+    "use strict";
+
+    angular.module('app')
+        .controller('LoginController', ['$scope' , '$http', '$log', '$cookies', '$location', function ($scope, $http, $log, $cookies, $location) {
+            $scope.errorMsg = null;
+
+            $scope.logUser = function () {
+                $http.post('/api/login', {login: $scope.login, password: $scope.password})
+                    .success(function (user) {
+                        $log.info('Authentication successed !');
+                        /**
+                         * Add the auth token to the http headers. It's that token which allow you to be authenticated on your Server.
+                         */
+                        $http.defaults.headers.common.Authentication = user.token;
+                        /**
+                         * Save the token in the cookies to not lose the token when the page is refreshed
+                         */
+                        $cookies.token = user.token;
+                        /**
+                         * We don't want the token to be everywhere in the app
+                         */
+                        user.token = '';
+                        $location.path('/');
+
+                    })
+                    .error(function (reason) {
+                            $log.error('unable to log  ' + reason);
+                            $scope.errorMsg = "Bad Login and/or password";
+                    });
+
+            };
+        }]);
+}());
 
 
 

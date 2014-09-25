@@ -1,20 +1,32 @@
 <!DOCTYPE html>
-<html>
+<!--[if lt IE 7]>
+<html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>
+<html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>
+<html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html class="no-js"> <!--<![endif]-->
 <head>
-    <title>AngularJS Training</title>
-    <link rel="stylesheet" href="styles/animation.css">
+    <title>HTML5/CSS3 Training</title>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+
+    <link rel="stylesheet" href="styles/animation.css"/>
     <link rel="stylesheet" href="styles/bootstrap.css"/>
-    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/main.css"/>
+
+
 </head>
-<body ng-app="angularTrainingApp">
+<body ng-app="trainingApp">
 
 <div class="slide" ng-controller="MainController">
 
-    <div  ng-cloak popover-placement="bottom" popover="{{popupText}}" ng-mousemove="setPopupText($event)"
+    <div ng-cloak popover-placement="bottom" popover="{{popupText}}" ng-mousemove="setPopupText($event)"
          popover-trigger="mouseenter">
         <a ng-click="gotoSelectedSlide()">
             <progressbar value="slideIndexAsPc" type="danger" class="progress-slideshow active">
-                {{height()}} <span style="color:black; white-space:nowrap;">{{slideIndex}} / {{slides.length}}</span></progressbar>
+                {{height()}} <span style="color:black; white-space:nowrap;">{{slideIndex}} / {{slides.length}}</span>
+            </progressbar>
         </a>
     </div>
 
@@ -38,29 +50,28 @@
 </div>
 
 
-<script src="components/lodash/dist/lodash.min.js"></script>
-<script src="lib/ace-builds/src-min/ace.js"></script><!--todo : Change ASAP - update to ace 1.1.2-->
-<script src="lib/ace-builds/src-min/ext-language_tools.js"></script>
-<script src="components/angular/angular.min.js"></script>
-<script src="components/angular-route/angular-route.min.js"></script>
-<script src="components/angular-animate/angular-animate.min.js"></script>
-<script src="components/angular-ui-bootstrap-bower/ui-bootstrap-tpls.js"></script>
-<script src="components/angular-sanitize/angular-sanitize.min.js"></script>
+<script src="vendor/ace-builds/src-min/ace.js"></script>
+<script src="vendor/ace-builds/src-min/ext-language_tools.js"></script>
+<script src="vendor/angular/angular.min.js"></script>
+<script src="vendor/angular-route/angular-route.min.js"></script>
+<script src="vendor/angular-animate/angular-animate.min.js"></script>
+<script src="vendor/angular-ui-bootstrap-bower/ui-bootstrap-tpls.min.js"></script>
+<script src="vendor/angular-sanitize/angular-sanitize.min.js"></script>
 
+<script src="editor/templates.js"></script>
+<script src="editor/training-editor.js"></script>
+<script src="editor/js/editor.js"></script>
+<script src="editor/js/corrector.js"></script>
 
 <script src="js/app.js"></script>
-
-<script src="js/controllers/mainController.js"></script>
-<script src="js/controllers/animationController.js"></script>
-<script src="js/controllers/slides.js"></script>
-
-<script src="js/directives/directives.js"></script>
-<script src="js/directives/editor.js"></script>
-<script src="js/directives/corrector.js"></script>
-
+<script src="js/directives/sideButton.js"></script>
+<script src="js/directives/note.js"></script>
 <script src="js/filters/filters.js"></script>
 
-<script src="js/services/services.js"></script>
+<script src="js/controllers/noteCtrl.js"></script>
+<script src="js/controllers/mainController.js"></script>
+<script src="js/controllers/slides.js"></script>
+<script src="js/controllers/animationController.js"></script>
 
 </body>
 </html>

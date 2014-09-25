@@ -1,7 +1,7 @@
 (function () {
     "use strict";
 
-    var app = angular.module('app', [ 'ngCookies', 'ngRoute', 'ui.bootstrap', 'pascalprecht.translate']);
+    var app = angular.module('app', [ 'ngCookies', 'ngRoute','ngResource', 'ui.bootstrap', 'pascalprecht.translate']);
 
     /** Services configuration */
     app.config(
@@ -59,6 +59,6 @@
                 });
             }
         ]).run(function run( $http, $cookies ){
-        $http.defaults.headers.common.Authentication = $cookies.token;
-    });
+            $http.defaults.headers.common.Authentication = $cookies.token;
+        });
 }());
