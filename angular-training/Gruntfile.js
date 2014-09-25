@@ -203,7 +203,7 @@ module.exports = function(grunt){
                 src: ["<%= yeoman.dist %>/*"]
             },
             temp:{
-                src:['<%= yeoman.tmp %>/*']
+                src:['<%= yeoman.tmp %>']
             }
         }
     });
@@ -221,11 +221,11 @@ module.exports = function(grunt){
         //"cssmin",
       //  "uglify:prod",
         "rev",
-        "clean:temp",
         "copy:ace",
         "usemin",
         "copy:editor",
-        "htmlmin"
+        "htmlmin",
+        "clean:temp"
     ]);
 
 };
