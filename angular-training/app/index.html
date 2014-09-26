@@ -17,61 +17,71 @@
 
 
 </head>
-<body ng-app="trainingApp">
+    <body ng-app="trainingApp">
 
-<div class="slide" ng-controller="MainController">
+        <div class="slide" ng-controller="MainController">
 
-    <div ng-cloak popover-placement="bottom" popover="{{popupText}}" ng-mousemove="setPopupText($event)"
-         popover-trigger="mouseenter">
-        <a ng-click="gotoSelectedSlide()">
-            <progressbar value="slideIndexAsPc" type="danger" class="progress-slideshow active">
-                {{height()}} <span style="color:black; white-space:nowrap;">{{slideIndex}} / {{slides.length}}</span>
-            </progressbar>
-        </a>
-    </div>
+            <div ng-cloak popover-placement="bottom" popover="{{popupText}}" ng-mousemove="setPopupText($event)"
+                 popover-trigger="mouseenter">
+                <a ng-click="gotoSelectedSlide()">
+                    <progressbar value="slideIndexAsPc" type="danger" class="progress-slideshow active">
+                        {{height()}} <span style="color:black; white-space:nowrap;">{{slideIndex}} / {{slides.length}}</span>
+                    </progressbar>
+                </a>
+            </div>
 
-    <a ng-click="previousSlide()">
-        <div class="left-triangle"></div>
-    </a>
+            <a ng-click="previousSlide()">
+                <div class="left-triangle"></div>
+            </a>
 
-    <a ng-click="nextSlide()">
-        <div class="right-triangle"></div>
-    </a>
+            <a ng-click="nextSlide()">
+                <div class="right-triangle"></div>
+            </a>
 
-    <a ng-show="!options.disableRemarks && displayRemarksIcon()" ng-click="showRemarks()" class="remarks">
-        <img src="images/info.png" />
-    </a>
+            <a ng-show="!options.disableRemarks && displayRemarksIcon()" ng-click="showRemarks()" class="remarks">
+                <img src="images/info.png" />
+            </a>
 
-    <div ng-cloak class="header" ng-show="slides[slideIndex].title">
-        <h1 class="title">{{slideIndex}}. {{slides[slideIndex].title}}</h1>
-    </div>
+            <div ng-cloak class="header" ng-show="slides[slideIndex].title">
+                <h1 class="title">{{slideIndex}}. {{slides[slideIndex].title}}</h1>
+            </div>
 
-    <div ng-cloak ng-view ng-class="getAnimation()"></div>
-</div>
+            <div ng-cloak ng-view ng-class="getAnimation()"></div>
+        </div>
 
+        <!--build:js js/script.js-->
+        <!--custom script -- Remove what you don't use -->
+        <!--end custom script -->
+        <!-- example of template
+        $.mockJSON.generateFromTemplate({'people|5-5':[{
+            'id|5-5':'@LETTER_UPPER@NUMBER@LETTER_LOWER',
+            'name':'@LAST_NAME @MALE_FIRST_NAME',
+            'age|0-130':0
+            }]}).people
 
-<script src="vendor/ace-builds/src-min/ace.js"></script>
-<script src="vendor/ace-builds/src-min/ext-language_tools.js"></script>
-<script src="vendor/angular/angular.min.js"></script>
-<script src="vendor/angular-route/angular-route.min.js"></script>
-<script src="vendor/angular-animate/angular-animate.min.js"></script>
-<script src="vendor/angular-ui-bootstrap-bower/ui-bootstrap-tpls.min.js"></script>
-<script src="vendor/angular-sanitize/angular-sanitize.min.js"></script>
+        -->
+        <script src="vendor/ace-builds/src-min/ace.js" type="text/javascript" > </script>
+        <script src="vendor/ace-builds/src-min/ext-language_tools.js" type="text/javascript" > </script>
+        <script src="vendor/angular/angular.min.js" type="text/javascript" > </script>
+        <script src="vendor/angular-route/angular-route.min.js" type="text/javascript" > </script>
+        <script src="vendor/angular-animate/angular-animate.min.js" type="text/javascript" > </script>
+        <script src="vendor/angular-ui-bootstrap-bower/ui-bootstrap-tpls.min.js" type="text/javascript" > </script>
+        <script src="vendor/angular-sanitize/angular-sanitize.min.js" type="text/javascript" > </script>
 
-<script src="editor/templates.js"></script>
-<script src="editor/training-editor.js"></script>
-<script src="editor/js/editor.js"></script>
-<script src="editor/js/corrector.js"></script>
+        <script src="editor/templates.js" type="text/javascript" > </script>
+        <script src="editor/training-editor.js" type="text/javascript" > </script>
+        <script src="editor/js/editor.js" type="text/javascript" > </script>
+        <script src="editor/js/corrector.js" type="text/javascript" > </script>
 
-<script src="js/app.js"></script>
-<script src="js/directives/sideButton.js"></script>
-<script src="js/directives/note.js"></script>
-<script src="js/filters/filters.js"></script>
+        <script src="js/app.js" type="text/javascript" > </script>
+        <script src="js/directives/sideButton.js" type="text/javascript" > </script>
+        <script src="js/directives/note.js" type="text/javascript" > </script>
+        <script src="js/filters/filters.js" type="text/javascript" > </script>
 
-<script src="js/controllers/noteCtrl.js"></script>
-<script src="js/controllers/mainController.js"></script>
-<script src="js/controllers/slides.js"></script>
-<script src="js/controllers/animationController.js"></script>
-
-</body>
+        <script src="js/controllers/noteCtrl.js" type="text/javascript" > </script>
+        <script src="js/controllers/mainController.js" type="text/javascript" > </script>
+        <script src="js/controllers/slides.js" type="text/javascript" > </script>
+        <script src="js/controllers/animationController.js" type="text/javascript" > </script>
+        <!-- endbuild-->
+    </body>
 </html>
