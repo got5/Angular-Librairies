@@ -1,4 +1,15 @@
-<!DOCTYPE html><!--[if lt IE 7]>
-<html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]--><!--[if IE 7]>
-<html class="no-js lt-ie9 lt-ie8"> <![endif]--><!--[if IE 8]>
-<html class="no-js lt-ie9"> <![endif]--><!--[if gt IE 8]><!--><html class="no-js"><!--<![endif]--><head><title>HTML5/CSS3 Training</title><meta http-equiv="Content-Type" content="text/html;charset=utf-8"><link rel="stylesheet" href="styles/animation.css"><link rel="stylesheet" href="styles/bootstrap.css"><link rel="stylesheet" href="styles/main.css"><body ng-app="trainingApp"><div class="slide" ng-controller="MainController"><div ng-cloak="" popover-placement="bottom" popover="{{popupText}}" ng-mousemove="setPopupText($event)" popover-trigger="mouseenter"><a ng-click="gotoSelectedSlide()"><progressbar value="slideIndexAsPc" type="danger" class="progress-slideshow active">{{height()}} <span style="color:black; white-space:nowrap">{{slideIndex}} / {{slides.length}}</span></progressbar></a></div><a ng-click="previousSlide()"><div class="left-triangle"></div></a> <a ng-click="nextSlide()"><div class="right-triangle"></div></a><div ng-cloak="" class="header" ng-show="slides[slideIndex].title"><h1 class="title">{{slideIndex}}. {{slides[slideIndex].title}}</h1></div><div ng-cloak="" ng-view="" ng-class="getAnimation()"></div></div><script src="js/dcb9441d.script.js"></script>
+<!doctype html>
+<html>
+  <head>
+    <title>Redirection to new repo</title> 
+    <meta http-equiv="Refresh" content="0; url=http://got5.github.io/TrainingAngularJS">
+    
+    <script type="text/javascript">
+      window.location.href = "http://got5.github.io/TrainingAngularJS"
+    </script>
+  </head>
+
+  <body>    
+    <p>If you are not redirected automatically, click <a href='http://got5.github.io/TrainingAngularJS'>here</a>.</p>
+  </body>
+</html>

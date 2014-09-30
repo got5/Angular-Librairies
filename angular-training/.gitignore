@@ -1,6 +1,0 @@
-app
-node_modules
-.gitignore.sublime-project
-.gitignore.sublime-workspace
-prod
-.tmp/
